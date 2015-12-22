@@ -52,7 +52,7 @@ export default class Tabs extends React.Component{
   	}
 
   	renderHome(route,navigator){
-  		return <WatchedDealsContainer/>
+  		return <WatchedDealsContainer featuredDeals$={this.props.state$.pluck('featuredDeals')}/>
 
   		// return <Deals route={route} data={data}/>
   	}

@@ -26,6 +26,7 @@ class Combinator extends React.Component {
     this.subscription.dispose();
   }
   render() {
+    // console.log(this.state)
     return this.state;
   }
 }

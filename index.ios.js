@@ -12,6 +12,7 @@ var {
   View,
 } = React;
 import App from './components/app'
+import {state$} from './model'
 let Dimensions = require('Dimensions');
 let windowSize = Dimensions.get('window');
 global.k=windowSize.width/320
@@ -21,7 +22,7 @@ global.center={justifyContent:'center',alignItems:'center'}
 var ideal = React.createClass({
   render: function() {
     return (
-      <App/>
+      <App state$={state$}/>
     );
   }
 });

@@ -1,6 +1,7 @@
 import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
 import Deal from './deal'
+import _ from 'lodash'
 import {openAnimation,scrollToTopAnimation} from './animations'
 import Test from './test'
 import LightBox from 'react-native-lightbox'
@@ -73,8 +74,8 @@ export default class DealCard extends React.Component{
 								}}>
 
 								<View style={{flexDirection:'row',flexWrap:'wrap',flex:2,marginLeft:!this.state.isOpen?5*k:10*k}}>
-									{deal.tags.map((tag,i)=>{
-										return <Text style={{fontSize:10*k,color:'gray',fontWeight:'500'}} key={i}>  {tag.toUpperCase()}</Text>
+									{_.values(deal.tags['sort:createdAt=desc'].edges).filter(tag=>tag.text).map((tag,i)=>{
+										return <Text style={{fontSize:10*k,color:'gray',fontWeight:'500'}} key={i}>  {tag.text.toUpperCase()}</Text>
 									})}
 								</View>
 								<View style={{flex:1,flexDirection:'row',...center,}}>

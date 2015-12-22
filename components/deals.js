@@ -127,6 +127,7 @@ export default class Deals extends React.Component{
 	}
 	render(){
 		this.canOpen=1
+		console.log(this.props.data,'===========')
 		// console.log('renderign deal list')
 		this.y=this.y || 0;
 		if(!this.state.renderPlaceholderOnly){

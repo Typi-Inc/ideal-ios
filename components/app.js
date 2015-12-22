@@ -25,7 +25,7 @@ export default class App extends React.Component{
 			<View style={{flex:1,backgroundColor:'e8e8ee'}}>
 				<View ref='status' style={{height:20,backgroundColor:'#0679a2', }}/>
 
-				<Tabs ref={el=>this.tabs=el}/>
+				<Tabs state$={this.props.state$} ref={el=>this.tabs=el}/>
 			</View>
 			)
 	}

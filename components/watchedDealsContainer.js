@@ -2,6 +2,7 @@ import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
 import _ from 'lodash';
 import Combinator from './combinator'
+import Deals from './deals'
 import {state$,action$,data$} from '../model'
 let UIManager = require('NativeModules').UIManager;
 let {
@@ -14,34 +15,27 @@ export default class WatchedDealsContainer extends React.Component{
 	state={}
 	
 	componentWillMount(){
-		state$.take(1).subscribe(x => {
-			// let ids = _.values(x.usersById['7d86e3c6-8e58-489c-92ba-9baf99145728'].watchedTags['sort:createdAt=desc'].edges).map(edge=>{
-			// 	return edge.id
-			// }).filter(x=>x)
-			data$.onNext({
-				featuredDeals: {
-					isFetching: true
-				}
-			})
-			// action$.onNext({
-			// 	type: 'get',
-			// 	path: ['tagsById', [...ids],'deals','sort:createdAt=desc', 'edges',{ from: 0, to : 10} , ['title']]
-			// })
 			action$.onNext({
 				type: 'get',
-				path: ['featuredDeals',{ from: 0, to : 10}, ['title'] ]
+				path: ['featuredDeals',{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text']
+				// ['featuredDeals',{ from: 0, to : 10}, ['title','conditions']]
+					
 			})
-		})
-
-	}
+	 }
 
 	render(){
+		// this.props.featuredDeals$.map(deals => console.log(deals) || deals)
 
 		return (
 		<Combinator>
-
-
-
+			<View>
+			{this.props.featuredDeals$.map(deals=>{
+				// console.log('here hre',deals)
+					return (
+						<Deals data={_.values(deals).filter(x=>x && x.title)}/>
+							)
+			})}
+			</View>
 		</Combinator>
 			)
 	}
@@ -51,5 +45,5 @@ export default class WatchedDealsContainer extends React.Component{
 
 Object.assign(WatchedDealsContainer.prototype, TimerMixin);
 
-
+// <Deals data={_.values(deals).filter(x=>x.title)}/>
 				   
