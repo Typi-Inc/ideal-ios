@@ -77,20 +77,14 @@ export default class Deals extends React.Component{
 		return;
 	}
 	viewDeal(item,refS){
-		// this.requestAnimationFrame(()=>{
 			this.toggleScroll(false)
 			// this.context.toggleTabs()
-			// this.refs[refS].toggleScroll(true)
 			let handle = React.findNodeHandle(this.refs[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
-				
 				LayoutAnimation.configureNext(openAnimation);
-
 				this.refs[refS].toggleOpen(true)
 				this.moveUpPrev(item,pagey)
 				this.hideNext(item,pagey)
-				// this.toggleSearch(0);
-				
 				if(this.props.navbar){
 					this.refs['navbar'].destroy()
 					this.refs[refS].animateOpen(pagey,75*k)
@@ -101,18 +95,13 @@ export default class Deals extends React.Component{
 				}
 				this.props.toggleSearch && this.props.toggleSearch(true)
 			})
-			// this.setTimeout(()=>this.props.toggleSearch && this.props.toggleSearch(true),500)
-			
-
-		// })
-		
 	
 	}
 	closeDeal(item,refS){
-		// this.requestAnimationFrame(()=>{
-			this.refs[refS].closeCommentBox()
 			this.toggleScroll(true)
 			this.refs[refS].toggleScroll(false)
+			this.refs[refS].closeCommentBox()
+
 			// this.context.toggleTabs()
 			let handle = React.findNodeHandle(this.refs[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
@@ -128,7 +117,6 @@ export default class Deals extends React.Component{
 				this.props.toggleSearch && this.props.toggleSearch(false)
 			
 			})
-		// })
 
 	}
 	toggleScroll(val){

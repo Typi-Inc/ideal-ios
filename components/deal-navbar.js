@@ -99,8 +99,8 @@ export default class DealNavbar extends React.Component{
 			alignItems:'center',
 			justifyContent:'center',
 			// opacity:this.anim3.interpolate({inputRange:[0,1],outputRange:[1,.3]}),
-			shadowColor:this.anim4.interpolate({inputRange:[0,0.4,1],outputRange:['black','#4A4A4A','gray']}),
-	        shadowOffset:{width:7,height:7},
+			shadowColor:'#444444',
+	        shadowOffset:{width:4,height:4},
 	        shadowOpacity:this.anim4,
 		}
 		this.textAnimatedStyle1={
@@ -143,8 +143,8 @@ export default class DealNavbar extends React.Component{
 			alignItems:'center',
 			// opacity:this.anim4.interpolate({inputRange:[0,1],outputRange:[1,.3]}),
 			justifyContent:'center',
-			shadowColor:'gray',
-	        shadowOffset:{width:7,height:7},
+			shadowColor:'#444444',
+	        shadowOffset:{width:4,height:4},
 	        shadowOpacity:this.anim3,
 		}
 		this.textAnimatedStyle2={

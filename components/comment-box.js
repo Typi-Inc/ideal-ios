@@ -42,7 +42,7 @@ export default class CommentBox extends React.Component{
 	render(){
     let bottom;
     if(k===1){
-      bottom=this.props.pushedFromLenta ? 0:63
+      bottom=this.props.pushedFromLenta ? 0:70
     }else if (k>1){
       bottom=this.props.pushedFromLenta ? 0:100
     }

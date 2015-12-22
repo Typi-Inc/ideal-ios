@@ -34,7 +34,6 @@ export default class FindTab extends React.Component{
 		this.textInput.setNativeProps({style:{width:255*k}})
 		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
 		this.setState({loadDeals:false})
-		// if(!this.state.loadDeals) this.suggestion.setNativeProps({style:{height:200*k}})
 	}
 	cancel(){
 		LayoutAnimation.easeInEaseOut()
@@ -45,12 +44,10 @@ export default class FindTab extends React.Component{
 		if(this.state.tagCount>0){
 			this.setState({loadDeals:true})
 		}
-		
-		// this.suggestion && this.suggestion.setNativeProps({style:{height:500*k}})
-
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
+		// let chosenTags=this.state.chosenTags.splice(this.state.chosenTags.indexOf(tag),1)
 		let newState = React.addons.update(this.state, {
 			chosenTags : {$unshift : [tag]},
 			loadDeals:{$set:true},
@@ -97,11 +94,11 @@ export default class FindTab extends React.Component{
 		// LayoutAnimation.easeInEaseOut()
 		let h1,h2;
 		if(k===1){
-			h1=500
+			h1=560
 			h2=450
 		}else if (k>1){
 			h1=610
-			h2=490
+			h2=610
 		}
 		this.searchPanel.setNativeProps({style:{height:val?0:100*k}})
 		this.deals.setNativeProps({style:{height:val?h1:h2}})
@@ -119,22 +116,28 @@ export default class FindTab extends React.Component{
 		}
 		this.anim.setValue(0)
 		this.setTimeout(()=>{
-			this.slider && this.slider.setNativeProps({style:{flex:k>1?.8:1}})
+			this.slider && this.slider.setNativeProps({style:{flex:k>1?.09:0.01}})
 			this.suggestion && this.suggestion.setNativeProps({style:{height:height}})
 		},500)
 	}
 	handleKeyboardDisappear(){
-		let h1,h2;
-		if(k===1){
-			h1=500
-			h2=450
-		}else if (k>1){
-			h1=520
-			h2=600
-		}
-		this.slider && this.slider.setNativeProps({style:{flex:0}})
-		!this.state.loadDeals && this.suggestion.setNativeProps({style:{height:h1}})
-		this.state.loadDeals && this.deals.setNativeProps({style:{height:h2}})
+		this.searchPanel.measure((x,y,w,h,px,py)=>{
+			console.log(h)
+			if(h>0){
+				let h1,h2;
+				if(k===1){
+					h1=500
+					h2=450
+				}else if (k>1){
+					h1=520
+					h2=600
+				}
+				this.slider && this.slider.setNativeProps({style:{flex:0}})
+				!this.state.loadDeals && this.suggestion.setNativeProps({style:{height:h1}})
+				this.state.loadDeals && this.deals.setNativeProps({style:{height:h2}})
+			}
+		})
+		
 	}
 
 
@@ -153,7 +156,7 @@ export default class FindTab extends React.Component{
 		this.anim=this.anim || new Animated.Value(0)
 		this.latestScroll=this.latestScroll || 0
 		return (
-			<View style={{backgroundColor:'white',flex:1,}}>
+			<View style={{backgroundColor:'white',}}>
 
 					<View ref={el=>this.searchPanel=el} style={{backgroundColor:'white',height:100*k}}>
 						<View ref={el=>this.search=el} style={{flexDirection:'row',...center,marginTop:10}}>

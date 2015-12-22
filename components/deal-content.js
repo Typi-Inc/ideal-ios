@@ -40,7 +40,7 @@ export default class DealContent extends React.Component{
 		}else if (this.state.num===1){
 			tabView=<Address/>
 		}else{
-			tabView=<Comments count={this.state.commentCount} comments={this.props.deal.comments}/>
+			tabView=<Comments count={this.state.commentCount} comments={this.props.deal.comments||[]}/>
 			// this.setTimeout(()=>this.props.openCommentBox(),300)
 		
 		}

@@ -6,7 +6,10 @@ import Deals from './deals'
 import Deal from './deal'
 import Profile from './profile'
 import FindTab from './findTab'
+import Navbar from './navbar'
 import {data} from './mock'
+import Parent from './parent'
+import WatchedDealsContainer from './watchedDealsContainer'
 let {
   AppRegistry,
   StyleSheet,
@@ -17,6 +20,26 @@ let {
   Navigator,
   View,
 } = React;
+// let ProfileRouteMapper={
+// 	LeftButton:(route, navigator, index, navState)=>{
+// 		if (index === 0) {
+// 	 	 return null;
+// 		}
+// 		return (
+// 			<TouchableOpacity  onPress={()=>navigator.pop()}>
+// 					<Image  style={{height:16*k,width:12*k,marginLeft:10}} source={{uri:'arrowWhite',isStatic:true}}/>
+// 			</TouchableOpacity>
+// 			)
+
+// 	},
+// 	RightButton:(route, navigator, index, navState)=>{
+// 		return null
+// 	},
+// 	Title:(route, navigator, index, navState)=>{
+// 		return <Text  style={{color:'white',fontWeight:'700',fontSize:20}}>{route.name}</Text>
+// 	}
+
+// }
 export default class Tabs extends React.Component{
 	state={selectedTab:'home',height:45,overflow:'visible'}
 
@@ -29,9 +52,9 @@ export default class Tabs extends React.Component{
   	}
 
   	renderHome(route,navigator){
+  		return <WatchedDealsContainer/>
 
-
-  		return <Deals route={route} data={data}/>
+  		// return <Deals route={route} data={data}/>
   	}
   	renderSearchTab(route,navigator){
   		return <FindTab/>
@@ -45,6 +68,7 @@ export default class Tabs extends React.Component{
   		}
   		
   	}
+  	
 	render(){
 
 			console.log('rerender tab')
@@ -91,7 +115,7 @@ export default class Tabs extends React.Component{
 				    // badgeText="1"
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'notifications' })}>
-		          	<Image source={{uri:'https://besmart.kz/media/events/images/218/109272.jpg.633x370_q100_crop-smart.jpg'}} style={{height:200,width:400,marginTop:20}}/>
+				    <Parent/>
 				  </TabNavigator.Item>
 
 				    <TabNavigator.Item
@@ -104,7 +128,9 @@ export default class Tabs extends React.Component{
 				    onPress={() => this.setState({ selectedTab: 'profile' })}>
  							<Navigator
 							initialRoute={{name:'profile'}}
+							// navigationBar={<Navigator.NavigationBar routeMapper={ProfileRouteMapper} style={{backgroundColor:this.props.blue?'white':'#0679a2'}}/>}
 							renderScene={this.renderProfile.bind(this)}
+
 						/>				
 				  </TabNavigator.Item>
 				</TabNavigator>

@@ -25,7 +25,7 @@ let {
   ScrollView
 } = React;
 export default class Deal extends React.Component{
-	state={isOpen:this.props.isOpen,hidden:false,num:0,slideUp:0,commentBox:false,text:'',isLoaded:false,loading:true};
+	state={isOpen:this.props.isOpen,hidden:false,num:0,slideUp:0,commentBox:false,text:'',isLoaded:false,loading:this.props.isOpen};
 
 //ANIMATE OPENING AND CLOSING BEGHINNING-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	animateScrollToTop(){
@@ -54,7 +54,7 @@ export default class Deal extends React.Component{
 	hide(){
 		this.refs['mainView'].setNativeProps({
 			style:{
-				top:350*k,
+				top:300*k,
 			}
 		})
 		this.state.hidden=true
@@ -70,7 +70,7 @@ export default class Deal extends React.Component{
 	animateOpen(pagey,t){
 		this.refs['mainView'].setNativeProps({
 			style:{
-				height:k===1?568*h:600*h,
+				height:k===1?580*h:600*h,
 				width:320*k,
 				top:-pagey+t,
 				marginLeft:0,
