@@ -7,7 +7,7 @@ export let data$ = new Rx.ReplaySubject(1);//data stream of state
 import _ from 'lodash'
 let model = new falcor.Model({
   source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
-  // maxSize: 0,
+  maxSize: 0,
 });
 // model.get(
 // 	["usersById","7d86e3c6-8e58-489c-92ba-9baf99145728","name"],
@@ -19,12 +19,7 @@ let model = new falcor.Model({
 action$.subscribe(action => {
   switch(action.type) {
 	  case 'get':
-	  	// console.log(action.path[0].constructor === Array)
-	 //  	if (action.path[0].constructor === Array)
-		//   	model.get(action.path).then(data => console.log(data,'-=-=-=-=')|| data$.onNext(data.json));
-		// else
-		  	model.get(action.path).then(data => console.log(data,'-=-=-=-=')|| data$.onNext(data.json));
-
+		model.get(...action.path).then(data => data$.onNext(data.json));
 	  	break;
 	  case 'set':
 	  	model.set(action.path, action.value);
@@ -37,9 +32,9 @@ action$.subscribe(action => {
   }
 })
 export let state$ = data$.scan((acumulator , newData) =>deepAssign(acumulator,newData))
-state$.pluck('featuredDeals').subscribe(deals => 
-	console.log(_.values(deals).filter(x=>x && x.title))
+// state$.pluck('featuredDeals').subscribe(deals => 
+// 	console.log(_.values(deals).filter(x=>x && x.title)))
 
 	// _.values(deals).filter(x=>x.title).forEach(console.log)
 	// console.log('=============',deals,'============')
-)
+// )

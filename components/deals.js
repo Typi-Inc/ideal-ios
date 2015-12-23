@@ -1,11 +1,12 @@
 import React from 'react-native'
 import Deal from './deal'
-import {data} from './mock'
+// import {data} from './ mock'
 import {openAnimation,closeImageAnimation} from './animations'
 import TimerMixin from 'react-timer-mixin'
 import Navbar from './navbar'
 import Spinner from 'react-native-spinkit';
 import Loading from './loading'
+import {action$} from '../model'
 let EventEmitter = require('EventEmitter');
 let UIManager = require('NativeModules').UIManager;
 let {
@@ -35,26 +36,26 @@ export default class Deals extends React.Component{
 	}	
 
 	moveUpPrev(item,pagey){
-		let prev=data.indexOf(item)-1			
+		let prev=this.props.data.indexOf(item)-1			
 		if(prev>-1){
-			let prevRef=''+data[prev].id
+			let prevRef=''+this.props.data[prev].id
 			this.refs[prevRef].moveUp(pagey)
-			let prev1=data.indexOf(item)-2
+			let prev1=this.props.data.indexOf(item)-2
 			if(prev1>-1){
-				let prevRef1=''+data[prev1].id
+				let prevRef1=''+this.props.data[prev1].id
 				this.refs[prevRef1].moveUp(pagey)
 			}
 		}
 		return;
 	}
 	moveDownPrev(item,pagey){
-		let prev=data.indexOf(item)-1			
+		let prev=this.props.data.indexOf(item)-1			
 		if(prev>-1){
-			let prevRef=''+data[prev].id
+			let prevRef=''+this.props.data[prev].id
 			this.refs[prevRef].moveDown(pagey)
-			let prev1=data.indexOf(item)-2
+			let prev1=this.props.data.indexOf(item)-2
 			if(prev1>-1){
-				let prevRef1=''+data[prev1].id
+				let prevRef1=''+this.props.data[prev1].id
 				this.refs[prevRef1].moveDown(pagey)
 			}
 		}
@@ -62,14 +63,14 @@ export default class Deals extends React.Component{
 	}
 	hideNext(item,pagey){
 		if(pagey<60){
-			let nextRef=''+data[data.indexOf(item)+1].id
+			let nextRef=''+this.props.data[this.props.data.indexOf(item)+1].id
 			this.refs[nextRef].hide()
 		}
 		return;
 	}
 	unHideNext(item){
-		if(data[data.indexOf(item)+1]){
-			let nextRef=''+data[data.indexOf(item)+1].id 
+		if(this.props.data[this.props.data.indexOf(item)+1]){
+			let nextRef=''+this.props.data[this.props.data.indexOf(item)+1].id 
 			if(this.refs[nextRef].isHidden()){
 				this.refs[nextRef].unHide()
 			}
@@ -78,6 +79,7 @@ export default class Deals extends React.Component{
 	}
 	viewDeal(item,refS){
 			this.toggleScroll(false)
+
 			// this.context.toggleTabs()
 			let handle = React.findNodeHandle(this.refs[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
@@ -125,11 +127,34 @@ export default class Deals extends React.Component{
 		})
 
 	}
+	componentWillReceiveProps(props){
+
+		this.stopFetch=false
+	}
+	fetchBottom(){
+		console.log('fetching your ass down')
+		
+	
+		action$.onNext({
+			type: 'get',
+			path: [['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+			['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10}, ['title','conditions','id','image','discount']],
+			['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'business',['name','image']],
+			['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'likes','sort:createdAt=desc','count']
+			]		
+		})
+
+
+	}
+	componentWillMount(){
+		console.log('mounting deals in home ')
+	}
 	render(){
 		this.canOpen=1
-		console.log(this.props.data,'===========')
+		// console.log(this.props.data,'===========')
 		// console.log('renderign deal list')
 		this.y=this.y || 0;
+		// console.log('rendering to fucking check')
 		if(!this.state.renderPlaceholderOnly){
 			return (
 			<View style={{flex:1,backgroundColor:'e8e8ee',
@@ -143,14 +168,17 @@ export default class Deals extends React.Component{
 				automaticallAdjustContentInsets={true}
 				contentContainerStyle={{paddingBottom:60}}
 				onScroll={(e)=>{
-					// console.log(e.nativeEvent.contentOffset.y)
+					if(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y<2500 && !this.stopFetch){
+						this.stopFetch=true
+						this.fetchBottom()	
+					}
 				}}
-				scrollEventThrottle={16}
+				scrollEventThrottle={10000}
 				ref='scroll'>
 					{this.props.data.map((deal,i)=>{
 						let refS = ''+deal.id
 						return (
-							<Deal ref={refS} navigator={this.props.navigator}
+							<Deal ref={refS} //navigator={this.props.navigator}
 							 key={deal.id} deal={deal}  
 							 isOpen={false}
 							 viewDeal={!this.state.loadNewer?this.viewDeal.bind(this,deal,refS):null}

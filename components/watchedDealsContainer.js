@@ -17,8 +17,12 @@ export default class WatchedDealsContainer extends React.Component{
 	componentWillMount(){
 			action$.onNext({
 				type: 'get',
-				path: ['featuredDeals',{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text']
-				// ['featuredDeals',{ from: 0, to : 10}, ['title','conditions']]
+				path: [['featuredDeals',{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+				['featuredDeals',{ from: 0, to : 10}, ['title','conditions','id','image','discount']],
+				['featuredDeals',{from:0,to:10},'business',['name','image']],
+				['featuredDeals',{from:0,to:10},'likes','sort:createdAt=desc','count']
+
+				]
 					
 			})
 	 }
@@ -28,7 +32,7 @@ export default class WatchedDealsContainer extends React.Component{
 
 		return (
 		<Combinator>
-			<View>
+			<View style={{flex:1}}>
 			{this.props.featuredDeals$.map(deals=>{
 				// console.log('here hre',deals)
 					return (

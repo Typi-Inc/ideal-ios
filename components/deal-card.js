@@ -28,7 +28,7 @@ export default class DealCard extends React.Component{
 	renderLightBox(){
 		return (
 			
-				<Image  source={{uri:this.props.deal.uri}}  //image of the deal
+				<Image  source={{uri:this.props.deal.image}}  //image of the deal
 				style={{justifyContent:'flex-end',
 					height:this.state.isOpen?220*h:180*h}}>
 				</Image>
@@ -39,17 +39,18 @@ export default class DealCard extends React.Component{
 
 	render(){
 		let deal=this.props.deal
+
 		this.anim=this.anim || new Animated.Value(1)	
 		return (
 						<Animated.View  >
 							<LightBox canOpen={this.state.isOpen} viewDeal={this.props.viewDeal} onClose={()=>LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)} renderContent={this.renderLightBox.bind(this)}>
-								<Image  source={{uri:deal.uri}} resizeMode={'cover'}  //image of the deal
+								<Image  source={{uri:deal.image}} resizeMode={'cover'}  //image of the deal
 								style={{justifyContent:'flex-end',alignItems:'flex-start',
 									height:this.state.isOpen?220*h:180*h,width:this.state.isOpen?320*k:300*k}}>
 				
 									
 									<View style={{backgroundColor:'0084b4',height:40*k,width:60*k,...center,opacity:1}}>
-										<Text style={{fontSize:20*k,color:'white',fontWeight:'800'}}>-30%</Text>
+										<Text style={{fontSize:20*k,color:'white',fontWeight:'800'}}>-{deal.discount}%</Text>
 									</View>
 								</Image>
 							</LightBox>
@@ -60,7 +61,7 @@ export default class DealCard extends React.Component{
 								<View style={{width:250*k}}>
 									<Text>
 										<Text style={{fontSize:14*k,fontWeight:'400',}}>{deal.title}</Text>
-										<Text style={{fontSize:14*k,fontWeight:'600',}}> "{deal.author}"</Text>
+										<Text style={{fontSize:14*k,fontWeight:'600',}}> «{deal.business.name}»</Text>
 									</Text>
 								</View>
 								<View style={{width:1,backgroundColor:'e4e4e4',height:45*k,}}/>
@@ -85,9 +86,9 @@ export default class DealCard extends React.Component{
 							</View>
 							<View style={{flexDirection:'row',marginBottom:14*k,alignItems:'center',marginTop:10*k,marginLeft:!this.state.isOpen?10*k:15*k}}>
 								<Image source={{uri:'cartGreen',isStatic:true}} style={{height:10*k,width:10*k,marginRight:3}}/>
-								<Text style={{color:'gray'}}>{deal.bought}</Text>
+								<Text style={{color:'gray'}}>19</Text>
 								<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
-								<Text style={{color:'gray'}}>{this.state.liked}</Text>
+								<Text style={{color:'gray'}}>{deal.likes['sort:createdAt=desc'].count}</Text>
 								<Image source={{uri:'hand132-5',isStatic:true}} style={{height:20*k,width:20*k,marginLeft:8,marginRight:3,marginBottom:4*k,transform:[{rotate:'15deg'}]}}/>
 								<Text style={{color:'gray'}}>1000 тг</Text>
 							</View>

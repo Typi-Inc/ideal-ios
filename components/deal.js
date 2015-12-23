@@ -150,6 +150,7 @@ export default class Deal extends React.Component{
 	render(){
 		this.anim=this.anim || new Animated.Value(1)
 		let deal=this.props.deal
+		// console.log('deal',deal)
 		this.move=this.move || 0
 		this.keyboard=this.keyboard || 0
 		if(this.state.loading){
@@ -190,7 +191,7 @@ export default class Deal extends React.Component{
 						closeCommentBox={this.closeCommentBox.bind(this)} 
 						toggleScroll={this.toggleScroll.bind(this)} 
 						navigator={this.props.navigator} 
-						closeDeal={this.props.closeDeal}/>:<DealAuthor author={deal.author} uri={deal.uri}/>}
+						closeDeal={this.props.closeDeal}/>:<DealAuthor business={deal.business}/>}
 					
 					<DealCard ref={el=>this.dealCard=el} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
 					{this.state.isOpen?<DealContent 
