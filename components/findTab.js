@@ -9,6 +9,7 @@ import {action$} from '../model'
 import Deals from './deals'
 import {ReplaySubject,Observable} from 'rx'
 import {model} from '../model'
+import Spinner from 'react-native-spinkit'
 import {openAnimation,spring1,spring2,scrollToTopAnimation,closeImageAnimation} from './animations'
 import Loading from './loading'
 let {
@@ -123,25 +124,38 @@ export default class FindTab extends React.Component{
 		
 	}
 	componentWillMount() {
-
 		// action$.onNext({type:'get',path:[['tagsByText','',{ from: 0, to : 20}, ['text'] ]]})
-
 		this.text$ = new ReplaySubject(1);
-
-		this.subscription=this.text$.
-			debounce(250).
-			map(key=>
-				Observable.fromPromise(model.get(
-					['tagsByText',key,{ from: 0, to : 20}, ['text'] ]
-				))
-			).switchLatest();
-		
 		this.text$.onNext('');
 
-		this.subscription.map(data => data && data.json ? data.json : {tagsByText : {'' : []}}).
+		this.searchTags$ = this.text$.
+			// map(key => {
+			// 	this.setState({isLoadingTags: true})
+			// 	return key;
+			// }).
+			debounce(250).
+			map(key=> {
+				let result$ = Observable.fromPromise(
+					model.get(
+						['tagsByText',key,{ from: 0, to : 20}, ['text'] ]
+					)
+				).delay(1000)
+				Observable.just(1).delay(500).takeUntil(result$).subscribe(() => this.setState({isLoadingTags: true}))
+				return result$
+			}).switchLatest();
+		this.searchTagsSubscription = this.searchTags$.map(data => data && data.json ? data.json : {tagsByText : {'' : []}}).
 			map(json => json.tagsByText[this.state.text || '']).
-			subscribe(tags=> this.setState({searchedTags:_.values(tags).filter(tag=>tag && tag.text)}))
+			subscribe(tags=> this.setState({
+				searchedTags:_.values(tags).filter(tag=>tag && tag.text),
+				isLoadingTags: false,
+			}))
 	}
+	// shouldComponentUpdate(p,s){
+	// 	if(this.state.isLoadingTags===s.isLoadingTags){
+	// 		return false
+	// 	}
+	// 	return true
+	// }
 
 	componentDidMount() {
 		// LayoutAnimation.configureNext(LayoutAnimation.create(100,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.opacity));
@@ -151,10 +165,11 @@ export default class FindTab extends React.Component{
     componentWillUnmount() {
         this._keyboardWillShowSubscription.remove();
         this._keyboardWillHideSubscription.remove();
-        // this.subscription.dispose()
+        this.searchTagsSubscription.dispose();
     }
 
 	render(){
+		console.log('rerender')
 
 		this.anim=this.anim || new Animated.Value(0)
 		this.latestScroll=this.latestScroll || 0
@@ -201,17 +216,28 @@ export default class FindTab extends React.Component{
 
 				{this.state.loadDeals ? <View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
 					<Deals search={true} toggleSearch={this.toggleSearch.bind(this)} data={data}/></View>:
-					<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
-						<ScrollView keyboardShouldPersistTaps={true}>
-								<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
-									{this.state.searchedTags.map((tag,i)=>{
-											console.log(tag);
-											return <Word chooseTag={this.chooseTag.bind(this)} key={i} isUp={false} tag={tag.text}/>
-										})}		
-								</View>
-						</ScrollView>
+					<View>
+				
+						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
+							<ScrollView keyboardShouldPersistTaps={true}>
+									<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
+										{this.state.searchedTags.map((tag,i)=>{
+												// console.log(tag);
+													return <Word chooseTag={this.chooseTag.bind(this)} key={i} isUp={false} tag={tag.text}/>
+											})}		
+									</View>
+							</ScrollView>
 
-						<View ref={el=>this.slider=el}/>
+							<View ref={el=>this.slider=el}/>
+						</View>
+
+						{this.state.isLoadingTags?
+							(<View style={{backgroundColor:'rgba(255,255,255,0.8)',width:320*k,top:0*k,flexDirection:'column',position:'absolute',justifyContent:'flex-start',alignItems:'center',height:500}}>
+			 	 				  <Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'#aaaaaa'}/>       
+		    				  </View>):<View/>
+						}
+
+						
 					</View>
 				}
 				</View>
