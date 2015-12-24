@@ -7,19 +7,28 @@ let UIManager = require('NativeModules').UIManager;
 let {
   Text,
   View,
-  Image
+  Image,
+  TouchableOpacity
 } = React;
 export default class DealAuthor extends React.Component{
 	state={}
 	render(){
+		console.log(this.props.business)
+		let name=this.props.business.name
+		let factName=name.length>20 ? name.slice(0,20)+'...':name
 		return (
 		<View>
-			<View style={{alignItems:'center',justifyContent:'space-between',flexDirection:'row',height:40*k}}>
+			<View style={{alignItems:'center',justifyContent:'space-between',flexDirection:'row',height: 50*k}}>
 				<View style={{...center,flexDirection:'row'}}>
-					<Image source={{uri:this.props.business.image}} style={{height:30*k,width:30*k,marginLeft:5*k}}/>
-					<Text style={{marginLeft:10*k,fontSize:14*k,fontWeight:'700'}}>{this.props.business.name}</Text>
+					<Image source={{uri:this.props.business.image}} style={{height:45*k,width:45*k,marginLeft:5*k}}/>
+					<View>
+						<Text style={{marginLeft:10*k,fontSize:14*k,fontWeight:'700'}}>{factName}</Text>
+						<Text style={{marginLeft:10*k,fontSize:12,color:'gray',fontWeight:'700',marginTop:5}}>Осталось 3 дня</Text>
+					</View>	
 				</View>
-				<Text style={{marginLeft:10*k,fontSize:12*k,fontWeight:'400',color:'gray',marginRight:10*k}}>3 дня</Text>
+					<TouchableOpacity style={{paddingTop:5*k,backgroundColor:'transparent',height:50*k,width:50*k,justifyContent:'flex-start',alignItems:'flex-end'}} onPress={()=>this.props.openHelper()}>
+						<Image style={{height:35,width:24,marginRight:15,transform:[{rotate:'15deg'}]}} source={{uri:'Earn blue green',isStatic:'true'}}/>
+					</TouchableOpacity>
 			</View>
 			<View style={{height:1,backgroundColor:'e4e4e4'}}/>
 		</View>

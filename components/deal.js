@@ -77,6 +77,10 @@ export default class Deal extends React.Component{
 				borderWidth:0,	
 			}
 		})
+		this.anim.setValue(0)
+		// if(this.anim._value===1){
+		// 	this.openHelper()
+		// }
 	}	
 	
 	animateClose(pagey){
@@ -89,6 +93,7 @@ export default class Deal extends React.Component{
 				borderWidth:1,
 			}
 		})
+		
 	}
 	toggleScroll(val){
 		this.refs['scroll'].setNativeProps({
@@ -146,9 +151,14 @@ export default class Deal extends React.Component{
 				//  		this.setState({isLoaded:true},()=>console.log('loading again'))
 	   //  		});
 	// }	
-
+	openHelper(){
+		Animated.spring(this.anim,{toValue:this.anim._value===0?1:0,tension:40,velocity:this.anim._value===0?20:0,friction:10}).start()
+		UIManager.measure(React.findNodeHandle(this.dialog),(x,y,w,h,px,py)=>{
+			console.log(x,y,py)
+		})
+	}
 	render(){
-		this.anim=this.anim || new Animated.Value(1)
+		this.anim=this.anim || new Animated.Value(0)
 		let deal=this.props.deal
 		// console.log('deal',deal)
 		this.move=this.move || 0
@@ -164,7 +174,7 @@ export default class Deal extends React.Component{
 			return (
 
 			<Animated.View ref='mainView' 
-			style={{flex:1,width:this.state.isOpen?320*k:300*k,height:this.state.isOpen?568*h:360*h,opacity:this.anim,
+			style={{flex:1,width:this.state.isOpen?320*k:300*k,height:this.state.isOpen?568*h:360*k,
 				backgroundColor:'white',marginLeft:this.state.isOpen?0:10*k,marginTop:this.state.isOpen?0:10*k,
 				borderWidth:this.state.isOpen?0:1,borderColor:'#e4e4e4'
 			}}>
@@ -191,7 +201,7 @@ export default class Deal extends React.Component{
 						closeCommentBox={this.closeCommentBox.bind(this)} 
 						toggleScroll={this.toggleScroll.bind(this)} 
 						navigator={this.props.navigator} 
-						closeDeal={this.props.closeDeal}/>:<DealAuthor business={deal.business}/>}
+						closeDeal={this.props.closeDeal}/>:<DealAuthor openHelper={this.openHelper.bind(this)} business={deal.business}/>}
 					
 					<DealCard ref={el=>this.dealCard=el} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
 					{this.state.isOpen?<DealContent 
@@ -200,6 +210,34 @@ export default class Deal extends React.Component{
 						openCommentBox={this.openCommentBox.bind(this)} deal={deal} conditions={deal.conditions}/>:<View/>}
 				</ScrollView>
 					{this.state.commentBox?<CommentBox pushedFromLenta={this.props.pushedFromLenta && this.props.pushedFromLenta} ref='comment-box' submitComment={this.submitComment.bind(this)}/>:<View/>}
+
+					<Animated.View ref={el=>this.dialog=el} style={{
+						height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,182*k]}),
+						backgroundColor:'rgba(0,132,180,0.7)',overflow:'visible',
+						width:299*k,
+						position:'absolute',
+						top:50*k,left:0,justifyContent:'flex-start',alignItems:'center',
+						opacity:this.anim.interpolate({inputRange:[0,0.8,0.9,1],outputRange:[0,1,1,1]}),
+
+					}}>
+					<Text style={{color:'white',marginTop:25,fontWeight:'900',
+					fontSize:14}}>Cкопируй ссылку.</Text>
+					<Text style={{color:'white',marginTop:25,fontWeight:'900',
+					fontSize:14}}>Отправь друзьям.</Text>
+					<Text style={{color:'white',marginTop:25,fontWeight:'900',
+					fontSize:14}}>За каждую покупку получи 1000 тг и выше.</Text>
+					<Text style={{color:'white',marginTop:25,fontWeight:'900',
+					fontSize:14}}></Text>
+
+					<TouchableWithoutFeedback>
+						<View style={{backgroundColor:'#0679a2',height:35*k,...center,borderRadius:3*k,marginBottom:10}}>
+							<Text style={{color:'white',fontWeight:'700',fontSize:15,margin:10}}>Заработать</Text>
+						</View>
+
+					</TouchableWithoutFeedback>
+
+
+				</Animated.View>
 
 			</Animated.View>
 					)

@@ -2,7 +2,7 @@ import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
 import _ from 'lodash';
 import Combinator from './combinator'
-import Deals from './deals'
+import DealContent from './deal-content'
 import {state$,action$,data$} from '../model'
 let UIManager = require('NativeModules').UIManager;
 let {
@@ -11,14 +11,14 @@ let {
 } = React;
 
 
-export default class WatchedDealsContainer extends React.Component{
+export default class DealContentContainer extends React.Component{
 	state={}
 	
 	componentWillMount(){
 			action$.onNext({
 				type: 'get',
 				path: [['featuredDeals',{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-				['featuredDeals',{ from: 0, to : 10}, ['title','conditions','id','image','discount','payout']],
+				['featuredDeals',{ from: 0, to : 10}, ['title','conditions','id','image','discount']],
 				['featuredDeals',{from:0,to:10},'business',['name','image']],
 				['featuredDeals',{from:0,to:10},'likes','sort:createdAt=desc','count']
 
@@ -36,7 +36,7 @@ export default class WatchedDealsContainer extends React.Component{
 			{this.props.featuredDeals$.map(deals=>{
 				// console.log('here hre',deals)
 					return (
-						<Deals data={_.values(deals).filter(x=>x && x.title)}/>
+						<DealContent data={_.values(deals).filter(x=>x && x.title)}/>
 							)
 			})}
 			</View>
@@ -47,7 +47,7 @@ export default class WatchedDealsContainer extends React.Component{
 
 }
 
-Object.assign(WatchedDealsContainer.prototype, TimerMixin);
+Object.assign(DealContentContainer.prototype, TimerMixin);
 
 // <Deals data={_.values(deals).filter(x=>x.title)}/>
 				   

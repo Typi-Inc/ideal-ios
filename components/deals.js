@@ -137,10 +137,10 @@ export default class Deals extends React.Component{
 	
 		action$.onNext({
 			type: 'get',
-			path: [['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-			['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10}, ['title','conditions','id','image','discount']],
-			['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'business',['name','image']],
-			['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'likes','sort:createdAt=desc','count']
+			path:[['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+				['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10}, ['title','conditions','id','image','discount']],
+				['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'business',['name','image']],
+				['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'likes','sort:createdAt=desc','count']
 			]		
 		})
 
@@ -151,15 +151,10 @@ export default class Deals extends React.Component{
 	}
 	render(){
 		this.canOpen=1
-		// console.log(this.props.data,'===========')
-		// console.log('renderign deal list')
 		this.y=this.y || 0;
-		// console.log('rendering to fucking check')
 		if(!this.state.renderPlaceholderOnly){
 			return (
-			<View style={{flex:1,backgroundColor:'e8e8ee',
-				// marginTop:this.props.marginTop?this.props.marginTop:0
-			}}>
+			<View style={{flex:1,backgroundColor:'#e8e8ee'}}>
 
 				{this.props.navbar ? <Navbar ref='navbar' title={this.props.title} navigator={this.props.navigator}/>:null}
 				<ScrollView
@@ -168,12 +163,12 @@ export default class Deals extends React.Component{
 				automaticallAdjustContentInsets={true}
 				contentContainerStyle={{paddingBottom:60}}
 				onScroll={(e)=>{
-					if(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y<2500 && !this.stopFetch){
+					if(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y<2700 && !this.stopFetch){
 						this.stopFetch=true
 						this.fetchBottom()	
 					}
 				}}
-				scrollEventThrottle={10000}
+				scrollEventThrottle={5000}
 				ref='scroll'>
 					{this.props.data.map((deal,i)=>{
 						let refS = ''+deal.id

@@ -41,7 +41,7 @@ let {
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'home',height:45,overflow:'visible'}
+	state={selectedTab:'search',height:45,overflow:'visible'}
 
   	static childContextTypes={toggleTabs:React.PropTypes.func}
 	getChildContext(){
@@ -57,7 +57,8 @@ export default class Tabs extends React.Component{
   		// return <Deals route={route} data={data}/>
   	}
   	renderSearchTab(route,navigator){
-  		return <FindTab/>
+  		return <FindTab //searchedTags$={this.props.state$.pluck('tagsByText')}
+  				/>
   	}
   	renderProfile(route,navigator){
   		// console.log(route)

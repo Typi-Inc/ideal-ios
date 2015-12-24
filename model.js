@@ -5,7 +5,7 @@ import deepAssign from 'deep-assign';
 export let action$ = new Rx.Subject();//action stream for reading and writing data
 export let data$ = new Rx.ReplaySubject(1);//data stream of state
 import _ from 'lodash'
-let model = new falcor.Model({
+export let model = new falcor.Model({
   source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
   maxSize: 0,
 });

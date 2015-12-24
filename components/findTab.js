@@ -3,7 +3,12 @@ import TimerMixin from 'react-timer-mixin'
 import Find from './find'
 import Word from './word'
 import {tags,data} from './mock'
+import _ from 'lodash'
+import Combinator from './combinator'
+import {action$} from '../model'
 import Deals from './deals'
+import {ReplaySubject,Observable} from 'rx'
+import {model} from '../model'
 import {openAnimation,spring1,spring2,scrollToTopAnimation,closeImageAnimation} from './animations'
 import Loading from './loading'
 let {
@@ -22,7 +27,7 @@ let PickerItemIOS=PickerIOS.Item
 let UIManager = require('NativeModules').UIManager;
 
 export default class FindTab extends React.Component{
-	state={loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:'Almaty',loadDeals:false,placeholderText:'Искать по тагам',tagCount:0}
+	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:'Almaty',loadDeals:false,placeholderText:'Искать по тагам',tagCount:0}
 	chooseCity(city){
 		LayoutAnimation.easeInEaseOut()
 		this.setState({city:city,loadDeals:true},()=>{
@@ -55,29 +60,8 @@ export default class FindTab extends React.Component{
 			tagCount:{$set:this.state.tagCount+1},
 			text:{$set:''}
 		});
-		// LayoutAnimation.configureNext(openAnimation)
 		this.setState(newState)
-		// this.setTimeout(()=>{
-		// 	UIManager.measure(React.findNodeHandle(this.city),(x,y,w,h,px,py)=>{
-		// 		if(x>150){
-		// 			let offset;
-		// 			if (tag.length<5){
-		// 				offset=240
-		// 			}else if(tag.length<10){
-		// 				offset=220
-		// 			}else if(tag.length>17){
-		// 				offset=250
-		// 			}else{
-		// 				offset=200
-		// 			}
-		// 			this.scroll.scrollTo(0,x-offset)
-		// 			this.latestScroll=x-offset
-		// 		}
-		// 	})	
-		// },200)
-		this.scroll.setNativeProps({directionalLockEnabled:true,horizontal:true})
-			
-		
+		this.scroll.setNativeProps({directionalLockEnabled:true,horizontal:true})	
 		this.setTimeout(()=>this.cancel(),0)
 	}
 	cancelTag(tag){
@@ -122,7 +106,6 @@ export default class FindTab extends React.Component{
 	}
 	handleKeyboardDisappear(){
 		this.searchPanel.measure((x,y,w,h,px,py)=>{
-			console.log(h)
 			if(h>0){
 				let h1,h2;
 				if(k===1){
@@ -139,7 +122,26 @@ export default class FindTab extends React.Component{
 		})
 		
 	}
+	componentWillMount() {
 
+		// action$.onNext({type:'get',path:[['tagsByText','',{ from: 0, to : 20}, ['text'] ]]})
+
+		this.text$ = new ReplaySubject(1);
+
+		this.subscription=this.text$.
+			debounce(250).
+			map(key=>
+				Observable.fromPromise(model.get(
+					['tagsByText',key,{ from: 0, to : 20}, ['text'] ]
+				))
+			).switchLatest();
+		
+		this.text$.onNext('');
+
+		this.subscription.map(data => data && data.json ? data.json : {tagsByText : {'' : []}}).
+			map(json => json.tagsByText[this.state.text || '']).
+			subscribe(tags=> this.setState({searchedTags:_.values(tags).filter(tag=>tag && tag.text)}))
+	}
 
 	componentDidMount() {
 		// LayoutAnimation.configureNext(LayoutAnimation.create(100,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.opacity));
@@ -149,6 +151,7 @@ export default class FindTab extends React.Component{
     componentWillUnmount() {
         this._keyboardWillShowSubscription.remove();
         this._keyboardWillHideSubscription.remove();
+        // this.subscription.dispose()
     }
 
 	render(){
@@ -170,8 +173,10 @@ export default class FindTab extends React.Component{
 					    			width:300*k,borderColor:'#cccccc',paddingLeft:10*k,
 					    			backgroundColor:'transparent',alignSelf:'center'}}
 								onChangeText={(text) => {
-									// this.props.hideDeals()
+									this.text$.onNext(text);
+									// console.log(text);
 									this.setState({text:text})}}
+									// action$.onNext({type:'get',path:[['tagsByText',text,{ from: 0, to : 20}, ['text'] ]]})
 								value={this.state.text}/>
 							<TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this.cancel.bind(this)}><Text ref={el=>this.cancelText=el}	 
 								style={{marginLeft:0,color:'#0679a2',fontSize:0.1,fontWeight:'500'}}>Cancel</Text>
@@ -194,16 +199,19 @@ export default class FindTab extends React.Component{
 		
 				<View style={{flex:1}}>
 
-				{this.state.loadDeals ? <View ref={el=>this.deals=el} style={{flex:1,height:500*k}}><Deals search={true} toggleSearch={this.toggleSearch.bind(this)} data={data}/></View>:
+				{this.state.loadDeals ? <View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
+					<Deals search={true} toggleSearch={this.toggleSearch.bind(this)} data={data}/></View>:
 					<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
-					<ScrollView keyboardShouldPersistTaps={true}>
-						<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
-							{tags.map((tag,i)=>{
-								return <Word chooseTag={this.chooseTag.bind(this)} key={i} isUp={false} tag={tag}/>
-							})}				
-						</View>
-					</ScrollView>
-					<View ref={el=>this.slider=el}/>
+						<ScrollView keyboardShouldPersistTaps={true}>
+								<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
+									{this.state.searchedTags.map((tag,i)=>{
+											console.log(tag);
+											return <Word chooseTag={this.chooseTag.bind(this)} key={i} isUp={false} tag={tag.text}/>
+										})}		
+								</View>
+						</ScrollView>
+
+						<View ref={el=>this.slider=el}/>
 					</View>
 				}
 				</View>

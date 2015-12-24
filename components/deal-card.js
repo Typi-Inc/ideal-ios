@@ -32,26 +32,18 @@ export default class DealCard extends React.Component{
 				style={{justifyContent:'flex-end',
 					height:this.state.isOpen?220*h:180*h}}>
 				</Image>
-
 			)
-
 	}
-
 	render(){
 		let deal=this.props.deal
 
-		this.anim=this.anim || new Animated.Value(1)	
+		this.anim=this.anim || new Animated.Value(0)	
 		return (
 						<Animated.View  >
 							<LightBox canOpen={this.state.isOpen} viewDeal={this.props.viewDeal} onClose={()=>LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)} renderContent={this.renderLightBox.bind(this)}>
 								<Image  source={{uri:deal.image}} resizeMode={'cover'}  //image of the deal
 								style={{justifyContent:'flex-end',alignItems:'flex-start',
 									height:this.state.isOpen?220*h:180*h,width:this.state.isOpen?320*k:300*k}}>
-				
-									
-									<View style={{backgroundColor:'0084b4',height:40*k,width:60*k,...center,opacity:1}}>
-										<Text style={{fontSize:20*k,color:'white',fontWeight:'800'}}>-{deal.discount}%</Text>
-									</View>
 								</Image>
 							</LightBox>
 						<TouchableWithoutFeedback onPress={this.state.isOpen ? null:this.props.viewDeal} style={{height:330*h}}>
@@ -89,8 +81,6 @@ export default class DealCard extends React.Component{
 								<Text style={{color:'gray'}}>19</Text>
 								<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
 								<Text style={{color:'gray'}}>{deal.likes['sort:createdAt=desc'].count}</Text>
-								<Image source={{uri:'hand132-5',isStatic:true}} style={{height:20*k,width:20*k,marginLeft:8,marginRight:3,marginBottom:4*k,transform:[{rotate:'15deg'}]}}/>
-								<Text style={{color:'gray'}}>1000 тг</Text>
 							</View>
 							</View>
 						</TouchableWithoutFeedback>
