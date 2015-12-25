@@ -16,6 +16,13 @@ export let model = new falcor.Model({
 // model.get(
 // 	['featuredDeals',{ from: 0, to : 10}, ['payout'] ]
 // ).then(data => console.log(data) || data$.onNext(data.json));
+// model.get(
+// 	['dealsByTags','18510ef9-3194-4c53-9f18-d5d7d92672ad',{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+// 	['dealsByTags','18510ef9-3194-4c53-9f18-d5d7d92672ad',{ from: 0, to : 10}, ['title','conditions','id','image','discount','payout']],
+// 	['dealsByTags','18510ef9-3194-4c53-9f18-d5d7d92672ad',{from:0,to:10},'business',['name','image']],
+// 	['dealsByTags','18510ef9-3194-4c53-9f18-d5d7d92672ad',{from:0,to:10},'likes','sort:createdAt=desc','count']
+// ).then(console.log)
+
 action$.subscribe(action => {
   switch(action.type) {
 	  case 'get':

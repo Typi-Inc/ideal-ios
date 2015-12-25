@@ -134,7 +134,7 @@ export default class DealNavbar extends React.Component{
 			borderRadius:this.anim2.interpolate({inputRange:[0,0.5,1],outputRange:[3*k,3,0*k]}),
 			// top:this.anim1.interpolate({inputRange:[0,1],outputRange:[0*k,-300*k]}),
 			width:this.anim2.interpolate({inputRange:[0,1],outputRange:[90*k,320*k]}),
-			backgroundColor:'#00b484',
+			backgroundColor:this.anim2.interpolate({inputRange:[0,1],outputRange:['#00b484','#0679a2']}),
 			left:this.anim2.interpolate({inputRange:[0,0.5,1],outputRange:[0*k,-100,-200*k]}),
 			marginRight:10*k,
 			flexDirection:'row',

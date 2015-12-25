@@ -134,15 +134,19 @@ export default class Deals extends React.Component{
 	fetchBottom(){
 		console.log('fetching your ass down')
 		
-	
-		action$.onNext({
-			type: 'get',
-			path:[['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-				['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10}, ['title','conditions','id','image','discount']],
-				['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'business',['name','image']],
-				['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'likes','sort:createdAt=desc','count']
-			]		
-		})
+		if(!this.props.search){
+			action$.onNext({
+				type: 'get',
+				path:[['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+					['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10}, ['title','conditions','id','image','discount']],
+					['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'business',['name','image']],
+					['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'likes','sort:createdAt=desc','count']
+				]		
+			})
+
+
+		}
+		
 
 
 	}
@@ -172,7 +176,9 @@ export default class Deals extends React.Component{
 				ref='scroll'>
 					{this.props.data.map((deal,i)=>{
 						let refS = ''+deal.id
+						// console.log(deal);
 						return (
+							
 							<Deal ref={refS} //navigator={this.props.navigator}
 							 key={deal.id} deal={deal}  
 							 isOpen={false}

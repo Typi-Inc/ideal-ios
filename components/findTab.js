@@ -28,7 +28,7 @@ let PickerItemIOS=PickerIOS.Item
 let UIManager = require('NativeModules').UIManager;
 
 export default class FindTab extends React.Component{
-	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:'Almaty',loadDeals:false,placeholderText:'Искать по тагам',tagCount:0}
+	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:{text:'Almaty'},loadDeals:false,placeholderText:'Искать по тагам',tagCount:0}
 	chooseCity(city){
 		LayoutAnimation.easeInEaseOut()
 		this.setState({city:city,loadDeals:true},()=>{
@@ -42,7 +42,9 @@ export default class FindTab extends React.Component{
 		this.setState({loadDeals:false})
 	}
 	cancel(){
+		// this.text$.onNext('');	
 		LayoutAnimation.easeInEaseOut()
+
 		this.textInput.setNativeProps({style:{width:300*k}})
 		this.cancelText.setNativeProps({style:{fontSize:0.1,marginLeft:0}})
 		this.textInput.blur()
@@ -50,19 +52,51 @@ export default class FindTab extends React.Component{
 		if(this.state.tagCount>0){
 			this.setState({loadDeals:true})
 		}
+		
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
 		// let chosenTags=this.state.chosenTags.splice(this.state.chosenTags.indexOf(tag),1)
-		let newState = React.addons.update(this.state, {
-			chosenTags : {$unshift : [tag]},
-			loadDeals:{$set:true},
-			placeholderText:{$set:'Добавить еще таг'},
-			tagCount:{$set:this.state.tagCount+1},
-			text:{$set:''}
-		});
-		this.setState(newState)
-		this.scroll.setNativeProps({directionalLockEnabled:true,horizontal:true})	
+		// console.log(this.state.chosenTags,'chosen Tags is ')
+		// let newState = React.addons.update(this.state, {
+		// 	chosenTags : {$unshift : [tag]},
+		// 	// loadDeals:{$set:true},
+		// 	placeholderText:{$set:'Добавить еще таг'},
+		// 	tagCount:{$set:this.state.tagCount+1},
+		// 	text:{$set:''}
+		// });
+		// this.setState(newState,()=>{
+			// console.log(this.state.chosenTags.concat([tag]));
+			let tagIdString=this.state.chosenTags.concat([tag]).map(tag => tag.id).join('&');
+		// console.log(tagIdString);
+			this.get$=Observable.fromPromise(
+				model.get(
+					['dealsByTags',tagIdString,{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+					['dealsByTags',tagIdString,{ from: 0, to : 10}, ['title','conditions','id','image','discount','payout']],
+					['dealsByTags',tagIdString,{from:0,to:10},'business',['name','image']],
+					['dealsByTags',tagIdString,{from:0,to:10},'likes','sort:createdAt=desc','count']
+				)
+			)
+			this.searchedDealsSubscription=this.get$.
+				map(data=>data && data.json ? data.json : {dealsByTags : {'' : []}}).
+				map(json =>json.dealsByTags[tagIdString || '']).
+				subscribe(deals=> this.setState({
+					searchedDeals:_.values(deals).filter(deal=>deal && deal.title),
+					loadDeals: true,
+					chosenTags : this.state.chosenTags.concat([tag]),
+					// loadDeals:{$set:true},
+					placeholderText:'Добавить еще таг',
+					tagCount:this.state.tagCount+1,
+					text:''
+				}))
+
+
+
+
+		// })
+		
+		console.log('hello world')
+		// this.scroll.setNativeProps({directionalLockEnabled:true,horizontal:true})	
 		this.setTimeout(()=>this.cancel(),0)
 	}
 	cancelTag(tag){
@@ -73,6 +107,7 @@ export default class FindTab extends React.Component{
 			tagCount:this.state.tagCount-1,loadDeals:this.state.tagCount>1?true:false,
 			placeholderText:this.state.tagCount>1?'Добавить еще таг':'Искать по тагам'
 		})	
+
 	}
 	toggleSearch(val){
 		this.anim.setValue(0)
@@ -137,9 +172,9 @@ export default class FindTab extends React.Component{
 			map(key=> {
 				let result$ = Observable.fromPromise(
 					model.get(
-						['tagsByText',key,{ from: 0, to : 20}, ['text'] ]
+						['tagsByText',key,{ from: 0, to : 20}, ['text','id'] ]
 					)
-				).delay(1000)
+				).delay(600)
 				Observable.just(1).delay(500).takeUntil(result$).subscribe(() => this.setState({isLoadingTags: true}))
 				return result$
 			}).switchLatest();
@@ -166,6 +201,7 @@ export default class FindTab extends React.Component{
         this._keyboardWillShowSubscription.remove();
         this._keyboardWillHideSubscription.remove();
         this.searchTagsSubscription.dispose();
+        this.searchedDealsSubscription.dispose()
     }
 
 	render(){
@@ -189,9 +225,7 @@ export default class FindTab extends React.Component{
 					    			backgroundColor:'transparent',alignSelf:'center'}}
 								onChangeText={(text) => {
 									this.text$.onNext(text);
-									// console.log(text);
 									this.setState({text:text})}}
-									// action$.onNext({type:'get',path:[['tagsByText',text,{ from: 0, to : 20}, ['text'] ]]})
 								value={this.state.text}/>
 							<TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this.cancel.bind(this)}><Text ref={el=>this.cancelText=el}	 
 								style={{marginLeft:0,color:'#0679a2',fontSize:0.1,fontWeight:'500'}}>Cancel</Text>
@@ -215,7 +249,11 @@ export default class FindTab extends React.Component{
 				<View style={{flex:1}}>
 
 				{this.state.loadDeals ? <View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
-					<Deals search={true} toggleSearch={this.toggleSearch.bind(this)} data={data}/></View>:
+							<Deals search={true} 
+								toggleSearch={this.toggleSearch.bind(this)} 	
+								data={this.state.searchedDeals}/>
+					
+					</View>:
 					<View>
 				
 						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
@@ -223,26 +261,20 @@ export default class FindTab extends React.Component{
 									<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
 										{this.state.searchedTags.map((tag,i)=>{
 												// console.log(tag);
-													return <Word chooseTag={this.chooseTag.bind(this)} key={i} isUp={false} tag={tag.text}/>
+													return <Word chooseTag={this.chooseTag.bind(this)} key={i} isUp={false} tag={tag}/>
 											})}		
 									</View>
 							</ScrollView>
-
 							<View ref={el=>this.slider=el}/>
 						</View>
-
 						{this.state.isLoadingTags?
 							(<View style={{backgroundColor:'rgba(255,255,255,0.8)',width:320*k,top:0*k,flexDirection:'column',position:'absolute',justifyContent:'flex-start',alignItems:'center',height:500}}>
 			 	 				  <Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'#aaaaaa'}/>       
 		    				  </View>):<View/>
 						}
-
-						
 					</View>
 				}
 				</View>
-				
-					
 				<Animated.View style={{flex:1,position:'absolute',bottom:0,height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,this.state.citySelectionHeight]}),
 				backgroundColor:'rgba(0,132,180,0.9)',width:320*k,justifyContent:'flex-start',alignItems:'center',opacity:this.anim,
 				}}>

@@ -63,7 +63,7 @@ export default class Word extends React.Component{
 	 						fontSize:13,
 	 						textAlign:'justify',
 	 						fontWeight:this.props.city && this.props.city?'700': '500'
-	 					}}>{tag}</Animated.Text>
+	 					}}>{tag.text}</Animated.Text>
 	 					{!this.state.isUp?<View/>:this.props.city && this.props.city?false:
 		 					<Animated.Image ref='cross' 
 		 					source={{uri:'crossWhite',isStatic:true}} 

@@ -1,7 +1,6 @@
 import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
 // import {oxpenAnimation} from './animations'
-import TabApp from './tab-app'
 import Tabs from './tabs'
 let UIManager = require('NativeModules').UIManager;
 let {

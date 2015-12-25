@@ -13,7 +13,6 @@ let {
 export default class DealAuthor extends React.Component{
 	state={}
 	render(){
-		console.log(this.props.business)
 		let name=this.props.business.name
 		let factName=name.length>20 ? name.slice(0,20)+'...':name
 		return (

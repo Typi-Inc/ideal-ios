@@ -230,8 +230,8 @@ export default class Deal extends React.Component{
 					fontSize:14}}></Text>
 
 					<TouchableWithoutFeedback>
-						<View style={{backgroundColor:'#0679a2',height:35*k,...center,borderRadius:3*k,marginBottom:10}}>
-							<Text style={{color:'white',fontWeight:'700',fontSize:15,margin:10}}>Заработать</Text>
+						<View style={{backgroundColor:'#54c085',height:35*k,...center,borderRadius:3*k,marginBottom:10}}>
+							<Text style={{color:'white',fontWeight:'700',fontSize:15,margin:10}}>Начать</Text>
 						</View>
 
 					</TouchableWithoutFeedback>
