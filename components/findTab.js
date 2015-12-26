@@ -39,7 +39,8 @@ export default class FindTab extends React.Component{
 		LayoutAnimation.easeInEaseOut()
 		this.textInput.setNativeProps({style:{width:255*k}})
 		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
-		this.setState({loadDeals:false})
+		this.props.loadDealsFalse();
+		this.props.onTextChange('');
 	}
 	cancel(){
 		// this.text$.onNext('');	
@@ -49,9 +50,9 @@ export default class FindTab extends React.Component{
 		this.cancelText.setNativeProps({style:{fontSize:0.1,marginLeft:0}})
 		this.textInput.blur()
 		this.setState({text:''})
-		if(this.state.tagCount>0){
-			this.setState({loadDeals:true})
-		}
+		// if(this.props.chosenTags.length>0){
+		// 	this.setState({loadDeals:true})
+		// }
 		
 	}
 	chooseTag(tag){
@@ -94,19 +95,20 @@ export default class FindTab extends React.Component{
 
 
 		// })
-		
-		console.log('hello world')
 		// this.scroll.setNativeProps({directionalLockEnabled:true,horizontal:true})	
 		this.setTimeout(()=>this.cancel(),0)
 	}
 	cancelTag(tag){
 		this.anim.setValue(0)
-		let chosenTags=this.state.chosenTags.splice(this.state.chosenTags.indexOf(tag),1)
+		// let chosenTags=this.state.chosenTags.splice(this.state.chosenTags.indexOf(tag),1)
 		LayoutAnimation.easeInEaseOut()
-		this.setState({chosenTags:this.state.chosenTags,
-			tagCount:this.state.tagCount-1,loadDeals:this.state.tagCount>1?true:false,
-			placeholderText:this.state.tagCount>1?'Добавить еще таг':'Искать по тагам'
-		})	
+		// this.setState({chosenTags:this.state.chosenTags,
+		// 	tagCount:this.state.tagCount-1,loadDeals:this.state.tagCount>1?true:false,
+		// 	placeholderText:this.state.tagCount>1?'Добавить еще таг':'Искать по тагам'
+		// })	
+		this.cancel()
+		// if(this.props.chosenTags===0) this.props.loadDealsFalse()
+		this.props.cancelTag(tag)
 
 	}
 	toggleSearch(val){
@@ -152,45 +154,46 @@ export default class FindTab extends React.Component{
 					h2=600
 				}
 				this.slider && this.slider.setNativeProps({style:{flex:0}})
-				!this.state.loadDeals && this.suggestion.setNativeProps({style:{height:h1}})
-				this.state.loadDeals && this.deals.setNativeProps({style:{height:h2}})
+				!this.props.loadDeals && this.suggestion.setNativeProps({style:{height:h1}})
+				this.props.loadDeals && this.deals.setNativeProps({style:{height:h2}})
 			}
 		})
 		
 	}
 	componentWillMount() {
-		// action$.onNext({type:'get',path:[['tagsByText','',{ from: 0, to : 20}, ['text'] ]]})
-		this.text$ = new ReplaySubject(1);
-		this.text$.onNext('');
+		this.props.onTextChange('');
+	// 	// action$.onNext({type:'get',path:[['tagsByText','',{ from: 0, to : 20}, ['text'] ]]})
+	// 	this.text$ = new ReplaySubject(1);
+	// 	this.text$.onNext('');
 
-		this.searchTags$ = this.text$.
-			// map(key => {
-			// 	this.setState({isLoadingTags: true})
-			// 	return key;
-			// }).
-			debounce(250).
-			map(key=> {
-				let result$ = Observable.fromPromise(
-					model.get(
-						['tagsByText',key,{ from: 0, to : 20}, ['text','id'] ]
-					)
-				).delay(600)
-				Observable.just(1).delay(500).takeUntil(result$).subscribe(() => this.setState({isLoadingTags: true}))
-				return result$
-			}).switchLatest();
-		this.searchTagsSubscription = this.searchTags$.map(data => data && data.json ? data.json : {tagsByText : {'' : []}}).
-			map(json => json.tagsByText[this.state.text || '']).
-			subscribe(tags=> this.setState({
-				searchedTags:_.values(tags).filter(tag=>tag && tag.text),
-				isLoadingTags: false,
-			}))
-	}
+	// 	this.searchTags$ = this.text$.
+	// 		// map(key => {
+	// 		// 	this.setState({isLoadingTags: true})
+	// 		// 	return key;
+	// 		// }).
+	// 		debounce(250).
+	// 		map(key=> {
+	// 			let result$ = Observable.fromPromise(
+	// 				model.get(
+	// 					['tagsByText',key,{ from: 0, to : 20}, ['text','id'] ]
+	// 				)
+	// 			).delay(600)
+	// 			Observable.just(1).delay(500).takeUntil(result$).subscribe(() => this.setState({isLoadingTags: true}))
+	// 			return result$
+	// 		}).switchLatest();
+	// 	this.searchTagsSubscription = this.searchTags$.map(data => data && data.json ? data.json : {tagsByText : {'' : []}}).
+	// 		map(json => json.tagsByText[this.state.text || '']).
+	// 		subscribe(tags=> this.setState({
+	// 			searchedTags:_.values(tags).filter(tag=>tag && tag.text),
+	// 			isLoadingTags: false,
+	// 		}))
+	// }
 	// shouldComponentUpdate(p,s){
 	// 	if(this.state.isLoadingTags===s.isLoadingTags){
 	// 		return false
 	// 	}
 	// 	return true
-	// }
+	}
 
 	componentDidMount() {
 		// LayoutAnimation.configureNext(LayoutAnimation.create(100,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.opacity));
@@ -200,8 +203,8 @@ export default class FindTab extends React.Component{
     componentWillUnmount() {
         this._keyboardWillShowSubscription.remove();
         this._keyboardWillHideSubscription.remove();
-        this.searchTagsSubscription.dispose();
-        this.searchedDealsSubscription.dispose()
+        // this.searchTagsSubscription.dispose();
+        // this.searchedDealsSubscription.dispose()
     }
 
 	render(){
@@ -216,7 +219,7 @@ export default class FindTab extends React.Component{
 						<View ref={el=>this.search=el} style={{flexDirection:'row',...center,marginTop:10}}>
 							<TextInput ref={el=>this.textInput=el}		    	
 					    		maxLength={40} 
-					    		placeholder={this.state.placeholderText}
+					    		placeholder={this.props.placeholderText}
 					    		clearTextOnFocus={true}
 					    		clearButtonMode={'while-editing'}
 					    		onFocus={this.focus.bind(this)}
@@ -224,7 +227,8 @@ export default class FindTab extends React.Component{
 					    			width:300*k,borderColor:'#cccccc',paddingLeft:10*k,
 					    			backgroundColor:'transparent',alignSelf:'center'}}
 								onChangeText={(text) => {
-									this.text$.onNext(text);
+									// this.text$.onNext(text);
+									this.props.onTextChange(text);
 									this.setState({text:text})}}
 								value={this.state.text}/>
 							<TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this.cancel.bind(this)}><Text ref={el=>this.cancelText=el}	 
@@ -237,8 +241,8 @@ export default class FindTab extends React.Component{
 						 >
 						 	<Word city={true} ref={el=>this.city=el} chooseTag={this.chooseCity.bind(this)} isUp={false} tag={this.state.city}/>
 
-						 	{this.state.chosenTags.map((tag,i)=>{
-								return <Word cancelTag={this.cancelTag.bind(this,tag)} key={i} isUp={true} tag={tag}/>
+						 	{this.props.chosenTags.map((tag,i)=>{
+								return <Word cancelTag={this.props.loadDeals&&this.cancelTag.bind(this,tag)} key={i} isUp={true} tag={tag}/>
 						 	})}
 
 						</ScrollView>
@@ -248,10 +252,11 @@ export default class FindTab extends React.Component{
 		
 				<View style={{flex:1}}>
 
-				{this.state.loadDeals ? <View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
+				{this.props.loadDeals ? <View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
 							<Deals search={true} 
+								loadDeals={this.props.loadDeals}
 								toggleSearch={this.toggleSearch.bind(this)} 	
-								data={this.state.searchedDeals}/>
+								data={this.props.searchedDeals}/>
 					
 					</View>:
 					<View>
@@ -259,16 +264,17 @@ export default class FindTab extends React.Component{
 						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
 							<ScrollView keyboardShouldPersistTaps={true}>
 									<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
-										{this.state.searchedTags.map((tag,i)=>{
-												// console.log(tag);
-													return <Word chooseTag={this.chooseTag.bind(this)} key={i} isUp={false} tag={tag}/>
+										{this.props.searchedTags.filter(x => !this.props.chosenTags.map(y => y.id).includes(x.id)).map((tag,i)=>{
+													return <Word chooseTag={this.props.chooseTag} key={i} isUp={false} tag={tag}/>
 											})}		
 									</View>
 							</ScrollView>
 							<View ref={el=>this.slider=el}/>
 						</View>
-						{this.state.isLoadingTags?
-							(<View style={{backgroundColor:'rgba(255,255,255,0.8)',width:320*k,top:0*k,flexDirection:'column',position:'absolute',justifyContent:'flex-start',alignItems:'center',height:500}}>
+						{this.props.isLoadingTags?
+							(<View style={{backgroundColor:'rgba(255,255,255,0.8)',
+								width:320*k,top:0*k,flexDirection:'column',
+								position:'absolute',justifyContent:'flex-start',alignItems:'center',height:500}}>
 			 	 				  <Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'#aaaaaa'}/>       
 		    				  </View>):<View/>
 						}

@@ -1,47 +1,10 @@
-import Rx from 'rx';
 import falcor from 'falcor';
 import FalcorHttpDatasource from 'falcor-http-datasource';
-import deepAssign from 'deep-assign';
-export let action$ = new Rx.Subject();//action stream for reading and writing data
-export let data$ = new Rx.ReplaySubject(1);//data stream of state
-import _ from 'lodash'
+
 export let model = new falcor.Model({
   source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
-  maxSize: 0,
+  // maxSize: 0,
 });
-// model.get(
-// 	["usersById","7d86e3c6-8e58-489c-92ba-9baf99145728","name"],
-// 	["usersById","7d86e3c6-8e58-489c-92ba-9baf99145728","watchedTags", "sort:createdAt=desc", 'edges', { from: 0, to: 100 }, ['text','id']]
-// ).then(data => data$.onNext(data.json));
-// model.get(
-// 	['featuredDeals',{ from: 0, to : 10}, ['payout'] ]
-// ).then(data => console.log(data) || data$.onNext(data.json));
-// model.get(
-// 	['dealsByTags','18510ef9-3194-4c53-9f18-d5d7d92672ad',{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-// 	['dealsByTags','18510ef9-3194-4c53-9f18-d5d7d92672ad',{ from: 0, to : 10}, ['title','conditions','id','image','discount','payout']],
-// 	['dealsByTags','18510ef9-3194-4c53-9f18-d5d7d92672ad',{from:0,to:10},'business',['name','image']],
-// 	['dealsByTags','18510ef9-3194-4c53-9f18-d5d7d92672ad',{from:0,to:10},'likes','sort:createdAt=desc','count']
-// ).then(console.log)
 
-action$.subscribe(action => {
-  switch(action.type) {
-	  case 'get':
-		model.get(...action.path).then(data => data$.onNext(data.json));
-	  	break;
-	  case 'set':
-	  	model.set(action.path, action.value);
-	  	break;
-	  case 'call':
-	  	model.call(action.path, action.value).then(data =>
-		  	data$.onNext(deepAssign(data.json,{featuredDeals: { isFetching: false }})
-	  	));
-	  break;    
-  }
-})
-export let state$ = data$.scan((acumulator , newData) =>deepAssign(acumulator,newData))
-// state$.pluck('featuredDeals').subscribe(deals => 
-// 	console.log(_.values(deals).filter(x=>x && x.title)))
 
-	// _.values(deals).filter(x=>x.title).forEach(console.log)
-	// console.log('=============',deals,'============')
-// )
+// model.get(['dealsByTags','3824723874823748923748927489237492837498237498234u2,h34j23h4j2h349234782349234h23k4h2kj34h23k4h238',{from:0,to:10},'business',['name','image']]).then(console.log)

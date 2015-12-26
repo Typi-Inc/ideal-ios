@@ -10,6 +10,7 @@ import Navbar from './navbar'
 import {data} from './mock'
 import Parent from './parent'
 import WatchedDealsContainer from './watchedDealsContainer'
+import FindTabContainer from './findTabContainer'
 let {
   AppRegistry,
   StyleSheet,
@@ -52,12 +53,12 @@ export default class Tabs extends React.Component{
   	}
 
   	renderHome(route,navigator){
-  		return <WatchedDealsContainer featuredDeals$={this.props.state$.pluck('featuredDeals')}/>
+  		return <WatchedDealsContainer />
 
   		// return <Deals route={route} data={data}/>
   	}
   	renderSearchTab(route,navigator){
-  		return <FindTab //searchedTags$={this.props.state$.pluck('tagsByText')}
+  		return <FindTabContainer //searchedTags$={this.props.state$.pluck('tagsByText')}
   				/>
   	}
   	renderProfile(route,navigator){

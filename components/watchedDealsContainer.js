@@ -3,7 +3,7 @@ import TimerMixin from 'react-timer-mixin'
 import _ from 'lodash';
 import Combinator from './combinator'
 import Deals from './deals'
-import {state$,action$,data$} from '../model'
+import {model} from '../model'
 let UIManager = require('NativeModules').UIManager;
 let {
   Text,
@@ -12,36 +12,48 @@ let {
 
 
 export default class WatchedDealsContainer extends React.Component{
-	state={}
+	state = {
+		deals: [],
+		error: null,
+	}
 	
-	componentWillMount(){
-			action$.onNext({
-				type: 'get',
-				path: [['featuredDeals',{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-				['featuredDeals',{ from: 0, to : 10}, ['title','conditions','id','image','discount','payout']],
-				['featuredDeals',{from:0,to:10},'business',['name','image']],
-				['featuredDeals',{from:0,to:10},'likes','sort:createdAt=desc','count']
+	componentDidMount() {
+		this.getFromModel([
+			['featuredDeals',{ from: this.state.deals.length, to : this.state.deals.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+			['featuredDeals',{ from: this.state.deals.length, to : this.state.deals.length+10}, ['title','conditions','id','image','discount']],
+			['featuredDeals',{ from: this.state.deals.length, to : this.state.deals.length+10},'business',['name','image']],
+			['featuredDeals',{ from: this.state.deals.length, to : this.state.deals.length+10},'likes','sort:createdAt=desc','count']
+		])
+	}
 
-				]
-					
+	getMoreDeals() {
+		this.getFromModel([
+			['featuredDeals',{ from: this.state.deals.length, to : this.state.deals.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+			['featuredDeals',{ from: this.state.deals.length, to : this.state.deals.length+10}, ['title','conditions','id','image','discount']],
+			['featuredDeals',{ from: this.state.deals.length, to : this.state.deals.length+10},'business',['name','image']],
+			['featuredDeals',{ from: this.state.deals.length, to : this.state.deals.length+10},'likes','sort:createdAt=desc','count']
+		])
+	}
+
+	getFromModel(paths) {
+		model.get(...paths).subscribe(data => {
+			const deals = _.values(data.json.featuredDeals).filter(deal => deal && deal.title);
+			this.setState({
+				deals: this.state.deals.concat(deals)
+			});
+		}, err => {
+			this.setState({
+				error: true
 			})
-	 }
+		});
+
+	}
 
 	render(){
 		// this.props.featuredDeals$.map(deals => console.log(deals) || deals)
-
 		return (
-		<Combinator>
-			<View style={{flex:1}}>
-			{this.props.featuredDeals$.map(deals=>{
-				// console.log('here hre',deals)
-					return (
-						<Deals data={_.values(deals).filter(x=>x && x.title)}/>
-							)
-			})}
-			</View>
-		</Combinator>
-			)
+			<Deals data={this.state.deals} getMoreData={this.getMoreDeals.bind(this)}/>
+		)
 	}
 
 

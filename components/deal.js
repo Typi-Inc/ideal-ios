@@ -154,7 +154,7 @@ export default class Deal extends React.Component{
 	openHelper(){
 		Animated.spring(this.anim,{toValue:this.anim._value===0?1:0,tension:40,velocity:this.anim._value===0?20:0,friction:10}).start()
 		UIManager.measure(React.findNodeHandle(this.dialog),(x,y,w,h,px,py)=>{
-			console.log(x,y,py)
+			// console.log(x,y,py)
 		})
 	}
 	render(){
@@ -213,28 +213,28 @@ export default class Deal extends React.Component{
 
 					<Animated.View ref={el=>this.dialog=el} style={{
 						height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,182*k]}),
-						backgroundColor:'rgba(0,132,180,0.7)',overflow:'visible',
+						backgroundColor:'rgba(0,132,180,0.9)',overflow:'visible',
 						width:299*k,
 						position:'absolute',
+						// padding:10*k,
 						top:50*k,left:0,justifyContent:'flex-start',alignItems:'center',
 						opacity:this.anim.interpolate({inputRange:[0,0.8,0.9,1],outputRange:[0,1,1,1]}),
 
 					}}>
-					<Text style={{color:'white',marginTop:25,fontWeight:'900',
-					fontSize:14}}>Cкопируй ссылку.</Text>
-					<Text style={{color:'white',marginTop:25,fontWeight:'900',
-					fontSize:14}}>Отправь друзьям.</Text>
-					<Text style={{color:'white',marginTop:25,fontWeight:'900',
-					fontSize:14}}>За каждую покупку получи 1000 тг и выше.</Text>
-					<Text style={{color:'white',marginTop:25,fontWeight:'900',
-					fontSize:14}}></Text>
+						<Text style={{color:'white',marginTop:15*k,fontWeight:'900',
+						fontSize:14}}>Cкопируй ссылку.</Text>
+						<Text style={{color:'white',marginTop:15*k,fontWeight:'900',
+						fontSize:14}}>Отправь друзьям.</Text>
+						<Text style={{textAlign:'center',color:'white',marginTop:15*k,fontWeight:'900',
+						fontSize:14}}>За каждую покупку получи 1000 тг и выше.</Text>
+						
 
-					<TouchableWithoutFeedback>
-						<View style={{backgroundColor:'#54c085',height:35*k,...center,borderRadius:3*k,marginBottom:10}}>
-							<Text style={{color:'white',fontWeight:'700',fontSize:15,margin:10}}>Начать</Text>
-						</View>
+						<TouchableOpacity>
+							<View style={{marginTop:19*k,borderWidth:1,borderColor:'white',height:35*k,...center,borderRadius:3*k}}>
+								<Text style={{color:'white',fontWeight:'700',fontSize:15,margin:10}}>Начать</Text>
+							</View>
 
-					</TouchableWithoutFeedback>
+						</TouchableOpacity>
 
 
 				</Animated.View>

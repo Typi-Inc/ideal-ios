@@ -6,7 +6,6 @@ import TimerMixin from 'react-timer-mixin'
 import Navbar from './navbar'
 import Spinner from 'react-native-spinkit';
 import Loading from './loading'
-import {action$} from '../model'
 let EventEmitter = require('EventEmitter');
 let UIManager = require('NativeModules').UIManager;
 let {
@@ -26,6 +25,9 @@ export default class Deals extends React.Component{
   	}
 	componentDidMount(){
 					// LayoutAnimation.configureNext(openAnimation);
+					// if(this.props.loadDeals && this.props.loadDeals){
+					// 	this.setState({renderPlaceholderOnly:false})
+					// }
 
 			 InteractionManager.runAfterInteractions(() => {
 				 		this.setTimeout(()=>{
@@ -125,30 +127,14 @@ export default class Deals extends React.Component{
 		this.refs['scroll'].setNativeProps({
 			scrollEnabled:val,
 		})
-
 	}
 	componentWillReceiveProps(props){
-
 		this.stopFetch=false
 	}
 	fetchBottom(){
-		console.log('fetching your ass down')
-		
 		if(!this.props.search){
-			action$.onNext({
-				type: 'get',
-				path:[['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-					['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10}, ['title','conditions','id','image','discount']],
-					['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'business',['name','image']],
-					['featuredDeals',{ from: this.props.data.length, to : this.props.data.length+10},'likes','sort:createdAt=desc','count']
-				]		
-			})
-
-
+			this.props.getMoreData();
 		}
-		
-
-
 	}
 	componentWillMount(){
 		console.log('mounting deals in home ')
@@ -176,7 +162,6 @@ export default class Deals extends React.Component{
 				ref='scroll'>
 					{this.props.data.map((deal,i)=>{
 						let refS = ''+deal.id
-						// console.log(deal);
 						return (
 							
 							<Deal ref={refS} //navigator={this.props.navigator}
