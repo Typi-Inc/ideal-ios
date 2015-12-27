@@ -8,8 +8,11 @@ import Combinator from './combinator'
 import {action$} from '../model'
 import Deals from './deals'
 import {ReplaySubject,Observable} from 'rx'
-import {model} from '../model'
+import {onTagTextChange} from '../intent/tagSearchText'
+// import {getQuery} from '../intent/getQuery'
+import {chooseTag} from '../intent/chooseTag'
 import Spinner from 'react-native-spinkit'
+// import { onTagTextChange } from '.model'
 import {openAnimation,spring1,spring2,scrollToTopAnimation,closeImageAnimation} from './animations'
 import Loading from './loading'
 let {
@@ -39,8 +42,8 @@ export default class FindTab extends React.Component{
 		LayoutAnimation.easeInEaseOut()
 		this.textInput.setNativeProps({style:{width:255*k}})
 		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
-		this.props.loadDealsFalse();
-		this.props.onTextChange('');
+		this.setState({loadDeals: false})
+		onTagTextChange('')
 	}
 	cancel(){
 		// this.text$.onNext('');	
@@ -49,53 +52,22 @@ export default class FindTab extends React.Component{
 		this.textInput.setNativeProps({style:{width:300*k}})
 		this.cancelText.setNativeProps({style:{fontSize:0.1,marginLeft:0}})
 		this.textInput.blur()
-		this.setState({text:''})
+		// this.setState({text:''})
 		// if(this.props.chosenTags.length>0){
 		// 	this.setState({loadDeals:true})
 		// }
+		this.setState({
+			loadDeals: true
+		})
 		
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
-		// let chosenTags=this.state.chosenTags.splice(this.state.chosenTags.indexOf(tag),1)
-		// console.log(this.state.chosenTags,'chosen Tags is ')
-		// let newState = React.addons.update(this.state, {
-		// 	chosenTags : {$unshift : [tag]},
-		// 	// loadDeals:{$set:true},
-		// 	placeholderText:{$set:'Добавить еще таг'},
-		// 	tagCount:{$set:this.state.tagCount+1},
-		// 	text:{$set:''}
-		// });
-		// this.setState(newState,()=>{
-			// console.log(this.state.chosenTags.concat([tag]));
-			let tagIdString=this.state.chosenTags.concat([tag]).map(tag => tag.id).join('&');
-		// console.log(tagIdString);
-			this.get$=Observable.fromPromise(
-				model.get(
-					['dealsByTags',tagIdString,{ from: 0, to : 10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-					['dealsByTags',tagIdString,{ from: 0, to : 10}, ['title','conditions','id','image','discount','payout']],
-					['dealsByTags',tagIdString,{from:0,to:10},'business',['name','image']],
-					['dealsByTags',tagIdString,{from:0,to:10},'likes','sort:createdAt=desc','count']
-				)
-			)
-			this.searchedDealsSubscription=this.get$.
-				map(data=>data && data.json ? data.json : {dealsByTags : {'' : []}}).
-				map(json =>json.dealsByTags[tagIdString || '']).
-				subscribe(deals=> this.setState({
-					searchedDeals:_.values(deals).filter(deal=>deal && deal.title),
-					loadDeals: true,
-					chosenTags : this.state.chosenTags.concat([tag]),
-					// loadDeals:{$set:true},
-					placeholderText:'Добавить еще таг',
-					tagCount:this.state.tagCount+1,
-					text:''
-				}))
-
-
-
-
-		// })
-		// this.scroll.setNativeProps({directionalLockEnabled:true,horizontal:true})	
+		chooseTag(tag);
+		this.setState({
+			loadDeals: true
+		})
+		this.scroll.setNativeProps({directionalLockEnabled:true,horizontal:true})	
 		this.setTimeout(()=>this.cancel(),0)
 	}
 	cancelTag(tag){
@@ -154,45 +126,14 @@ export default class FindTab extends React.Component{
 					h2=600
 				}
 				this.slider && this.slider.setNativeProps({style:{flex:0}})
-				!this.props.loadDeals && this.suggestion.setNativeProps({style:{height:h1}})
-				this.props.loadDeals && this.deals.setNativeProps({style:{height:h2}})
+				!this.state.loadDeals && this.suggestion.setNativeProps({style:{height:h1}})
+				this.state.loadDeals && this.deals && this.deals.setNativeProps({style:{height:h2}})
 			}
 		})
 		
 	}
 	componentWillMount() {
-		this.props.onTextChange('');
-	// 	// action$.onNext({type:'get',path:[['tagsByText','',{ from: 0, to : 20}, ['text'] ]]})
-	// 	this.text$ = new ReplaySubject(1);
-	// 	this.text$.onNext('');
-
-	// 	this.searchTags$ = this.text$.
-	// 		// map(key => {
-	// 		// 	this.setState({isLoadingTags: true})
-	// 		// 	return key;
-	// 		// }).
-	// 		debounce(250).
-	// 		map(key=> {
-	// 			let result$ = Observable.fromPromise(
-	// 				model.get(
-	// 					['tagsByText',key,{ from: 0, to : 20}, ['text','id'] ]
-	// 				)
-	// 			).delay(600)
-	// 			Observable.just(1).delay(500).takeUntil(result$).subscribe(() => this.setState({isLoadingTags: true}))
-	// 			return result$
-	// 		}).switchLatest();
-	// 	this.searchTagsSubscription = this.searchTags$.map(data => data && data.json ? data.json : {tagsByText : {'' : []}}).
-	// 		map(json => json.tagsByText[this.state.text || '']).
-	// 		subscribe(tags=> this.setState({
-	// 			searchedTags:_.values(tags).filter(tag=>tag && tag.text),
-	// 			isLoadingTags: false,
-	// 		}))
-	// }
-	// shouldComponentUpdate(p,s){
-	// 	if(this.state.isLoadingTags===s.isLoadingTags){
-	// 		return false
-	// 	}
-	// 	return true
+		onTagTextChange('')
 	}
 
 	componentDidMount() {
@@ -216,35 +157,55 @@ export default class FindTab extends React.Component{
 			<View style={{backgroundColor:'white',}}>
 
 					<View ref={el=>this.searchPanel=el} style={{backgroundColor:'white',height:100*k}}>
-						<View ref={el=>this.search=el} style={{flexDirection:'row',...center,marginTop:10}}>
-							<TextInput ref={el=>this.textInput=el}		    	
-					    		maxLength={40} 
-					    		placeholder={this.props.placeholderText}
-					    		clearTextOnFocus={true}
-					    		clearButtonMode={'while-editing'}
-					    		onFocus={this.focus.bind(this)}
-					    		style={{fontSize:16,borderWidth:1,height:40*k,borderRadius:5,
-					    			width:300*k,borderColor:'#cccccc',paddingLeft:10*k,
-					    			backgroundColor:'transparent',alignSelf:'center'}}
-								onChangeText={(text) => {
-									// this.text$.onNext(text);
-									this.props.onTextChange(text);
-									this.setState({text:text})}}
-								value={this.state.text}/>
-							<TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this.cancel.bind(this)}><Text ref={el=>this.cancelText=el}	 
-								style={{marginLeft:0,color:'#0679a2',fontSize:0.1,fontWeight:'500'}}>Cancel</Text>
-							</TouchableOpacity>
-						</View>
+						<Combinator>
+							<View ref={el=>this.search=el} style={{flexDirection:'row',...center,marginTop:10}}>
+								{this.props.tagSearchText$.map(text1 => {
+									return <TextInput ref={el=>this.textInput=el}		    	
+							    		maxLength={40} 
+							    		placeholder={this.props.placeholderText}
+							    		clearTextOnFocus={true}
+							    		clearButtonMode={'while-editing'}
+							    		onFocus={this.focus.bind(this)}
+							    		style={{fontSize:16,borderWidth:1,height:40*k,borderRadius:5,
+							    			width:300*k,borderColor:'#cccccc',paddingLeft:10*k,
+							    			backgroundColor:'transparent',alignSelf:'center'}}
+										onChangeText={(text) => {
+											// this.text$.onNext(text);
+											// this.props.onTextChange(text);
+											// this.setState({text:text})
+											onTagTextChange(text)
+										}}
+										value={text1}
+										/>									
+								})}
+								<TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this.cancel.bind(this)}><Text ref={el=>this.cancelText=el}	 
+									style={{marginLeft:0,color:'#0679a2',fontSize:0.1,fontWeight:'500'}}>Cancel</Text>
+								</TouchableOpacity>
+							</View>
+						</Combinator>
 						<ScrollView automaticallyAdjustContentInsets={false}
 						ref={el=>this.scroll=el} horizontal={true} keyboardShouldPersistTaps={true}
-							contentContainerStyle={{...center,}} showsHorizontalScrollIndicator={false}
+							contentContainerStyle={{...center,}} 
+							showsHorizontalScrollIndicator={false}
 						 >
-						 	<Word city={true} ref={el=>this.city=el} chooseTag={this.chooseCity.bind(this)} isUp={false} tag={this.state.city}/>
-
-						 	{this.props.chosenTags.map((tag,i)=>{
-								return <Word cancelTag={this.props.loadDeals&&this.cancelTag.bind(this,tag)} key={i} isUp={true} tag={tag}/>
-						 	})}
-
+						 	<View style={{flexDirection:'row'}}>
+		 					<Word city={true} ref={el=>this.city=el} chooseTag={this.chooseCity.bind(this)} isUp={false} tag={this.state.city}/>
+						 	<Combinator>
+						 		<View style={{flexDirection:'row'}}>
+							 		{this.props.chosenTags$.map(chosenTags => {
+							 			if(chosenTags){
+							 				return <View style={{flexDirection:'row'}}>
+						 						{chosenTags.map(tag=>{
+													return <Word cancelTag={()=>null} key={tag.id} isUp={true} tag={tag}/>
+												})}
+						 					</View>
+							 			}		 		
+							 			})
+									}
+						 		</View>
+						 	</Combinator>
+			
+						 	</View>
 						</ScrollView>
 						<View style={{...separator,}}/>
 					</View>
@@ -252,22 +213,67 @@ export default class FindTab extends React.Component{
 		
 				<View style={{flex:1}}>
 
-				{this.props.loadDeals ? <View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
-							<Deals search={true} 
-								loadDeals={this.props.loadDeals}
-								toggleSearch={this.toggleSearch.bind(this)} 	
-								data={this.props.searchedDeals}/>
-					
-					</View>:
-					<View>
-				
+				{this.state.loadDeals ? <Combinator me={'deals'}>
+						<View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
+							{
+								// this.props.chosenTags$.flatMap(chosenTags => {
+								// 	this.props.searchedTags$.map(searchedDeals => {
+								// 		if (searchedDeals === 'isLoading') {
+								// 		return <Deals search={true}
+								// 			isLoading={true}
+								// 			toggleSearch={this.toggleSearch.bind(this)} 	
+								// 			data={searchedDeals}/>
+								// 		}
+
+								// 		const tagIdString = chosenTags.map(tag => tag.id).join(',')
+								// 		return <Deals search={true}
+								// 			toggleSearch={this.toggleSearch.bind(this)} 	
+								// 			data={_.values(searchedDeals[tagIdString]).filter(deal=>deal && deal.id)}/>
+
+								// 	})
+								// })
+								Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$,
+									(chosenTags,searchedDeals) => {
+										if (chosenTags) {
+											this.chosenTags = chosenTags
+											this.searchedDeals = searchedDeals
+										}
+										if (searchedDeals === 'isLoading') {
+										return <Deals search={true}
+											isLoading={true}
+											toggleSearch={this.toggleSearch.bind(this)}
+											data={[]}/>
+										}
+
+										const tagIdString = this.chosenTags.map(tag => tag.id).join(',')
+										return <Deals search={true}
+											toggleSearch={this.toggleSearch.bind(this)}
+											data={_.values(this.searchedDeals[tagIdString]).filter(deal=>deal && deal.id)}/>
+									}
+								)
+							}
+						</View>
+					</Combinator> :<View>
 						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
 							<ScrollView keyboardShouldPersistTaps={true}>
+								<Combinator>
 									<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
-										{this.props.searchedTags.filter(x => !this.props.chosenTags.map(y => y.id).includes(x.id)).map((tag,i)=>{
-													return <Word chooseTag={this.props.chooseTag} key={i} isUp={false} tag={tag}/>
-											})}		
+										{
+											Observable.combineLatest(this.props.searchedTags$, this.props.tagSearchText$, 
+												(searchedTags, tagSearchText) =>
+													searchedTags && searchedTags[tagSearchText] && _.values(searchedTags[tagSearchText]).
+													filter(tag => tag && tag.text).map(tag => (
+														<Word chooseTag={this.chooseTag.bind(this)} key={tag.id} isUp={false} tag={tag}/>
+													))
+												)
+										}
+
+										{//this.state.searchedTags.filter(x => !this.props.chosenTags.map(y => y.id).includes(x.id)).map((tag,i)=>{
+													//return <Word chooseTag={this.props.chooseTag} key={i} isUp={false} tag={tag}/>
+										//	})
+										}		
 									</View>
+								</Combinator>
 							</ScrollView>
 							<View ref={el=>this.slider=el}/>
 						</View>

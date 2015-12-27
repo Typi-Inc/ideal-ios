@@ -12,6 +12,11 @@ var {
   View,
 } = React;
 import App from './components/app'
+import intent from './intent'
+import model from './model'
+
+let state$ = model(intent());
+
 let Dimensions = require('Dimensions');
 let windowSize = Dimensions.get('window');
 global.k=windowSize.width/320
@@ -21,7 +26,7 @@ global.center={justifyContent:'center',alignItems:'center'}
 var ideal = React.createClass({
   render: function() {
     return (
-      <App />
+      <App state$={state$}/>
     );
   }
 });

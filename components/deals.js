@@ -25,16 +25,16 @@ export default class Deals extends React.Component{
   	}
 	componentDidMount(){
 					// LayoutAnimation.configureNext(openAnimation);
-					// if(this.props.loadDeals && this.props.loadDeals){
-					// 	this.setState({renderPlaceholderOnly:false})
-					// }
+					if(this.props.isLoading){
+						this.setState({renderPlaceholderOnly:false})
+					}
 
-			 InteractionManager.runAfterInteractions(() => {
-				 		this.setTimeout(()=>{
-				 			this.setState({renderPlaceholderOnly:false})
-				 		},200)
+			 // InteractionManager.runAfterInteractions(() => {
+				//  		this.setTimeout(()=>{
+				//  			this.setState({renderPlaceholderOnly:false})
+				//  		},200)
 				 		
-	    		});
+	   //  		});
 	}	
 
 	moveUpPrev(item,pagey){

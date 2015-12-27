@@ -5,7 +5,7 @@ import { ReplaySubject, Observable } from 'rx';
 import Combinator from './combinator'
 import Deals from './deals'
 import FindTab from './findTab'
-import {model} from '../model'
+import {model,data$} from '../model'
 let UIManager = require('NativeModules').UIManager;
 let {
   Text,
@@ -27,6 +27,7 @@ export default class FindTabContainer extends React.Component{
 	componentWillMount() {
 		this.text$ = new ReplaySubject(1);
 		let currentText;
+
 
 		this.searchTags$ = this.text$.
 			debounce(250).
@@ -152,5 +153,3 @@ export default class FindTabContainer extends React.Component{
 
 Object.assign(FindTabContainer.prototype, TimerMixin);
 
-// <Deals data={_.values(deals).filter(x=>x.title)}/>
-				   

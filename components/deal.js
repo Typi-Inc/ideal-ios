@@ -226,7 +226,7 @@ export default class Deal extends React.Component{
 						<Text style={{color:'white',marginTop:15*k,fontWeight:'900',
 						fontSize:14}}>Отправь друзьям.</Text>
 						<Text style={{textAlign:'center',color:'white',marginTop:15*k,fontWeight:'900',
-						fontSize:14}}>За каждую покупку получи 1000 тг и выше.</Text>
+						fontSize:14}}>За каждую покупку друга получи 1000 тг и выше.</Text>
 						
 
 						<TouchableOpacity>
