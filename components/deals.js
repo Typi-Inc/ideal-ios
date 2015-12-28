@@ -19,15 +19,16 @@ let {
   InteractionManager
 } = React;
 export default class Deals extends React.Component{
-	state={canOpen:true,renderPlaceholderOnly: true,loadNewer:false}
+	state={canOpen:true,loadNewer:false}
 	static contextTypes={
     	toggleTabs: React.PropTypes.func
   	}
 	componentDidMount(){
 					// LayoutAnimation.configureNext(openAnimation);
-					if(this.props.isLoading){
-						this.setState({renderPlaceholderOnly:false})
-					}
+		// if(this.props.data[0]){
+		// 	console.log('here')
+		// 	this.setState({renderPlaceholderOnly:false})
+		// }
 
 			 // InteractionManager.runAfterInteractions(() => {
 				//  		this.setTimeout(()=>{
@@ -137,12 +138,13 @@ export default class Deals extends React.Component{
 		}
 	}
 	componentWillMount(){
-		console.log('mounting deals in home ')
+		// console.log('mounting deals in home ')
 	}
 	render(){
 		this.canOpen=1
 		this.y=this.y || 0;
-		if(!this.state.renderPlaceholderOnly){
+		if(this.props.data[0]){
+			// this.props.toggleClick(true)
 			return (
 			<View style={{flex:1,backgroundColor:'#e8e8ee'}}>
 
@@ -176,9 +178,10 @@ export default class Deals extends React.Component{
 			</View>
 			)
 		}	
+		// this.props.toggleClick(false)
 		return (<View>
 			{this.props.navbar ? <Navbar ref='navbar' title={this.props.title} navigator={this.props.navigator}/>:null}
-		 <View style={{backgroundColor:'e8e8ee',flexDirection:'column',flex:1,alignItems:'center',justifyContent:'flex-start',height:600*k}}>
+		 <View style={{backgroundColor:'#e8e8ee',flexDirection:'column',flex:1,alignItems:'center',justifyContent:'flex-start',height:600*k}}>
 		 	   <Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
 	      </View>
 			</View>)

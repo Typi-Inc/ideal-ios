@@ -1,11 +1,11 @@
 import {getQuery$} from './getQuery'
 import {tagSearchText$} from './tagSearchText'
-import {chooseTag$} from './chooseTag'
+import {toggleTag$} from './toggleTag'
 
 const intent = () => ({
 	getQuery$,
 	tagSearchText$,
-	chooseTag$
+	toggleTag$
 })
 
 export default intent;

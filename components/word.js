@@ -14,7 +14,7 @@ let {
   ScrollView,
 } = React;
 export default class Word extends React.Component{
-	state={isUp:this.props.isUp}
+	state={isUp:this.props.isUp,canClick:true}
 	choose(){
 		// LayoutAnimation.configureNext(openAnimation)
 		// this.setState({isUp:!this.state.isUp})
@@ -35,6 +35,28 @@ export default class Word extends React.Component{
 	componentWillUnmount(){
 		Animated.timing(this.anim,{toValue:0,duration:200}).start()
 	}
+	componentWillReceiveProps(props){
+		if (props.cannotClick){
+			this.setState({canClick:false},()=>{
+				this.setTimeout(()=>{
+					this.setState({canClick:true})
+				},400)	
+			})
+			
+		}
+	}
+	onPress() {
+		if(!this.props.cannotClick){
+			this.setState({canClick:false},()=>{
+				this.setTimeout(()=>{
+					this.setState({canClick:true})
+				},200)	
+			})
+		}
+		if(this.state.canClick){
+			 this.state.isUp?this.state.canClick?this.cancel():null:this.choose()
+		}
+	}
 	render(){
 		if(this.props.isUp){
 			// console.log(this.props.tag)
@@ -42,7 +64,7 @@ export default class Word extends React.Component{
 		this.anim = this.anim || new Animated.Value(0)	
 		let tag=this.props.tag	
 			return (
-	 			<TouchableOpacity onPress={this.state.isUp?this.cancel.bind(this):this.choose.bind(this)}>	
+	 			<TouchableOpacity onPress={this.state.isUp?this.state.canClick?this.cancel.bind(this):null:this.choose.bind(this)}>	
 	 				<Animated.View style={{flexDirection:'row',
 	 				height:this.props.city && this.props.city?35*k:30*k,
 	 				paddingLeft:5*k,

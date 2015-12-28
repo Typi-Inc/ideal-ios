@@ -1,4 +1,5 @@
 import React from 'react-native';
+import _ from 'lodash';
 import combineTemplate from './combineTemplate';
 let {LayoutAnimation}=React
 class Combinator extends React.Component {
@@ -7,7 +8,6 @@ class Combinator extends React.Component {
 
     // Keep track of whether the component has mounted
     this.componentHasMounted = false;
-    console.log('starting everything back on track',props.me)
     // Subscribe to child prop changes so we know when to re-render
     this.subscription = combineTemplate(props.children).subscribe(
       children =>{
@@ -18,16 +18,18 @@ class Combinator extends React.Component {
       }
     );
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(nextState, this.state)
+  }
   componentDidMount() {
     this.componentHasMounted = true;
   }
   componentWillUnmount() {
-    console.log('killing everybody and fucking up the team',this.props.me)
     // Clean-up subscription before un-mounting
     this.subscription.dispose();
   }
   render() {
-    // console.log(this.state)
+    // console.log('combinator is in the house',this.props.me)
     return this.state;
   }
 }

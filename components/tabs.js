@@ -9,9 +9,7 @@ import FindTab from './findTab'
 import Navbar from './navbar'
 import {data} from './mock'
 import Parent from './parent'
-import WatchedDealsContainer from './watchedDealsContainer'
 import FeaturedDealsTab from './featuredDealsTab'
-import FindTabContainer from './findTabContainer'
 let {
   AppRegistry,
   StyleSheet,
@@ -79,7 +77,7 @@ export default class Tabs extends React.Component{
   	
 	render(){
 
-			console.log('rerender tab')
+			// console.log('rerender tab')
 		return (
 			<TabNavigator ref={el=>this.tabBar=el}
 				tabBarStyle={{height:this.state.height,overflow:this.state.overflow}}

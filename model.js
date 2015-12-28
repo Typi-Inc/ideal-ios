@@ -4,9 +4,14 @@ import FalcorHttpDatasource from 'falcor-http-datasource';
 import _ from 'lodash';
 // import deepAssign from 'deep-assign';
 
-let model = ({ tagSearchText$, getQuery$, chooseTag$, repeatPreviousState$ }) => {
+let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 	let data$ = new Rx.ReplaySubject(1);//data stream of state
-	let state$ = data$.scan((accumulator , newData) => _.merge(accumulator, newData))
+	let state$ = data$.scan((accumulator , newData) =>_.merge(accumulator, newData, 
+		(a, b) => {
+		if (_.isArray(a) && _.isArray(b) && a.length - b.length === 1) {
+			return b;
+		}
+	}))
 
 	let rootModel = new falcor.Model({
 	  source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
@@ -14,42 +19,42 @@ let model = ({ tagSearchText$, getQuery$, chooseTag$, repeatPreviousState$ }) =>
 	  // 	state$.onNext(model.getCache());
 	  // }
 	});
-
-	tagSearchText$.subscribe(text => data$.onNext({'tagSearchText': text}))
+	tagSearchText$.subscribe(text =>data$.onNext({'tagSearchText': text}))
 	tagSearchText$.debounce(250).
 		map(key=> {
-			let currentText = key;
 			let result$ = Rx.Observable.fromPromise(
 				rootModel.get(
 					['tagsByText',key,{ from: 0, to : 20}, ['text','id'] ]
 				)
-			)//.delay(1000)
-			// Rx.Observable.just(1).
-				// delay(200).
-				// takeUntil(result$).subscribe(() => data$.onNext({tagsByText:{isLoadingTags:true}}))
+			)
+			Rx.Observable.just(1).
+				delay(200).
+				takeUntil(result$).subscribe(() => data$.onNext({tagsByText:'isLoading'}))
 			return result$
 		}).switchLatest().
 		filter(data => data && data.json).
 		subscribe(data =>data$.onNext(data.json))
-
-
 	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => data && data.json && data$.onNext(data.json)))
-
-	chooseTag$.
+	toggleTag$.
 	  scan((acc, nextTag) => {
-		return acc.concat([nextTag])
-	}, []).
-	  subscribe(tags => {
+	  	if(acc.filter(tag=>tag.id===nextTag.id).length>0){
+	  		acc.splice(acc.indexOf(acc.filter(tag=>tag.id===nextTag.id)[0]),1)
+	  		return acc
+	  	}
+		acc.unshift(nextTag)
+		return acc
+	}, []).map(tags => {
+		console.log(tags, 'in a map');
 		data$.onNext({ chosenTags: tags, dealsByTags: 'isLoading' })
-		let tagIdString=tags.map(tag => tag.id).join(',');
-		rootModel.get(
+		let tagIdString=tags.length === 0 ? '' : tags.map(tag => tag.id).join(',');
+		return Rx.Observable.fromPromise(rootModel.get(
 			['dealsByTags',tagIdString,{from:0,to:10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
 			['dealsByTags',tagIdString,{from:0,to:10},['title','conditions','id','image','discount','payout']],
 			['dealsByTags',tagIdString,{from:0,to:10},'business',['name','image']],
 			['dealsByTags',tagIdString,{from:0,to:10},'likes','sort:createdAt=desc','count']
-		).then(data => data && data.json && data$.onNext(data.json))
-	})
-
+		))
+	}).delay(500).switchLatest().
+	   subscribe(data => data && data.json && data$.onNext(data.json))
 	return state$
 }
 

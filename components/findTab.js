@@ -1,6 +1,5 @@
 import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
-import Find from './find'
 import Word from './word'
 import {tags,data} from './mock'
 import _ from 'lodash'
@@ -10,7 +9,7 @@ import Deals from './deals'
 import {ReplaySubject,Observable} from 'rx'
 import {onTagTextChange} from '../intent/tagSearchText'
 // import {getQuery} from '../intent/getQuery'
-import {chooseTag} from '../intent/chooseTag'
+import {toggleTag} from '../intent/toggleTag'
 import Spinner from 'react-native-spinkit'
 // import { onTagTextChange } from '.model'
 import {openAnimation,spring1,spring2,scrollToTopAnimation,closeImageAnimation} from './animations'
@@ -63,25 +62,42 @@ export default class FindTab extends React.Component{
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
-		chooseTag(tag);
+		toggleTag(tag);
 		this.setState({
 			loadDeals: true
 		})
-		this.scroll.setNativeProps({directionalLockEnabled:true,horizontal:true})	
 		this.setTimeout(()=>this.cancel(),0)
 	}
 	cancelTag(tag){
+
 		this.anim.setValue(0)
+
+		if(this.chosenTags[0] && this.searchedDeals!=='isLoading') {
+			if(this.chosenTags.length>1){
+					this.setState({
+					loadDeals: true
+				}, () => {
+					toggleTag(tag)
+				})
+			}else{
+				this.setState({
+					loadDeals: false
+				}, () => {
+					toggleTag(tag)
+					onTagTextChange('')
+				})
+
+			}
+		}
+		
 		// let chosenTags=this.state.chosenTags.splice(this.state.chosenTags.indexOf(tag),1)
 		LayoutAnimation.easeInEaseOut()
 		// this.setState({chosenTags:this.state.chosenTags,
 		// 	tagCount:this.state.tagCount-1,loadDeals:this.state.tagCount>1?true:false,
 		// 	placeholderText:this.state.tagCount>1?'Добавить еще таг':'Искать по тагам'
 		// })	
-		this.cancel()
+		// this.cancel()
 		// if(this.props.chosenTags===0) this.props.loadDealsFalse()
-		this.props.cancelTag(tag)
-
 	}
 	toggleSearch(val){
 		this.anim.setValue(0)
@@ -149,15 +165,15 @@ export default class FindTab extends React.Component{
     }
 
 	render(){
-		console.log('rerender')
-
+		// console.log('rerender')
+		console.log(this.state.loadDeals, 'load Deals ?')
 		this.anim=this.anim || new Animated.Value(0)
 		this.latestScroll=this.latestScroll || 0
 		return (
 			<View style={{backgroundColor:'white',}}>
 
 					<View ref={el=>this.searchPanel=el} style={{backgroundColor:'white',height:100*k}}>
-						<Combinator>
+						<Combinator me={'text input'}>
 							<View ref={el=>this.search=el} style={{flexDirection:'row',...center,marginTop:10}}>
 								{this.props.tagSearchText$.map(text1 => {
 									return <TextInput ref={el=>this.textInput=el}		    	
@@ -189,18 +205,23 @@ export default class FindTab extends React.Component{
 							showsHorizontalScrollIndicator={false}
 						 >
 						 	<View style={{flexDirection:'row'}}>
-		 					<Word city={true} ref={el=>this.city=el} chooseTag={this.chooseCity.bind(this)} isUp={false} tag={this.state.city}/>
-						 	<Combinator>
-						 		<View style={{flexDirection:'row'}}>
-							 		{this.props.chosenTags$.map(chosenTags => {
-							 			if(chosenTags){
-							 				return <View style={{flexDirection:'row'}}>
-						 						{chosenTags.map(tag=>{
-													return <Word cancelTag={()=>null} key={tag.id} isUp={true} tag={tag}/>
-												})}
-						 					</View>
-							 			}		 		
-							 			})
+						 	<Combinator me={'chosenTags'}>
+						 		<View style={{flexDirection:'row',...center}}>
+		 						<Word city={true} ref={el=>this.city=el} chooseTag={this.chooseCity.bind(this)} isUp={false} tag={this.state.city}/>
+
+							 		{
+							 			Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$,
+							 				(chosenTags,searchedDeals)=>{
+							 					if(chosenTags){
+									 				console.log(searchedDeals)
+									 				return <View style={{flexDirection:'row'}}>
+								 						{chosenTags.map(tag=>{
+															return <Word cannotClick={this.state.loadDeals} cancelTag={this.cancelTag.bind(this)} key={tag.id+'chosen'} isUp={true} tag={tag}/>
+														})}
+								 					</View>
+									 			}
+
+							 				})
 									}
 						 		</View>
 						 	</Combinator>
@@ -216,35 +237,19 @@ export default class FindTab extends React.Component{
 				{this.state.loadDeals ? <Combinator me={'deals'}>
 						<View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
 							{
-								// this.props.chosenTags$.flatMap(chosenTags => {
-								// 	this.props.searchedTags$.map(searchedDeals => {
-								// 		if (searchedDeals === 'isLoading') {
-								// 		return <Deals search={true}
-								// 			isLoading={true}
-								// 			toggleSearch={this.toggleSearch.bind(this)} 	
-								// 			data={searchedDeals}/>
-								// 		}
-
-								// 		const tagIdString = chosenTags.map(tag => tag.id).join(',')
-								// 		return <Deals search={true}
-								// 			toggleSearch={this.toggleSearch.bind(this)} 	
-								// 			data={_.values(searchedDeals[tagIdString]).filter(deal=>deal && deal.id)}/>
-
-								// 	})
-								// })
 								Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$,
 									(chosenTags,searchedDeals) => {
 										if (chosenTags) {
 											this.chosenTags = chosenTags
+										}
+										if (searchedDeals) {
 											this.searchedDeals = searchedDeals
 										}
 										if (searchedDeals === 'isLoading') {
 										return <Deals search={true}
-											isLoading={true}
 											toggleSearch={this.toggleSearch.bind(this)}
 											data={[]}/>
 										}
-
 										const tagIdString = this.chosenTags.map(tag => tag.id).join(',')
 										return <Deals search={true}
 											toggleSearch={this.toggleSearch.bind(this)}
@@ -253,16 +258,22 @@ export default class FindTab extends React.Component{
 								)
 							}
 						</View>
-					</Combinator> :<View>
+					</Combinator> : <View>
 						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
 							<ScrollView keyboardShouldPersistTaps={true}>
-								<Combinator>
+								<Combinator me={'suggestion tags'}>
 									<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
 										{
 											Observable.combineLatest(this.props.searchedTags$, this.props.tagSearchText$, 
 												(searchedTags, tagSearchText) =>
 													searchedTags && searchedTags[tagSearchText] && _.values(searchedTags[tagSearchText]).
-													filter(tag => tag && tag.text).map(tag => (
+													filter(tag => tag && tag.text).filter(tag=>{
+														if(this.chosenTags){
+															return !this.chosenTags.map(tag=>tag.id).includes(tag.id)
+														}
+														return true
+
+													}).map(tag => (
 														<Word chooseTag={this.chooseTag.bind(this)} key={tag.id} isUp={false} tag={tag}/>
 													))
 												)
