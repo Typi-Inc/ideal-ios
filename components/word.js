@@ -45,18 +45,7 @@ export default class Word extends React.Component{
 			
 		}
 	}
-	onPress() {
-		if(!this.props.cannotClick){
-			this.setState({canClick:false},()=>{
-				this.setTimeout(()=>{
-					this.setState({canClick:true})
-				},200)	
-			})
-		}
-		if(this.state.canClick){
-			 this.state.isUp?this.state.canClick?this.cancel():null:this.choose()
-		}
-	}
+
 	render(){
 		if(this.props.isUp){
 			// console.log(this.props.tag)

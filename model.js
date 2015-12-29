@@ -24,9 +24,9 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 		map(key=> {
 			let result$ = Rx.Observable.fromPromise(
 				rootModel.get(
-					['tagsByText',key,{ from: 0, to : 20}, ['text','id'] ]
+					['tagsByText',key,{ from: 0, to : 40}, ['text','id'] ]
 				)
-			)
+			)//.delay(500)
 			Rx.Observable.just(1).
 				delay(200).
 				takeUntil(result$).subscribe(() => data$.onNext({tagsByText:'isLoading'}))
@@ -35,6 +35,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 		filter(data => data && data.json).
 		subscribe(data =>data$.onNext(data.json))
 	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => data && data.json && data$.onNext(data.json)))
+	
 	toggleTag$.
 	  scan((acc, nextTag) => {
 	  	if(acc.filter(tag=>tag.id===nextTag.id).length>0){
@@ -44,14 +45,14 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 		acc.unshift(nextTag)
 		return acc
 	}, []).map(tags => {
-		console.log(tags, 'in a map');
+		// console.log(tags, 'in a map');
 		data$.onNext({ chosenTags: tags, dealsByTags: 'isLoading' })
 		let tagIdString=tags.length === 0 ? '' : tags.map(tag => tag.id).join(',');
 		return Rx.Observable.fromPromise(rootModel.get(
-			['dealsByTags',tagIdString,{from:0,to:10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-			['dealsByTags',tagIdString,{from:0,to:10},['title','conditions','id','image','discount','payout']],
-			['dealsByTags',tagIdString,{from:0,to:10},'business',['name','image']],
-			['dealsByTags',tagIdString,{from:0,to:10},'likes','sort:createdAt=desc','count']
+			['dealsByTags',tagIdString,{from:0,to:5},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+			['dealsByTags',tagIdString,{from:0,to:5},['title','conditions','id','image','discount','payout']],
+			['dealsByTags',tagIdString,{from:0,to:5},'business',['name','image']],
+			['dealsByTags',tagIdString,{from:0,to:5},'likes','sort:createdAt=desc','count']
 		))
 	}).delay(500).switchLatest().
 	   subscribe(data => data && data.json && data$.onNext(data.json))

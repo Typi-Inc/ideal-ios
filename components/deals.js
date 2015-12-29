@@ -82,7 +82,6 @@ export default class Deals extends React.Component{
 	}
 	viewDeal(item,refS){
 			this.toggleScroll(false)
-
 			// this.context.toggleTabs()
 			let handle = React.findNodeHandle(this.refs[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
@@ -133,9 +132,9 @@ export default class Deals extends React.Component{
 		this.stopFetch=false
 	}
 	fetchBottom(){
-		if(!this.props.search){
+		// if(!this.props.search){
 			this.props.getMoreData();
-		}
+		// }
 	}
 	componentWillMount(){
 		// console.log('mounting deals in home ')

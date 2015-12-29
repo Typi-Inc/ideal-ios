@@ -21,13 +21,24 @@ export default class FeaturedDealsTab extends React.Component{
 			['featuredDeals',{from:0,to:10},'likes','sort:createdAt=desc','count']
 		])
 	}
+
+	getMoreData(){
+		getQuery([
+			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, 'text'],
+			['featuredDeals',{from:this.deals.length,to:this.deals.length+10}, ['title','conditions','id','image','discount']],
+			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'business',['name','image']],
+			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likes','sort:createdAt=desc','count']
+		])
+	}
 	render(){
 		// this.props.featuredDeals$.map(deals => console.log(deals) || deals)
 		return (
 			<Combinator>
 				<View style={{flex:1}}>
 					{this.props.deals$.map(deals => {
-							return <Deals data={_.values(deals).filter(deal => deal && deal.title)} />
+							this.deals=_.values(deals).filter(deal => deal && deal.title)
+							// console.log(this.deals)
+							return <Deals getMoreData={this.getMoreData.bind(this)}  data={_.values(deals).filter(deal => deal && deal.title)} />
 						}
 					)}
 				</View>

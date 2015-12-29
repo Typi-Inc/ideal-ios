@@ -8,10 +8,9 @@ import {action$} from '../model'
 import Deals from './deals'
 import {ReplaySubject,Observable} from 'rx'
 import {onTagTextChange} from '../intent/tagSearchText'
-// import {getQuery} from '../intent/getQuery'
+import {getQuery} from '../intent/getQuery';
 import {toggleTag} from '../intent/toggleTag'
 import Spinner from 'react-native-spinkit'
-// import { onTagTextChange } from '.model'
 import {openAnimation,spring1,spring2,scrollToTopAnimation,closeImageAnimation} from './animations'
 import Loading from './loading'
 let {
@@ -30,7 +29,13 @@ let PickerItemIOS=PickerIOS.Item
 let UIManager = require('NativeModules').UIManager;
 
 export default class FindTab extends React.Component{
-	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:{text:'Almaty'},loadDeals:false,placeholderText:'Искать по тагам',tagCount:0}
+	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:{text:'Almaty'},loadDeals:false,placeholderText:'Искать по тегам',tagCount:0}
+	shouldComponentUpdate(p,s){
+		if(s.loadDeals===this.state.loadDeals){
+			return false
+		}//else if(s.placeholderText===this.state.placeholderText) return false
+		return true
+	}
 	chooseCity(city){
 		LayoutAnimation.easeInEaseOut()
 		this.setState({city:city,loadDeals:true},()=>{
@@ -41,47 +46,48 @@ export default class FindTab extends React.Component{
 		LayoutAnimation.easeInEaseOut()
 		this.textInput.setNativeProps({style:{width:255*k}})
 		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
-		this.setState({loadDeals: false})
-		onTagTextChange('')
+		if(this.chosenTags){
+			this.setState({loadDeals: false})
+			onTagTextChange('')
+		}
+		
 	}
 	cancel(){
-		// this.text$.onNext('');	
 		LayoutAnimation.easeInEaseOut()
-
 		this.textInput.setNativeProps({style:{width:300*k}})
 		this.cancelText.setNativeProps({style:{fontSize:0.1,marginLeft:0}})
 		this.textInput.blur()
-		// this.setState({text:''})
-		// if(this.props.chosenTags.length>0){
-		// 	this.setState({loadDeals:true})
-		// }
-		this.setState({
-			loadDeals: true
-		})
-		
+		if(this.chosenTags&&this.chosenTags[0]){
+			this.setState({
+				loadDeals: true,
+			})
+			this.textInput.blur()
+		}
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
-		toggleTag(tag);
-		this.setState({
-			loadDeals: true
+		this.setState({placeholderText:'Добавить еще тег'},()=>{
+				toggleTag(tag);
+				this.setState({
+					loadDeals: true,
+				})
 		})
 		this.setTimeout(()=>this.cancel(),0)
 	}
 	cancelTag(tag){
-
 		this.anim.setValue(0)
-
 		if(this.chosenTags[0] && this.searchedDeals!=='isLoading') {
 			if(this.chosenTags.length>1){
 					this.setState({
-					loadDeals: true
+					loadDeals: true,
+					placeholderText:'Добавить еще тег'
 				}, () => {
 					toggleTag(tag)
 				})
 			}else{
 				this.setState({
-					loadDeals: false
+					loadDeals: false,
+					placeholderText:'Искать по тегам'
 				}, () => {
 					toggleTag(tag)
 					onTagTextChange('')
@@ -89,19 +95,9 @@ export default class FindTab extends React.Component{
 
 			}
 		}
-		
-		// let chosenTags=this.state.chosenTags.splice(this.state.chosenTags.indexOf(tag),1)
-		LayoutAnimation.easeInEaseOut()
-		// this.setState({chosenTags:this.state.chosenTags,
-		// 	tagCount:this.state.tagCount-1,loadDeals:this.state.tagCount>1?true:false,
-		// 	placeholderText:this.state.tagCount>1?'Добавить еще таг':'Искать по тагам'
-		// })	
-		// this.cancel()
-		// if(this.props.chosenTags===0) this.props.loadDealsFalse()
 	}
 	toggleSearch(val){
 		this.anim.setValue(0)
-		// LayoutAnimation.easeInEaseOut()
 		let h1,h2;
 		if(k===1){
 			h1=560
@@ -151,22 +147,25 @@ export default class FindTab extends React.Component{
 	componentWillMount() {
 		onTagTextChange('')
 	}
-
 	componentDidMount() {
-		// LayoutAnimation.configureNext(LayoutAnimation.create(100,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.opacity));
         this._keyboardWillShowSubscription= DeviceEventEmitter.addListener('keyboardWillShow', this.handleKeyboardAppear.bind(this));
         this._keyboardWillHideSubscription= DeviceEventEmitter.addListener('keyboardWillHide', this.handleKeyboardDisappear.bind(this));
     }
     componentWillUnmount() {
         this._keyboardWillShowSubscription.remove();
         this._keyboardWillHideSubscription.remove();
-        // this.searchTagsSubscription.dispose();
-        // this.searchedDealsSubscription.dispose()
     }
-
+    getMoreData(){
+    	console.log('loading more data',this.tagIdString,this.numberOfSearchedDeals)
+		getQuery([
+			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},['title','conditions','id','image','discount','payout']],
+			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'business',['name','image']],
+			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'likes','sort:createdAt=desc','count']
+		])
+	}
 	render(){
-		// console.log('rerender')
-		console.log(this.state.loadDeals, 'load Deals ?')
+		// console.log(this.state.loadDeals, 'load Deals ?')
 		this.anim=this.anim || new Animated.Value(0)
 		this.latestScroll=this.latestScroll || 0
 		return (
@@ -178,7 +177,7 @@ export default class FindTab extends React.Component{
 								{this.props.tagSearchText$.map(text1 => {
 									return <TextInput ref={el=>this.textInput=el}		    	
 							    		maxLength={40} 
-							    		placeholder={this.props.placeholderText}
+							    		placeholder={this.state.placeholderText}
 							    		clearTextOnFocus={true}
 							    		clearButtonMode={'while-editing'}
 							    		onFocus={this.focus.bind(this)}
@@ -213,7 +212,7 @@ export default class FindTab extends React.Component{
 							 			Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$,
 							 				(chosenTags,searchedDeals)=>{
 							 					if(chosenTags){
-									 				console.log(searchedDeals)
+									 				// console.log(searchedDeals)
 									 				return <View style={{flexDirection:'row'}}>
 								 						{chosenTags.map(tag=>{
 															return <Word cannotClick={this.state.loadDeals} cancelTag={this.cancelTag.bind(this)} key={tag.id+'chosen'} isUp={true} tag={tag}/>
@@ -250,10 +249,20 @@ export default class FindTab extends React.Component{
 											toggleSearch={this.toggleSearch.bind(this)}
 											data={[]}/>
 										}
-										const tagIdString = this.chosenTags.map(tag => tag.id).join(',')
+										if(chosenTags && chosenTags.length>4){
+											return <View style={{...center}}>
+												<Text style={{margin:15,color:'gray',textAlign:'center'}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
+											</View>
+										}
+										if(this.chosenTags){
+											this.tagIdString = this.chosenTags.map(tag => tag.id).join(',')
+
+										}
+										this.numberOfSearchedDeals=_.values(this.searchedDeals[this.tagIdString]).filter(deal=>deal && deal.id).length
 										return <Deals search={true}
+											getMoreData={this.getMoreData.bind(this)}
 											toggleSearch={this.toggleSearch.bind(this)}
-											data={_.values(this.searchedDeals[tagIdString]).filter(deal=>deal && deal.id)}/>
+											data={_.values(this.searchedDeals[this.tagIdString]).filter(deal=>deal && deal.id)}/>
 									}
 								)
 							}
@@ -278,23 +287,43 @@ export default class FindTab extends React.Component{
 													))
 												)
 										}
-
-										{//this.state.searchedTags.filter(x => !this.props.chosenTags.map(y => y.id).includes(x.id)).map((tag,i)=>{
-													//return <Word chooseTag={this.props.chooseTag} key={i} isUp={false} tag={tag}/>
-										//	})
+										{
+											this.props.searchedTags$.map(loading=>{
+												// console.log(loading)
+												if(loading==='isLoading'){
+												return	(<View style={{backgroundColor:'rgba(255,255,255,0.9)',
+															width:320*k,top:0*k,right:0,flexDirection:'column',
+															position:'absolute',justifyContent:'flex-start',alignItems:'center',height:500}}>
+										 	 				  <Spinner style={{marginTop:15*k}} isVisible={true} size={30} type={'WanderingCubes'} color={'#aaaaaa'}/>       
+									    				  </View>
+									    				  )
+												}
+												return null
+											})
 										}		
 									</View>
 								</Combinator>
 							</ScrollView>
 							<View ref={el=>this.slider=el}/>
 						</View>
-						{this.props.isLoadingTags?
-							(<View style={{backgroundColor:'rgba(255,255,255,0.8)',
-								width:320*k,top:0*k,flexDirection:'column',
-								position:'absolute',justifyContent:'flex-start',alignItems:'center',height:500}}>
-			 	 				  <Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'#aaaaaa'}/>       
-		    				  </View>):<View/>
-						}
+						<View style={{flex:100}}>
+							<Combinator>
+								<View >
+									
+									{this.props.isLoadingTags?
+										(<View style={{backgroundColor:'rgba(255,255,255,0.8)',
+											width:320*k,top:0*k,flexDirection:'column',
+											position:'absolute',justifyContent:'flex-start',alignItems:'center',height:500}}>
+						 	 				  <Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'#aaaaaa'}/>       
+					    				  </View>):<View/>
+									}
+
+								</View>
+							</Combinator>
+
+						</View>
+
+						
 					</View>
 				}
 				</View>
