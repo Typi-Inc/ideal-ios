@@ -72,8 +72,8 @@ export default class DealCard extends React.Component{
 									})}
 								</View>
 								<View style={{flex:1,flexDirection:'row',...center,}}>
-									<Text style={{textDecorationLine:'line-through',fontSize:13*k,color:'gray',textDecorationColor:'red'}}>1000  </Text>
-									<Text style={{fontSize:20*k,fontWeight:'600'}}>700</Text>
+									<Text style={{textDecorationLine:'line-through',fontSize:16*k,color:'gray',textDecorationColor:'red'}}>1000  </Text>
+									<Text style={{fontSize:22*k,fontWeight:'600'}}>700</Text>
 								</View>
 							</View>
 							<View style={{flexDirection:'row',marginBottom:14*k,alignItems:'center',marginTop:10*k,marginLeft:!this.state.isOpen?10*k:15*k}}>
@@ -85,7 +85,6 @@ export default class DealCard extends React.Component{
 							</View>
 						</TouchableWithoutFeedback>
 					</Animated.View>
-			
      		)
 	}
 }

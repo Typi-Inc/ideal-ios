@@ -8,7 +8,8 @@ let {
   Text,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableWithoutFeedback
 } = React;
 export default class DealAuthor extends React.Component{
 	state={}
@@ -16,6 +17,7 @@ export default class DealAuthor extends React.Component{
 		let name=this.props.business.name
 		let factName=name.length>20 ? name.slice(0,20)+'...':name
 		return (
+	<TouchableWithoutFeedback onPress={this.props.isOpen ? null:this.props.viewDeal}>
 		<View>
 			<View style={{alignItems:'center',justifyContent:'space-between',flexDirection:'row',height: 50*k}}>
 				<View style={{...center,flexDirection:'row'}}>
@@ -31,9 +33,12 @@ export default class DealAuthor extends React.Component{
 			</View>
 			<View style={{height:1,backgroundColor:'e4e4e4'}}/>
 		</View>
+	</TouchableWithoutFeedback>
+
      		)
 	}
 }
+
 Object.assign(DealAuthor.prototype, TimerMixin);
 
 

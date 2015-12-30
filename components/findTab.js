@@ -63,6 +63,7 @@ export default class FindTab extends React.Component{
 			})
 			this.textInput.blur()
 		}
+		onTagTextChange('')
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
@@ -156,7 +157,7 @@ export default class FindTab extends React.Component{
         this._keyboardWillHideSubscription.remove();
     }
     getMoreData(){
-    	console.log('loading more data',this.tagIdString,this.numberOfSearchedDeals)
+    	// console.log('loading more data',this.tagIdString,this.numberOfSearchedDeals)
 		getQuery([
 			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
 			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},['title','conditions','id','image','discount','payout']],
@@ -185,10 +186,10 @@ export default class FindTab extends React.Component{
 							    			width:300*k,borderColor:'#cccccc',paddingLeft:10*k,
 							    			backgroundColor:'transparent',alignSelf:'center'}}
 										onChangeText={(text) => {
-											// this.text$.onNext(text);
-											// this.props.onTextChange(text);
-											// this.setState({text:text})
-											onTagTextChange(text)
+											if(!text.includes('+')){
+												onTagTextChange(text)
+
+											}
 										}}
 										value={text1}
 										/>									
@@ -274,8 +275,15 @@ export default class FindTab extends React.Component{
 									<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
 										{
 											Observable.combineLatest(this.props.searchedTags$, this.props.tagSearchText$, 
-												(searchedTags, tagSearchText) =>
-													searchedTags && searchedTags[tagSearchText] && _.values(searchedTags[tagSearchText]).
+												(searchedTags, tagSearchText) =>{
+													if (searchedTags==='not found') {
+														return <View style={{...center}}>
+																	<Text style={{margin:15,color:'gray',textAlign:'center'}}>Не найдено.</Text>
+																	<Text style={{color:'gray',textAlign:'center'}}>Попробуйте ввести другой тег.</Text>
+
+																</View>
+													}
+													return searchedTags && searchedTags[tagSearchText] && _.values(searchedTags[tagSearchText]).
 													filter(tag => tag && tag.text).filter(tag=>{
 														if(this.chosenTags){
 															return !this.chosenTags.map(tag=>tag.id).includes(tag.id)
@@ -285,7 +293,7 @@ export default class FindTab extends React.Component{
 													}).map(tag => (
 														<Word chooseTag={this.chooseTag.bind(this)} key={tag.id} isUp={false} tag={tag}/>
 													))
-												)
+												})
 										}
 										{
 											this.props.searchedTags$.map(loading=>{

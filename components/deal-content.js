@@ -18,7 +18,7 @@ let {
   DeviceEventEmitter
 } = React;
 export default class DealContent extends React.Component{
-	state={num:0,count:0,commentCount:0}
+	state={num:1,count:0,commentCount:0}
 	changeTab(num){
 		this.requestAnimationFrame(()=>{
 			LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -35,12 +35,12 @@ export default class DealContent extends React.Component{
 	render(){
 		let tabView,commentBox;
 		if(this.state.num===0){
-			tabView=<Info count={this.state.count} conditions={this.props.conditions}/>
+			tabView=<Info dealId={this.props.deal.id} count={this.state.count} />
 
 		}else if (this.state.num===1){
 			tabView=<Address/>
 		}else{
-			tabView=<Comments count={this.state.commentCount} comments={this.props.deal.comments||[]}/>
+			tabView=<Comments dealId={this.props.deal.id} count={this.state.commentCount} />
 			// this.setTimeout(()=>this.props.openCommentBox(),300)
 		
 		}

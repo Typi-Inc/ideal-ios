@@ -20,17 +20,18 @@ export default class Certificate extends React.Component{
 
 	}
 	render(){
+		let certificate=this.props.certificate
 		return (
 		<View style={{flexDirection:'row',backgroundColor:'white',alignItems:'center',justifyContent:'space-between'}}>
 			<View style={{width:170*k,alignItems:'flex-start',marginTop:6*k,marginBottom:6*k,marginLeft:5*k}}>
 				<Text style={{marginLeft:5*k,fontSize:12,
 					fontWeight:'500',color:'black',width:160*k,
 					textAlign:'auto'}}>
-					Скидка 50% на бытоваой озонатор-ионизатор Laison - 300 тг 
+					{certificate.title}
 				</Text>
 				<View style={{flex:1,flexDirection:'row',...center,marginLeft:10*k,marginTop:6*k}}>
-					<Text style={{textDecorationLine:'line-through',fontSize:10*k,color:'gray',textDecorationColor:'red'}}>1000  </Text>
-					<Text style={{fontSize:15*k,fontWeight:'600',}}>700</Text>
+					<Text style={{textDecorationLine:'line-through',fontSize:10*k,color:'gray',textDecorationColor:'red'}}>{certificate.oldPrice}  </Text>
+					<Text style={{fontSize:15*k,fontWeight:'600',}}>{certificate.newPrice}</Text>
 				</View>
 			</View>
 			<View style={{flexDirection:'row',...center,marginRight:10*k}}>

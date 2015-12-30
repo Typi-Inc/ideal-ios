@@ -172,7 +172,6 @@ export default class Deal extends React.Component{
 		// if(this.state.isLoaded){
 		// 	console.log('render deal',this.props.deal.id)
 			return (
-
 			<Animated.View ref='mainView' 
 			style={{flex:1,width:this.state.isOpen?320*k:300*k,height:this.state.isOpen?568*h:360*k,
 				backgroundColor:'white',marginLeft:this.state.isOpen?0:10*k,marginTop:this.state.isOpen?0:10*k,
@@ -201,7 +200,7 @@ export default class Deal extends React.Component{
 						closeCommentBox={this.closeCommentBox.bind(this)} 
 						toggleScroll={this.toggleScroll.bind(this)} 
 						navigator={this.props.navigator} 
-						closeDeal={this.props.closeDeal}/>:<DealAuthor openHelper={this.openHelper.bind(this)} business={deal.business}/>}
+						closeDeal={this.props.closeDeal}/>:<DealAuthor viewDeal={this.props.viewDeal} isOpen={this.state.isOpen} openHelper={this.openHelper.bind(this)} business={deal.business}/>}
 					
 					<DealCard ref={el=>this.dealCard=el} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
 					{this.state.isOpen?<DealContent 
@@ -210,7 +209,6 @@ export default class Deal extends React.Component{
 						openCommentBox={this.openCommentBox.bind(this)} deal={deal} conditions={deal.conditions}/>:<View/>}
 				</ScrollView>
 					{this.state.commentBox?<CommentBox pushedFromLenta={this.props.pushedFromLenta && this.props.pushedFromLenta} ref='comment-box' submitComment={this.submitComment.bind(this)}/>:<View/>}
-
 					<Animated.View ref={el=>this.dialog=el} style={{
 						height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,182*k]}),
 						backgroundColor:'rgba(0,132,180,0.9)',overflow:'visible',
@@ -219,7 +217,6 @@ export default class Deal extends React.Component{
 						// padding:10*k,
 						top:50*k,left:0,justifyContent:'flex-start',alignItems:'center',
 						opacity:this.anim.interpolate({inputRange:[0,0.8,0.9,1],outputRange:[0,1,1,1]}),
-
 					}}>
 						<Text style={{color:'white',marginTop:15*k,fontWeight:'900',
 						fontSize:14}}>Cкопируй ссылку.</Text>
@@ -227,18 +224,12 @@ export default class Deal extends React.Component{
 						fontSize:14}}>Отправь друзьям.</Text>
 						<Text style={{textAlign:'center',color:'white',marginTop:15*k,fontWeight:'900',
 						fontSize:14}}>За каждую покупку друга получи 1000 тг и выше.</Text>
-						
-
 						<TouchableOpacity>
 							<View style={{marginTop:19*k,borderWidth:1,borderColor:'white',height:35*k,...center,borderRadius:3*k}}>
 								<Text style={{color:'white',fontWeight:'700',fontSize:15,margin:10}}>Начать</Text>
 							</View>
-
 						</TouchableOpacity>
-
-
 				</Animated.View>
-
 			</Animated.View>
 					)
 		// }

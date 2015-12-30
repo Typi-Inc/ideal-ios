@@ -16,7 +16,10 @@ let {
 } = React;
 export default class App extends React.Component{
 	state={}
-	
+	static childContextTypes={state$:React.PropTypes.any}
+	getChildContext(){
+		return {state$: this.props.state$}
+	}
 	render(){
 		StatusBarIOS.setStyle('light-content');
 
