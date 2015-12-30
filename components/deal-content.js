@@ -18,10 +18,10 @@ let {
   DeviceEventEmitter
 } = React;
 export default class DealContent extends React.Component{
-	state={num:1,count:0,commentCount:0}
+	state={num:0,count:0,commentCount:0}
 	changeTab(num){
 		this.requestAnimationFrame(()=>{
-			LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+			// LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
 			this.setState({num:num,count:this.state.count+1,commentCount:num===2?this.state.commentCount+1:this.state.commentCount},()=>{
 				if(num===2){
 					this.props.openCommentBox()

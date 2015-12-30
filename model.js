@@ -39,7 +39,15 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 		}).switchLatest().
 		// filter(data => data && data.json).
 		subscribe(data => data && data.json ? data$.onNext(data.json) : data$.onNext({tagsByText: 'not found' }))
-	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => data && data.json && data$.onNext(data.json)))
+	getQuery$.subscribe(paths => {
+		let obj = {};
+		obj[paths[0][0]] = {};
+		obj[paths[0][0]][paths[0][1]] = {};
+		obj[paths[0][0]][paths[0][1]][paths[0][2]] = 'isLoading';
+		
+		data$.onNext(obj);
+		return rootModel.get(...paths).then(data => data && data.json && data$.onNext(data.json))
+	})
 	
 	toggleTag$.
 	  scan((acc, nextTag) => {
@@ -61,7 +69,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 		))
 	}).delay(500).switchLatest().
 	   subscribe(data => data && data.json && data$.onNext(data.json))
-	state$.pluck('dealsById').subscribe(x => console.log(x, '------------dealsById-------------'))
+	// state$.pluck('dealsById').subscribe(x => console.log(x, '------------dealsById-------------'))
 	return state$
 }
 

@@ -11,7 +11,7 @@ class Combinator extends React.Component {
     // Subscribe to child prop changes so we know when to re-render
     this.subscription = combineTemplate(props.children).subscribe(
       children =>{
-        LayoutAnimation.easeInEaseOut()
+        // LayoutAnimation.easeInEaseOut()
         !this.componentHasMounted
           ? this.state = children
           : this.setState(children)

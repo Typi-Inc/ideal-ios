@@ -7,6 +7,7 @@ import Loading from './loading'
 import {getQuery} from '../intent/getQuery'
 import Combinator from './combinator'
 import _ from 'lodash'
+import Spinner from 'react-native-spinkit'
 let UIManager = require('NativeModules').UIManager;
 let {
   Text,
@@ -22,7 +23,7 @@ export default class Info extends React.Component{
 	componentDidMount(){
 		// LayoutAnimation.easeInEaseOut()
 	this.setTimeout(()=>{
-		LayoutAnimation.easeInEaseOut()
+		// LayoutAnimation.easeInEaseOut()
 		this.setState({loading:false})
 	},300)
 		
@@ -68,15 +69,19 @@ export default class Info extends React.Component{
 								<View style={{marginBottom:0*k}}>
 									{	
 										this.context.state$.pluck('dealsById').filter(x=>x).
-											pluck([this.props.dealId]).filter(x=>x).
-											pluck('certificates').filter(x=>x).pluck('sort:createdAt=desc').pluck('edges').filter(certificates=>certificates).map(certificates=>{
-												return _.values(certificates).filter(certificate=>certificate && certificate.title).map(certificate=>{
-													return (<View  key={certificate.id}>
-														<Certificate certificate={certificate}/>
-														<View style={{...separator}}/>
-													</View>)
+											pluck([this.props.dealId]).filter(x=>x).pluck('certificates').filter(x=>x).map(certificates=>{
+												if (certificates==='isLoading'){
+						 	  						return <View style={{...center}}>
+						 	  						<Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
+													 </View>
+												}
+												return _.values(certificates['sort:createdAt=desc'].edges).filter(certificate=>certificate && certificate.title).map(certificate=>{
+													// console.log(certificate,'certificate here')
+													return (<Certificate key={certificate.id} certificate={certificate}/>)
 												})
 											})
+
+
 									}		
 								</View>
 							</Combinator>

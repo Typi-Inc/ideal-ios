@@ -4,6 +4,7 @@ import {openAnimation,spring1,spring2,scrollToTopAnimation,closeImageAnimation} 
 import Comment from './comment'
 import Loading from './loading'
 import _ from 'lodash'
+import Spinner from 'react-native-spinkit'
 import {getQuery} from '../intent/getQuery'
 import Combinator from './combinator'
 let {
@@ -15,15 +16,15 @@ let {
   TouchableOpacity
 } = React;
 export default class Comments extends React.Component{
-	state={loading:this.props.count===1}
+	state={}
 	static contextTypes={
     	state$: React.PropTypes.any
   	}
 	componentDidMount(){
-		this.setTimeout(()=>{
-			LayoutAnimation.easeInEaseOut()
-			this.setState({loading:false})
-		},300)
+		// this.setTimeout(()=>{
+		// 	LayoutAnimation.easeInEaseOut()
+		// 	this.setState({loading:false})
+		// },300)
 		// this.context.state$.pluck('dealsById').subscribe(console.log);
 		
 	}
@@ -55,13 +56,16 @@ export default class Comments extends React.Component{
 
 					{	
 						this.context.state$.pluck('dealsById').filter(x=>x).
-							pluck([this.props.dealId]).filter(x=>x).
-							pluck('comments').filter(x=>x).pluck('sort:createdAt=desc').pluck('edges').filter(comments=>comments).map(comments=>{
-								return _.values(comments).filter(comment=>comment && comment.text).map(comment=>{
+							pluck([this.props.dealId]).pluck('comments').map(comments=>{
+								if (comments==='isLoading'){
+		 	  						return <View style={{...center}}>
+		 	  						<Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
+									 </View>
+								}
+								return _.values(comments['sort:createdAt=desc'].edges).filter(comment=>comment && comment.text).map(comment=>{
 									// console.log(comment,'comment here')
 									return (<Comment key={comment.id} comment={comment}/>)
 								})
-
 							})
 
 

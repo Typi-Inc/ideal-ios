@@ -1,0 +1,154 @@
+PODS:
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - Bolts (1.5.1):
+    - Bolts/AppLinks (= 1.5.1)
+    - Bolts/Tasks (= 1.5.1)
+  - Bolts/AppLinks (1.5.1):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.5.1)
+  - CocoaLumberjack (2.2.0):
+    - CocoaLumberjack/Default (= 2.2.0)
+    - CocoaLumberjack/Extensions (= 2.2.0)
+  - CocoaLumberjack/Core (2.2.0)
+  - CocoaLumberjack/Default (2.2.0):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.2.0):
+    - CocoaLumberjack/Default
+  - FBSDKCoreKit (4.8.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc (= 4.8.0)
+    - FBSDKCoreKit/no-arc (= 4.8.0)
+  - FBSDKCoreKit/arc (4.8.0):
+    - Bolts (~> 1.1)
+  - FBSDKCoreKit/no-arc (4.8.0):
+    - Bolts (~> 1.1)
+    - FBSDKCoreKit/arc
+  - FBSDKLoginKit (4.8.0):
+    - FBSDKCoreKit
+  - Lock (1.22.0):
+    - CocoaLumberjack (~> 2.0)
+    - Lock/Core (= 1.22.0)
+    - Lock/UI (= 1.22.0)
+    - Lock/WebView (= 1.22.0)
+  - Lock-Facebook (2.2.1):
+    - CocoaLumberjack (~> 2.0)
+    - FBSDKCoreKit (~> 4.6)
+    - FBSDKLoginKit (~> 4.6)
+    - Lock/Core (~> 1.11)
+  - Lock/Core (1.22.0):
+    - AFNetworking (~> 2.5)
+    - CocoaLumberjack (~> 2.0)
+  - Lock/CoreUI (1.22.0):
+    - CocoaLumberjack (~> 2.0)
+    - Lock/Core
+  - Lock/Email (1.22.0):
+    - CocoaLumberjack (~> 2.0)
+    - Lock/UI
+  - Lock/SMS (1.22.0):
+    - CocoaLumberjack (~> 2.0)
+    - Lock/UI
+  - Lock/TouchID (1.22.0):
+    - CocoaLumberjack (~> 2.0)
+    - Lock/UI
+    - SimpleKeychain (~> 0.2)
+    - TouchIDAuth (~> 0.1)
+  - Lock/UI (1.22.0):
+    - CocoaLumberjack (~> 2.0)
+    - Lock/CoreUI
+  - Lock/WebView (1.22.0):
+    - CocoaLumberjack (~> 2.0)
+    - Lock/CoreUI
+  - LockReactNative (0.0.4):
+    - LockReactNative/Core (= 0.0.4)
+    - LockReactNative/NativeModule (= 0.0.4)
+  - LockReactNative/Core (0.0.4):
+    - Lock (~> 1.21)
+    - Lock/Email
+    - Lock/SMS
+    - Lock/TouchID
+  - LockReactNative/NativeModule (0.0.4):
+    - LockReactNative/Core
+    - React/Core
+  - Mapbox-iOS-SDK (3.0.0)
+  - RCTMapboxGL (3.0.0):
+    - Mapbox-iOS-SDK (= 3.0.0)
+  - React/Core (0.17.0)
+  - React/RCTActionSheet (0.17.0):
+    - React/Core
+  - React/RCTGeolocation (0.17.0):
+    - React/Core
+  - React/RCTImage (0.17.0):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTNetwork (0.17.0):
+    - React/Core
+  - React/RCTSettings (0.17.0):
+    - React/Core
+  - React/RCTText (0.17.0):
+    - React/Core
+  - React/RCTVibration (0.17.0):
+    - React/Core
+  - React/RCTWebSocket (0.17.0):
+    - React/Core
+  - SimpleKeychain (0.6.1)
+  - TouchIDAuth (0.2.0):
+    - SimpleKeychain (~> 0.3)
+
+DEPENDENCIES:
+  - Lock-Facebook (~> 2.2)
+  - LockReactNative (from `../node_modules/react-native-lock-ios`)
+  - RCTMapboxGL (from `../node_modules/react-native-mapbox-gl/ios`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+
+EXTERNAL SOURCES:
+  LockReactNative:
+    :path: ../node_modules/react-native-lock-ios
+  RCTMapboxGL:
+    :path: ../node_modules/react-native-mapbox-gl/ios
+  React:
+    :path: ../node_modules/react-native
+
+SPEC CHECKSUMS:
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  Bolts: a12663244b1d3351c738882e71902fc74db54f64
+  CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
+  FBSDKCoreKit: 66a935d17b6e00b6b64e604f2eb9b72c9ab7deb8
+  FBSDKLoginKit: d893fcbb98d854496925e9ff73c67b896982d3c4
+  Lock: 44dc7465a9aae6f0a6b2eb1c3dfe082855faad5b
+  Lock-Facebook: 09f2397cbc9ae2e1fc654f7e66248da30343e349
+  LockReactNative: 5380650513a98f99a0c408f86917e85e67a2b46e
+  Mapbox-iOS-SDK: 5e7bafc554a15ebfc615d8b0fa0a0b5d31faac70
+  RCTMapboxGL: 401ce6c335abdb17b4556697b3227158bddcf40b
+  React: cbd0828b5f388c80e3398c9b9986a567ecfb37c5
+  SimpleKeychain: 150d76f3b9200de58f033228f6e976c6241a221c
+  TouchIDAuth: 0cf861f58a2cacfc1c12cb02de4850729d943c81
+
+COCOAPODS: 0.39.0

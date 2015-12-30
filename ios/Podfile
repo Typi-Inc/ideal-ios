@@ -1,0 +1,15 @@
+source 'https://github.com/CocoaPods/Specs.git'
+pod 'React', :subspecs => [
+  'Core', 
+  'RCTImage', 
+  'RCTNetwork', 
+  'RCTText', 
+  'RCTWebSocket',
+  'RCTActionSheet',
+  'RCTGeolocation',
+  'RCTSettings',
+  'RCTVibration'
+  ], :path => '../node_modules/react-native'
+pod 'LockReactNative', :path => '../node_modules/react-native-lock-ios'
+pod 'RCTMapboxGL', :path => '../node_modules/react-native-mapbox-gl/ios'
+pod 'Lock-Facebook', '~> 2.2'

@@ -12,6 +12,7 @@
     "lodash": "^3.10.1",
     "react-native": "^0.17.0",
     "react-native-lightbox": "^0.5.0",
+    "react-native-lock-ios": "0.0.4",
     "react-native-mapbox-gl": "^3.0.0",
     "react-native-spinkit": "0.0.5",
     "react-timer-mixin": "^0.13.3",
