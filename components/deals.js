@@ -82,10 +82,11 @@ export default class Deals extends React.Component{
 	}
 	viewDeal(item,refS){
 			this.toggleScroll(false)
-			// this.context.toggleTabs()
+
 			let handle = React.findNodeHandle(this.refs[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
 				LayoutAnimation.configureNext(openAnimation);
+
 				this.refs[refS].toggleOpen(true)
 				this.moveUpPrev(item,pagey)
 				this.hideNext(item,pagey)
@@ -97,6 +98,7 @@ export default class Deals extends React.Component{
 				}else{
 					this.refs[refS].animateOpen(pagey,25*k)
 				}
+				this.context.toggleTabs()
 				this.props.toggleSearch && this.props.toggleSearch(true)
 			})
 	
@@ -106,7 +108,7 @@ export default class Deals extends React.Component{
 			this.refs[refS].toggleScroll(false)
 			this.refs[refS].closeCommentBox()
 
-			// this.context.toggleTabs()
+			this.context.toggleTabs()
 			let handle = React.findNodeHandle(this.refs[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
 				LayoutAnimation.configureNext(openAnimation);

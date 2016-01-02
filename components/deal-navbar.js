@@ -8,6 +8,7 @@ import Deals from './deals'
 import {data} from './mock'
 import Certificate from './certificate'
 import Loading from './loading'
+import Payout from './payout'
 let UIManager = require('NativeModules').UIManager;
 let {
   Text,
@@ -24,7 +25,10 @@ export default class DealNavbar extends React.Component{
 	earnClick(){
 
 		this.setTimeout(()=>Animated.timing(this.anim4,{toValue:1,duration:350}).start(),100)
-		this.setTimeout(()=>Animated.timing(this.anim1,{toValue:1,duration:250}).start(),200)
+		this.setTimeout(()=>{
+			this.setTimeout(()=>this.props.openEarn(),50)
+			Animated.timing(this.anim1,{toValue:1,duration:250}).start()},200)
+		
 		// this.props.toggleOpacity()
 		// this.setTimeout(()=>this.test.click(),200)
 		this.props.toggleScroll(false)
@@ -47,6 +51,7 @@ export default class DealNavbar extends React.Component{
 			}
 
 		},500)
+		this.props.closeEarn()
 		// this.setTimeout(()=>this.test.backClick(),0)
 		// this.test.backClick()
 		Animated.timing(this.anim1,{toValue:0,duration:250}).start()
@@ -126,7 +131,7 @@ export default class DealNavbar extends React.Component{
 			opacity:this.anim1.interpolate({inputRange:[0,.1,.5,.8,.9,1],outputRange:[0,0,.0,0,.1,1]}),
 			top:this.anim1.interpolate({inputRange:[0,1],outputRange:[50*k,50*k]}),
 			left:this.anim1.interpolate({inputRange:[0,1],outputRange:[160*k,0*k]}),
-			height:this.anim1.interpolate({inputRange:[0,0.1,0.2,.3,.6,1],outputRange:[0*k,30,80,100,200,600*k]}),
+			height:this.anim1.interpolate({inputRange:[0,0.1,0.2,.3,.6,1],outputRange:[20*k,30,80,100,200,600*k]}),
 			width:this.anim1.interpolate({inputRange:[0,0.5,.8,1],outputRange:[0*k,100,200,320*k]}),
 		}
 		this.animatedStyle2={
@@ -193,7 +198,9 @@ export default class DealNavbar extends React.Component{
 							<Animated.Text ref={el=>this.earnText=el} style={this.textAnimatedStyle1}>Заработать</Animated.Text>
 							<Animated.View style={{backgroundColor:'blue',width:this.anim1.interpolate({inputRange:[0,1],outputRange:[0,120*k]})}}/>
 						</Animated.View>
+
 					</View>
+					
 				</TouchableWithoutFeedback>
 				
 				<TouchableWithoutFeedback onPress={!this.state.open?this.buy.bind(this):null}>
@@ -209,10 +216,10 @@ export default class DealNavbar extends React.Component{
 			</View>
 				
 				<Animated.View ref={el=>this.slideDown2=el} style={this.slideDownStyle2}>
-					{this.state.open?<Info/>:<Loading color={'#00b484'} isVisible={!this.state.open} size={30}/>}
+					{this.state.open?<Payout/>:<Loading color={'#00b484'} isVisible={!this.state.open} size={30}/>}
 				</Animated.View>
 				<Animated.View ref={el=>this.slideDown1=el} style={this.slideDownStyle1}>
-					{this.state.open?<Info/>:<Loading color={'#0084b4'} isVisible={!this.state.open} size={30}/>}
+					{this.state.open?<Payout/>:<Loading color={'#0084b4'} isVisible={!this.state.open} size={30}/>}
 				</Animated.View>
 
 			</View>

@@ -40,7 +40,7 @@ export default class Comments extends React.Component{
 		if(!this.state.loading){
 			return (
 
-				<View>
+				<View style={{marginBottom:300}}>
 
 				<TouchableOpacity>
 							<View style={{height:30*k,...center}}>
@@ -56,16 +56,21 @@ export default class Comments extends React.Component{
 
 					{	
 						this.context.state$.pluck('dealsById').filter(x=>x).
-							pluck([this.props.dealId]).pluck('comments').map(comments=>{
+							pluck([this.props.dealId]).filter(x=>x).pluck('comments').filter(x=>x).map(comments=>{
 								if (comments==='isLoading'){
 		 	  						return <View style={{...center}}>
 		 	  						<Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
 									 </View>
 								}
-								return _.values(comments['sort:createdAt=desc'].edges).filter(comment=>comment && comment.text).map(comment=>{
+								if(comments && comments!=='isLoading'){
+									return _.values(comments['sort:createdAt=desc'].edges).filter(comment=>comment && comment.text).map(comment=>{
 									// console.log(comment,'comment here')
-									return (<Comment key={comment.id} comment={comment}/>)
-								})
+										return (<Comment key={comment.id} comment={comment}/>)
+									})
+								}else{
+									return <View/>
+								}
+								
 							})
 
 

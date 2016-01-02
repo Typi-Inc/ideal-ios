@@ -7,32 +7,27 @@ let {
   View,
   TextInput,
   Image,
+  Animated,
   TouchableOpacity
 } = React;
 export default class CommentBox extends React.Component{
 	state={}
 	show(){
-    let height;
-    if(k===1){
-      height=203
-    }else if (k>1){
-      height=230
-    }
-    LayoutAnimation.configureNext(LayoutAnimation.create(200,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.scaleXY));
-        this.refs['slide-up'].setNativeProps({
+    
+        // this.setTimeout(()=>{
+        //   // LayoutAnimation.configureNext(LayoutAnimation.create(200,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.scaleXY));
 
-          style:{height:210}
+        //   this.refs['slide-up'].setNativeProps({
 
-        })
+        //   style:{height:height}
+
+        // })},0)
+    Animated.spring(this.anim,{toValue:1,velocity:18,tension:48,friction:10}).start()
 
   }
   hide(){
 
-    LayoutAnimation.configureNext(LayoutAnimation.create(200,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.opacity));
-      this.refs['slide-up'].setNativeProps({
-          style:{height:0*h}
-        })
-
+    Animated.spring(this.anim,{toValue:0,velocity:-15,tension:58,friction:10}).start()
   }
   blurText(){
     this.refs['text-input'].blur()
@@ -42,17 +37,23 @@ export default class CommentBox extends React.Component{
 	render(){
     let bottom;
     if(k===1){
-      bottom=this.props.pushedFromLenta ? 0:70
+      bottom=27
     }else if (k>1){
-      bottom=this.props.pushedFromLenta ? 0:100
+      bottom=0
     }
-
+    let height;
+    if(k===1){
+      height=250
+    }else if (k>1){
+      height=230
+    }
+    this.anim=this.anim || new Animated.Value(0)
 		return (
 
 
-          <View style={{backgroundColor:'transparent'}}>
+          <View style={{backgroundColor:'#e8e8ee'}}>
               <View ref='main-view' 
-              style={{backgroundColor:'transparent',height:55*k,borderWidth:1,flexDirection:'row',...center,
+              style={{height:55*k,borderWidth:1,flexDirection:'row',...center,
                 borderColor:'#e4e4e4',width:320*k,marginBottom:this.props.pushedFromLenta ? bottom:bottom}}>
                   <TextInput
                     ref='text-input'
@@ -64,12 +65,12 @@ export default class CommentBox extends React.Component{
                   />
                   <TouchableOpacity>
                     <View style={{backgroundColor:'0084b4',borderRadius:3*k,height:39*k,width:45*k,marginLeft:8*k,marginBottom:2*k,...center}}>
-                      <Image source={{uri:'arrow-right',isStatic:true}} style={{height:20,width:30}}/>
+                      <Image source={{uri:'arrow-right',isStatic:true}} style={{height:15*k,width:23*k}}/>
                     </View>
 
                   </TouchableOpacity>
               </View> 
-              <View ref='slide-up' style={{height:0,opacity:0}}/>
+              <Animated.View ref='slide-up' style={{height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,height]})}}/>
             </View>
 
 

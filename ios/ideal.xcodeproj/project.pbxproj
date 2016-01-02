@@ -24,6 +24,7 @@
 		98FA8A1D1C33994E008B814E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A1C1C33994E008B814E /* libc++.tbd */; };
 		98FA8A1F1C339965008B814E /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A1E1C339965008B814E /* libsqlite3.tbd */; };
 		98FA8A211C339CE0008B814E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A201C339CE0008B814E /* libz.tbd */; };
+		98FA8A411C34DF57008B814E /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A401C34DF4B008B814E /* libRNSpinkit.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = ideal;
+		};
+		98FA8A3F1C34DF4B008B814E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98FA8A3B1C34DF4B008B814E /* RNSpinkit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D42CB3511B2538DE00FD0AE2;
+			remoteInfo = RNSpinkit;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -70,6 +78,7 @@
 		98FA8A281C343413008B814E /* libReact.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReact.a; path = "Pods/../build/Debug-iphoneos/libReact.a"; sourceTree = "<group>"; };
 		98FA8A291C343413008B814E /* libSimpleKeychain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSimpleKeychain.a; path = "Pods/../build/Debug-iphoneos/libSimpleKeychain.a"; sourceTree = "<group>"; };
 		98FA8A2A1C343413008B814E /* libTouchIDAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTouchIDAuth.a; path = "Pods/../build/Debug-iphoneos/libTouchIDAuth.a"; sourceTree = "<group>"; };
+		98FA8A3B1C34DF4B008B814E /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 		F36BA5EC4C1DA1CC4BB0E1E2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -85,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98FA8A411C34DF57008B814E /* libRNSpinkit.a in Frameworks */,
 				98FA8A211C339CE0008B814E /* libz.tbd in Frameworks */,
 				98FA8A1F1C339965008B814E /* libsqlite3.tbd in Frameworks */,
 				98FA8A1D1C33994E008B814E /* libc++.tbd in Frameworks */,
@@ -135,6 +145,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				98FA8A3B1C34DF4B008B814E /* RNSpinkit.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -197,6 +208,14 @@
 				F36BA5EC4C1DA1CC4BB0E1E2 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		98FA8A3C1C34DF4B008B814E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				98FA8A401C34DF4B008B814E /* libRNSpinkit.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,6 +286,12 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 98FA8A3C1C34DF4B008B814E /* Products */;
+					ProjectRef = 98FA8A3B1C34DF4B008B814E /* RNSpinkit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* ideal */,
@@ -274,6 +299,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		98FA8A401C34DF4B008B814E /* libRNSpinkit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSpinkit.a;
+			remoteRef = 98FA8A3F1C34DF4B008B814E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {

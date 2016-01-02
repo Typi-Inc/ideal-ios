@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'D6B284494816B24AE2B8B647'
+               BlueprintIdentifier = 'BCFF304EC1D2FDBC819704C6'
                BlueprintName = 'LockReactNative'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libLockReactNative.a'>

@@ -128,7 +128,7 @@ export default class FindTab extends React.Component{
 		},500)
 	}
 	handleKeyboardDisappear(){
-		this.searchPanel.measure((x,y,w,h,px,py)=>{
+		this.searchPanel&&this.searchPanel.measure((x,y,w,h,px,py)=>{
 			if(h>0){
 				let h1,h2;
 				if(k===1){
@@ -210,8 +210,9 @@ export default class FindTab extends React.Component{
 		 						<Word city={true} ref={el=>this.city=el} chooseTag={this.chooseCity.bind(this)} isUp={false} tag={this.state.city}/>
 
 							 		{
-							 			Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$,
-							 				(chosenTags,searchedDeals)=>{
+							 			this.props.chosenTags$.map(
+							 				chosenTags=>{
+							 					console.log(chosenTags);
 							 					if(chosenTags){
 									 				// console.log(searchedDeals)
 									 				return <View style={{flexDirection:'row'}}>
@@ -257,7 +258,6 @@ export default class FindTab extends React.Component{
 										}
 										if(this.chosenTags){
 											this.tagIdString = this.chosenTags.map(tag => tag.id).join(',')
-
 										}
 										this.numberOfSearchedDeals=_.values(this.searchedDeals[this.tagIdString]).filter(deal=>deal && deal.id).length
 										return <Deals search={true}

@@ -16,11 +16,13 @@ let {
 export default class Word extends React.Component{
 	state={isUp:this.props.isUp,canClick:true}
 	choose(){
-		// LayoutAnimation.configureNext(openAnimation)
+		LayoutAnimation.configureNext(openAnimation)
 		// this.setState({isUp:!this.state.isUp})
 		this.props.chooseTag(this.props.tag)
 	}
 	cancel(){
+		LayoutAnimation.configureNext(openAnimation)
+		
 		if(this.props.city && this.props.city){
 			return;
 		}
@@ -35,16 +37,16 @@ export default class Word extends React.Component{
 	componentWillUnmount(){
 		Animated.timing(this.anim,{toValue:0,duration:200}).start()
 	}
-	componentWillReceiveProps(props){
-		if (props.cannotClick){
-			this.setState({canClick:false},()=>{
-				this.setTimeout(()=>{
-					this.setState({canClick:true})
-				},400)	
-			})
+	// componentWillReceiveProps(props){
+	// 	if (props.cannotClick){
+	// 		this.setState({canClick:false},()=>{
+	// 			this.setTimeout(()=>{
+	// 				this.setState({canClick:true})
+	// 			},400)	
+	// 		})
 			
-		}
-	}
+	// 	}
+	// }
 
 	render(){
 		if(this.props.isUp){
@@ -60,7 +62,7 @@ export default class Word extends React.Component{
 	 				paddingRight:5*k,
 	 				marginLeft:7*k,
 	 				marginTop:7*k,
-	 				opacity:this.anim,
+	 				// opacity:this.anim,
 	 				// width:!this.state.isUp?tag.length*10*k:tag.length*10*k+14*k,
 	 				borderWidth:1,
 	 				borderRadius:3,

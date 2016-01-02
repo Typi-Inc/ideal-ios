@@ -8,6 +8,9 @@ import Profile from './profile'
 import FindTab from './findTab'
 import Navbar from './navbar'
 import {data} from './mock'
+import Auth from './auth'
+var Auth0Lock = require('react-native-lock-ios');
+var lock = new Auth0Lock({clientId: 'TWpDN8HdEaplEXJYemOcNYSXi64oQmf8', domain: 'ideal.eu.auth0.com'});
 import Parent from './parent'
 import FeaturedDealsTab from './featuredDealsTab'
 let {
@@ -20,6 +23,23 @@ let {
   Navigator,
   View,
 } = React;
+
+// 	store.get('Auth0Token').then(token=>{
+  // 		if(token && token.idToken.length>10){
+  // 			return;
+  // 		}
+  // 		lock.show({}, (err, profile, token) => {
+		// 	if (err) {
+		// 		console.log(err);
+		// 		return;
+		// 	}
+		// 	console.log(profile,'profile end','token start',token)
+		// 	store.save('Auth0Token',{idToken:token.idToken}).then(res=>console.log(res))
+		// 	// Authentication worked!
+		// 	console.log('Logged in with Auth0!');
+		// });
+  // 	})
+
 // let ProfileRouteMapper={
 // 	LeftButton:(route, navigator, index, navState)=>{
 // 		if (index === 0) {
@@ -41,7 +61,7 @@ let {
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'search',height:45,overflow:'visible'}
+	state={selectedTab:'profile',height:45,overflow:'visible'}
 
   	static childContextTypes={toggleTabs:React.PropTypes.func}
 	getChildContext(){
@@ -60,9 +80,9 @@ export default class Tabs extends React.Component{
   	}
   	renderSearchTab(route,navigator){
   		return (<FindTab searchedTags$={this.props.state$.pluck('tagsByText')}
-  						 chosenTags$={this.props.state$.pluck('chosenTags')}
-  						 searchedDeals$={this.props.state$.pluck('dealsByTags')}
-  						 tagSearchText$={this.props.state$.pluck('tagSearchText')}
+					chosenTags$={this.props.state$.pluck('chosenTags')}
+					searchedDeals$={this.props.state$.pluck('dealsByTags')}
+					tagSearchText$={this.props.state$.pluck('tagSearchText')}
   				/>)
   	}
   	renderProfile(route,navigator){
@@ -70,7 +90,7 @@ export default class Tabs extends React.Component{
   		if(route.name==='Deal'){
   			return <Deal deal={route.deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} pushedFromLenta={true}/>
   		}else{
-  			return <Profile navigator={navigator}/>
+  			return <Auth><Profile navigator={navigator}/></Auth>
   		}
   		
   	}

@@ -3,8 +3,9 @@ import falcor from 'falcor';
 import FalcorHttpDatasource from 'falcor-http-datasource';
 import _ from 'lodash';
 // import deepAssign from 'deep-assign';
+var store = require('react-native-simple-store');
 
-let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
+let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	let data$ = new Rx.ReplaySubject(1);//data stream of state
 	let state$ = data$.scan((accumulator , newData) =>_.merge(accumulator, newData, 
 		(a, b) => {
@@ -12,13 +13,38 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 			return b;
 		}
 	}))
+	let rootModel;
+	store.get('Auth0Token').then(token=>{
+		if(token&&token.idToken){
+			rootModel = new falcor.Model({
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+	  			headers:{Authorization:'Bearer '+token.idToken}
+			});
+		}else{
+		    rootModel = new falcor.Model({
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+			});
+		}
+	
 
-	let rootModel = new falcor.Model({
-	  source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
-	  // onChange() {
-	  // 	state$.onNext(model.getCache());
-	  // }
-	});
+	})
+	auth$.subscribe(idToken=>{
+		let newModel;
+		if(idToken){
+			 newModel = new falcor.Model({
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+	  			cache: rootModel.getCache(),
+	  			headers:{Authorization:'Bearer '+idToken}
+			});
+			rootModel = newModel
+		}else{
+		    newModel = new falcor.Model({
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+			});
+			rootModel = newModel
+		}
+		
+	})
 	// rootModel.get(
 	// 	// ['dealsById','23ad5fbc-a991-4cff-88bf-2ede82fcadc5','comments','sort:createdAt=desc', 'edges', {from: 0, to: 10}, ['text','id']],
 	// 		// ['dealsById','23ad5fbc-a991-4cff-88bf-2ede82fcadc5','comments','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'author',['name','image']],
@@ -39,16 +65,9 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 		}).switchLatest().
 		// filter(data => data && data.json).
 		subscribe(data => data && data.json ? data$.onNext(data.json) : data$.onNext({tagsByText: 'not found' }))
-	getQuery$.subscribe(paths => {
-		let obj = {};
-		obj[paths[0][0]] = {};
-		obj[paths[0][0]][paths[0][1]] = {};
-		obj[paths[0][0]][paths[0][1]][paths[0][2]] = 'isLoading';
-		
-		data$.onNext(obj);
-		return rootModel.get(...paths).then(data => data && data.json && data$.onNext(data.json))
-	})
-	
+	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => data && data.json && data$.onNext(data.json)))
+	callQuery$.subscribe((...args) => rooModel.call(...args).then(data => data && data.json && data$.onNext(data.json)))
+
 	toggleTag$.
 	  scan((acc, nextTag) => {
 	  	if(acc.filter(tag=>tag.id===nextTag.id).length>0){
@@ -67,7 +86,8 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$,  }) => {
 			['dealsByTags',tagIdString,{from:0,to:5},'business',['name','image']],
 			['dealsByTags',tagIdString,{from:0,to:5},'likes','sort:createdAt=desc','count']
 		))
-	}).delay(500).switchLatest().
+	}).delay(100)
+	.switchLatest().
 	   subscribe(data => data && data.json && data$.onNext(data.json))
 	// state$.pluck('dealsById').subscribe(x => console.log(x, '------------dealsById-------------'))
 	return state$
