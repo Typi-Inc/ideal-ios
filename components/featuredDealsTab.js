@@ -18,7 +18,8 @@ export default class FeaturedDealsTab extends React.Component{
 			['featuredDeals',{from:0,to:10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, 'text'],
 			['featuredDeals',{from:0,to:10}, ['title','conditions','id','image','discount']],
 			['featuredDeals',{from:0,to:10},'business',['name','image']],
-			['featuredDeals',{from:0,to:10},'likes','sort:createdAt=desc','count']
+			['featuredDeals',{from:0,to:10},'likes','sort:createdAt=desc','count'],
+			// ['featuredDeals',{from:0,to:10},'likes','where:idLiker={{me}}','count']
 		])
 	}
 
@@ -27,7 +28,8 @@ export default class FeaturedDealsTab extends React.Component{
 			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, 'text'],
 			['featuredDeals',{from:this.deals.length,to:this.deals.length+10}, ['title','conditions','id','image','discount']],
 			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'business',['name','image']],
-			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likes','sort:createdAt=desc','count']
+			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likes','sort:createdAt=desc','count'],
+			// ['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likes','where:idLiker={{me}}','count']
 		])
 	}
 	render(){

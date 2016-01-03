@@ -17,24 +17,29 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	store.get('Auth0Token').then(token=>{
 		if(token&&token.idToken){
 			rootModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
-	  			headers:{Authorization:'Bearer '+token.idToken}
-			});
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
+	  				headers: {
+	  					'Authorization': 'Bearer '+token.idToken
+	  				}
+	  			}),
+			}).batch(20)
 		}else{
 		    rootModel = new falcor.Model({
 	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
-			});
+			})
 		}
-	
-
 	})
 	auth$.subscribe(idToken=>{
 		let newModel;
 		if(idToken){
+			console.log(idToken,'id token is here')
 			 newModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
+	  				headers: {
+	  					'Authorization': 'Bearer '+idToken
+	  				}
+	  			}),
 	  			cache: rootModel.getCache(),
-	  			headers:{Authorization:'Bearer '+idToken}
 			});
 			rootModel = newModel
 		}else{
@@ -66,7 +71,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		// filter(data => data && data.json).
 		subscribe(data => data && data.json ? data$.onNext(data.json) : data$.onNext({tagsByText: 'not found' }))
 	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => data && data.json && data$.onNext(data.json)))
-	callQuery$.subscribe((...args) => rooModel.call(...args).then(data => data && data.json && data$.onNext(data.json)))
+	callQuery$.subscribe(args => rootModel.call(...args).then(data => data && data.json && data$.onNext(data.json)))
 
 	toggleTag$.
 	  scan((acc, nextTag) => {
@@ -86,10 +91,14 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 			['dealsByTags',tagIdString,{from:0,to:5},'business',['name','image']],
 			['dealsByTags',tagIdString,{from:0,to:5},'likes','sort:createdAt=desc','count']
 		))
-	}).delay(100)
+	})//.delay(100)
 	.switchLatest().
 	   subscribe(data => data && data.json && data$.onNext(data.json))
-	// state$.pluck('dealsById').subscribe(x => console.log(x, '------------dealsById-------------'))
+	// state$.pluck('dealsById').filter(x=>x).pluck('9c2f19e1-452e-4f22-a4d3-bda10ec0ed64').filter(x => x).
+	// 	pluck('likes').filter(x => x).
+	// 	pluck(`where:idDeal=9c2f19e1-452e-4f22-a4d3-bda10ec0ed64,idLiker={{me}}`).filter(x => x).
+	// 	pluck('count').
+	// 	subscribe(x => console.log(x, '------------dealsById-------------'))
 	return state$
 }
 

@@ -61,7 +61,7 @@ let {
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'profile',height:45,overflow:'visible'}
+	state={selectedTab:'home',height:45,overflow:'visible'}
 
   	static childContextTypes={toggleTabs:React.PropTypes.func}
 	getChildContext(){

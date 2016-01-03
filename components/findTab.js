@@ -212,7 +212,7 @@ export default class FindTab extends React.Component{
 							 		{
 							 			this.props.chosenTags$.map(
 							 				chosenTags=>{
-							 					console.log(chosenTags);
+							 					// console.log(chosenTags);
 							 					if(chosenTags){
 									 				// console.log(searchedDeals)
 									 				return <View style={{flexDirection:'row'}}>

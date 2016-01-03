@@ -28,7 +28,7 @@ export default class Profile extends React.Component{
 		this.setTimeout(()=>{this.update=true},200)
 	}
 	scrollToPosition(s){
-		console.log(s)
+		// console.log(s)
 		this.refs['scroll'].scrollTo(s,0)
 		this.refs['nav'].setNativeProps({style:{height:0}})
 	}

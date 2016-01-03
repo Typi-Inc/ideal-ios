@@ -3,7 +3,10 @@ import TimerMixin from 'react-timer-mixin'
 import Deal from './deal'
 import _ from 'lodash'
 import {openAnimation,scrollToTopAnimation} from './animations'
+import Combinator from './combinator'
 import Test from './test'
+import {callQuery} from '../intent/callQuery'
+import {getQuery} from '../intent/getQuery'
 import LightBox from 'react-native-lightbox'
 let UIManager = require('NativeModules').UIManager;
 let {
@@ -16,15 +19,40 @@ let {
   LayoutAnimation,
   Animated
 } = React;
+class Like extends React.Component{
+	state={}
+	componentWillUpdate(){
+		console.log('updateing very strange')
+		LayoutAnimation.configureNext(LayoutAnimation.create(150,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.opacity));
+
+	}
+	render(){
+		return <TouchableWithoutFeedback onPress={this.props.like}><View style={{height:45,width:45,...center,}}><Image ref={el=>this.image=el} style={{height:!this.props.bool?19*k:24*k,width:!this.props.bool?21*k:26*k,marginRight:this.props.isOpen?k>1?10*k:6*k:6*k}} source={{uri:!this.props.bool?'likeGrey':'likeRed',isStatic:true}}/></View></TouchableWithoutFeedback>
+	}
+}
+
 export default class DealCard extends React.Component{
-	state={isOpen:this.props.isOpen,isLiked:false,liked:this.props.deal.liked}
+	state={isOpen:this.props.isOpen}
+	static contextTypes={
+    	state$: React.PropTypes.any
+  	}
+  	componentWillMount() {
+  		getQuery([
+  			['dealsById', this.props.deal.id, 'likes', `where:idDeal=${this.props.deal.id},idLiker={{me}}`, 'count']
+  		])
+  	}
 	componentWillReceiveProps(props){
 		this.setState({isOpen:props.isOpen})
 	}
 	like(){
-		LayoutAnimation.configureNext(LayoutAnimation.create(100,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.scaleXY));
-		this.setState({isLiked:!this.state.isLiked,liked:!this.state.isLiked?this.state.liked+1:this.state.liked-1})
+		// this.setState({isLiked:!this.state.isLiked,liked:!this.state.isLiked?this.state.liked+1:this.state.liked-1})
+
+		callQuery(
+			['like', 'toggle'],
+			[this.props.deal.id]
+		)
 	}
+
 	renderLightBox(){
 		return (
 			
@@ -36,7 +64,6 @@ export default class DealCard extends React.Component{
 	}
 	render(){
 		let deal=this.props.deal
-
 		this.anim=this.anim || new Animated.Value(0)	
 		return (
 						<Animated.View  >
@@ -60,9 +87,20 @@ export default class DealCard extends React.Component{
 									</Text>
 								</View>
 								<View style={{width:1,backgroundColor:'e4e4e4',height:46*k,}}/>
-								<View style={{flexDirection:'row',marginRight:0*k}}>
-									<TouchableWithoutFeedback onPress={this.like.bind(this)}><View style={{height:45,width:45,...center,}}><Image ref={'like-image'} style={{height:!this.state.isLiked?19*k:24*k,width:!this.state.isLiked?21*k:26*k,marginRight:this.state.isOpen?k>1?10*k:6*k:6*k}} source={{uri:!this.state.isLiked?'likeGrey':'likeRed',isStatic:true}}/></View></TouchableWithoutFeedback>
-								</View>
+								<Combinator>
+									<View style={{flexDirection:'row',marginRight:0*k}}>
+										{
+											this.context.state$.pluck('dealsById').filter(x => x).
+												pluck(this.props.deal.id).filter(x => x).
+												pluck('likes').filter(x => x).
+												pluck(`where:idDeal=${this.props.deal.id},idLiker={{me}}`).filter(x => x).
+												pluck('count').distinctUntilChanged().map(bool =>{
+													return <Like like={this.like.bind(this)} bool={bool} isOpen={this.state.isOpen}/>
+												}
+												)
+										}
+									</View>
+								</Combinator>
 							</View> 
 							<View style={{height:1,backgroundColor:'e4e4e4'}}/>
 

@@ -15,30 +15,35 @@ var store = require('react-native-simple-store');
 export default class Auth extends React.Component{
 	state={loggedIn:true}
 	componentWillMount(){
+		store.delete('Auth0Token').then(()=>
+
 
 			store.get('Auth0Token').then(res=>{
-				console.log(res,'am i null? say yes!!')
 				if(res) this.setState({loggedIn:true})
 				else this.setState({loggedIn:false})
 			})
+		)
 		
 	}
 	render(){
 		if(!this.state.loggedIn){
 			lock.show({}, (err, profile, token) => {
 			if (err) {
-				console.log(err);
 				return;
 			}
-				console.log(profile,'profile end','token start',token)
-				callQuery(
-					['users', 'createOrUpdate'],
-					profile,
-					['id']
-				)
-				store.save('Auth0Token',{idToken:token.idToken}).then(res=>toggleAuth(token.idToken))
+				
+				store.save('Auth0Token',{idToken:token.idToken}).then(res=>{
+
+					toggleAuth(token.idToken)
+					console.log(profile)
+					callQuery(
+						['users', 'create'],
+						[profile],
+						['id']
+					)
+
+				})
 				// Authentication worked!
-				console.log('Logged in with Auth0!');
 			});
 		}
 
