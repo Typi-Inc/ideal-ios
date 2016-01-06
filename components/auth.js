@@ -8,53 +8,47 @@ var lock = new Auth0Lock({clientId: 'TWpDN8HdEaplEXJYemOcNYSXi64oQmf8', domain: 
 
 let {
 	 View,
+	 Modal,
 	 Text
 } = React;
 var store = require('react-native-simple-store');
 
 export default class Auth extends React.Component{
 	state={loggedIn:true}
+	static contextTypes={
+    	goHome: React.PropTypes.func
+  	}
 	componentWillMount(){
 		store.delete('Auth0Token').then(()=>
-
-
 			store.get('Auth0Token').then(res=>{
 				if(res) this.setState({loggedIn:true})
 				else this.setState({loggedIn:false})
 			})
 		)
-		
 	}
 	render(){
 		if(!this.state.loggedIn){
-			lock.show({}, (err, profile, token) => {
-			if (err) {
-				return;
-			}
-				
+			lock.show({closable:true}, (err, profile, token) => {
+				this.context.goHome()
+				if (err) {
+					return;
+				}
 				store.save('Auth0Token',{idToken:token.idToken}).then(res=>{
-
 					toggleAuth(token.idToken)
-					console.log(profile)
-					callQuery(
-						['users', 'create'],
-						[profile],
-						['id']
-					)
-
+					callQuery(['users', 'create'],[profile],['id'])
 				})
-				// Authentication worked!
 			});
 		}
-
-		return (
+		if(this.state.loggedIn){
+			return (
 				<View style={{flex:1}}>
 					{this.props.children}
 				</View>
 			)
+		}
+		return <View/>
+		
 	}
-
-
 }
 
 Object.assign(Auth.prototype, TimerMixin);

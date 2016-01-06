@@ -35,6 +35,7 @@ export default class DealContent extends React.Component{
 		
 	}
 	render(){
+		// console.log(this.props.deal);
 		let tabView,commentBox;
 		if(this.state.num===0){
 			tabView=<Info dealId={this.props.deal.id} count={this.state.count} />

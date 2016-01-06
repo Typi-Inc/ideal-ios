@@ -2,6 +2,7 @@ import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
 import _ from 'lodash';
 import Combinator from './combinator'
+import { Observable } from 'rx'
 import Deals from './deals'
 import {getFeaturedDeals} from '../model'
 import {getQuery} from '../intent/getQuery';
@@ -19,7 +20,8 @@ export default class FeaturedDealsTab extends React.Component{
 			['featuredDeals',{from:0,to:10}, ['title','conditions','id','image','discount']],
 			['featuredDeals',{from:0,to:10},'business',['name','image']],
 			['featuredDeals',{from:0,to:10},'likes','sort:createdAt=desc','count'],
-			// ['featuredDeals',{from:0,to:10},'likes','where:idLiker={{me}}','count']
+			// ['featuredDeals',{from:0,to:10},'likes',`where:idDeal={{this.id}},idLiker={{me}}`,'count']
+			['featuredDeals',{from:0,to:10},'likedByUser', '{{me}}']
 		])
 	}
 
@@ -29,7 +31,8 @@ export default class FeaturedDealsTab extends React.Component{
 			['featuredDeals',{from:this.deals.length,to:this.deals.length+10}, ['title','conditions','id','image','discount']],
 			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'business',['name','image']],
 			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likes','sort:createdAt=desc','count'],
-			// ['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likes','where:idLiker={{me}}','count']
+			// ['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likes',`where:idDeal={{this.id}},idLiker={{me}}`,'count']
+			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likedByUser', '{{me}}']
 		])
 	}
 	render(){
@@ -37,12 +40,18 @@ export default class FeaturedDealsTab extends React.Component{
 		return (
 			<Combinator>
 				<View style={{flex:1}}>
-					{this.props.deals$.map(deals => {
-							this.deals=_.values(deals).filter(deal => deal && deal.title)
-							// console.log(this.deals)
-							return <Deals getMoreData={this.getMoreData.bind(this)}  data={_.values(deals).filter(deal => deal && deal.title)} />
-						}
-					)}
+					{
+						Observable.combineLatest(this.props.featuredDeals$, this.props.dealsById$, (featuredDeals, dealsById) => {
+							if (!dealsById || !featuredDeals) {
+								return <Deals
+									data={[]}/>
+							}
+							return {featuredDeals, dealsById}
+						}).filter(x => x).map(({featuredDeals, dealsById}) => {
+							this.deals = _.values(featuredDeals).map(path => dealsById[path[1]])
+							return <Deals getMoreData={this.getMoreData.bind(this)}  data={this.deals} />
+						})
+					}
 				</View>
 			</Combinator>
 		)

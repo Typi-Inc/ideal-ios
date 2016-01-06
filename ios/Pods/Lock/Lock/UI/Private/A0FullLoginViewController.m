@@ -48,7 +48,7 @@
     A0Theme *theme = [A0Theme sharedInstance];
     self.orLabel.font = [theme fontForKey:A0ThemeSeparatorTextFont];
     self.orLabel.textColor = [theme colorForKey:A0ThemeSeparatorTextColor];
-    self.orLabel.text = A0LocalizedString(@"OR");
+    self.orLabel.text = A0LocalizedString(@"ИЛИ");
     self.serviceCollectionView.authenticationDelegate = self;
     self.serviceCollectionView.parameters = self.parameters;
     self.serviceCollectionView.lock = self.lock;

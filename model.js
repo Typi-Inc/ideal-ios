@@ -32,7 +32,6 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	auth$.subscribe(idToken=>{
 		let newModel;
 		if(idToken){
-			console.log(idToken,'id token is here')
 			 newModel = new falcor.Model({
 	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
 	  				headers: {
@@ -64,13 +63,49 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 				)
 			)//.delay(500)
 			Rx.Observable.just(1).
-				delay(200).
+				//delay(200).
 				takeUntil(result$).subscribe(() => data$.onNext({tagsByText:'isLoading'}))
 			return result$
 		}).switchLatest().
 		// filter(data => data && data.json).
 		subscribe(data => data && data.json ? data$.onNext(data.json) : data$.onNext({tagsByText: 'not found' }))
-	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => data && data.json && data$.onNext(data.json)))
+	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => {
+		if (data && data.json) {
+			if (data.json.featuredDeals) {
+				const result = { featuredDeals: {}, dealsById: {} }
+				Object.keys(data.json.featuredDeals).filter(x => !isNaN(x)).forEach(index => {
+					const keysWithPathKeyInside = Object.keys(data.json.featuredDeals[index])
+					const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
+					const path = data.json.featuredDeals[index][pathKey]
+					result.featuredDeals[index] = path
+					if (!result.dealsById[path[1]]) {
+						result.dealsById[path[1]] = {}
+					}
+					_.merge(result.dealsById[path[1]], data.json.featuredDeals[index])
+				})
+				return data$.onNext(result)
+			}
+			if (data.json.dealsByTags) {
+				const tagString = Object.keys(data.json.dealsByTags).
+					filter(key => (key.indexOf('key') === -1) && (key.indexOf('parent') === -1))[0]
+				const result = { dealsByTags: {}, dealsById: {} }
+				result.dealsByTags[tagString] = {}
+				const deals = data.json.dealsByTags[tagString]
+				Object.keys(deals).filter(x => !isNaN(x)).forEach(index => {
+					const keysWithPathKeyInside = Object.keys(deals[index])
+					const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
+					const path = deals[index][pathKey]
+					result.dealsByTags[tagString][index] = path
+					if (!result.dealsById[path[1]]) {
+						result.dealsById[path[1]] = {}
+					}
+					_.merge(result.dealsById[path[1]], deals[index])
+				})
+				return data$.onNext(result)
+			}
+			return data$.onNext(data.json);
+		}
+	}))
 	callQuery$.subscribe(args => rootModel.call(...args).then(data => data && data.json && data$.onNext(data.json)))
 
 	toggleTag$.
@@ -86,19 +121,44 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		data$.onNext({ chosenTags: tags, dealsByTags: 'isLoading' })
 		let tagIdString=tags.length === 0 ? '' : tags.map(tag => tag.id).join(',');
 		return Rx.Observable.fromPromise(rootModel.get(
-			['dealsByTags',tagIdString,{from:0,to:5},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-			['dealsByTags',tagIdString,{from:0,to:5},['title','conditions','id','image','discount','payout']],
-			['dealsByTags',tagIdString,{from:0,to:5},'business',['name','image']],
-			['dealsByTags',tagIdString,{from:0,to:5},'likes','sort:createdAt=desc','count']
+			['dealsByTags',tagIdString,{from:0,to:10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
+			['dealsByTags',tagIdString,{from:0,to:10},['title','conditions','id','image','discount','payout']],
+			['dealsByTags',tagIdString,{from:0,to:10},'business',['name','image']],
+			['dealsByTags',tagIdString,{from:0,to:10},'likes','sort:createdAt=desc','count'],
+			['dealsByTags',tagIdString,{from:0,to:10},'likedByUser', '{{me}}']
+
 		))
 	})//.delay(100)
 	.switchLatest().
-	   subscribe(data => data && data.json && data$.onNext(data.json))
+	   subscribe(data => {
+	   	if (data && data.json) {
+			if (data.json.dealsByTags) {
+				const tagString = Object.keys(data.json.dealsByTags).
+					filter(key => (key.indexOf('key') === -1) && (key.indexOf('parent') === -1))[0]
+				const result = { dealsByTags: {}, dealsById: {} }
+				result.dealsByTags[tagString] = {}
+				const deals = data.json.dealsByTags[tagString]
+				Object.keys(deals).filter(x => !isNaN(x)).forEach(index => {
+					const keysWithPathKeyInside = Object.keys(deals[index])
+					const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
+					const path = deals[index][pathKey]
+					result.dealsByTags[tagString][index] = path
+					if (!result.dealsById[path[1]]) {
+						result.dealsById[path[1]] = {}
+					}
+					_.merge(result.dealsById[path[1]], deals[index])
+				})
+				return data$.onNext(result)
+			}
+			return data$.onNext(data.json);
+		}
+	   })
 	// state$.pluck('dealsById').filter(x=>x).pluck('9c2f19e1-452e-4f22-a4d3-bda10ec0ed64').filter(x => x).
 	// 	pluck('likes').filter(x => x).
 	// 	pluck(`where:idDeal=9c2f19e1-452e-4f22-a4d3-bda10ec0ed64,idLiker={{me}}`).filter(x => x).
 	// 	pluck('count').
 	// 	subscribe(x => console.log(x, '------------dealsById-------------'))
+	// state$.pluck('tagsByText').subscribe(console.log);
 	return state$
 }
 

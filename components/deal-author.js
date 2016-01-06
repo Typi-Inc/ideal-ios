@@ -28,7 +28,7 @@ export default class DealAuthor extends React.Component{
 					</View>	
 				</View>
 					<TouchableOpacity style={{paddingTop:5*k,backgroundColor:'transparent',height:50*k,width:50*k,justifyContent:'flex-start',alignItems:'flex-end'}} onPress={()=>this.props.openHelper()}>
-						<Image style={{height:35,width:24,marginRight:15,transform:[{rotate:'15deg'}]}} source={{uri:'Earn blue green',isStatic:'true'}}/>
+						<Image style={{height:35*k,width:24*k,marginRight:15,transform:[{rotate:'15deg'}]}} source={{uri:'Earn blue green',isStatic:'true'}}/>
 					</TouchableOpacity>
 			</View>
 			<View style={{height:1,backgroundColor:'e4e4e4'}}/>

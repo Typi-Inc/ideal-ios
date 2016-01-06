@@ -71,7 +71,7 @@ AUTH0_DYNAMIC_LOGGER_METHODS
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = A0LocalizedString(@"Login");
+        self.title = A0LocalizedString(@"Войти");
     }
     return self;
 }
@@ -87,8 +87,8 @@ AUTH0_DYNAMIC_LOGGER_METHODS
     [self.userField.textField addTarget:self action:@selector(matchDomainInTextField:) forControlEvents:UIControlEventEditingChanged];
     self.singleSignOnIcon.image = [self.singleSignOnIcon.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.userField setFieldPlaceholderText:A0LocalizedString(@"Username")];
-    [self.passwordField setFieldPlaceholderText:A0LocalizedString(@"Password")];
-    [self.accessButton setTitle:A0LocalizedString(@"ACCESS") forState:UIControlStateNormal];
+    [self.passwordField setFieldPlaceholderText:A0LocalizedString(@"Пароль")];
+    [self.accessButton setTitle:A0LocalizedString(@"ВОЙТИ") forState:UIControlStateNormal];
     self.validator = [[A0CredentialsValidator alloc] initWithValidators:@[
                                                                           [[A0UsernameValidator alloc] initWithField:self.userField.textField],
                                                                           [[A0PasswordValidator alloc] initWithField:self.passwordField.textField],
@@ -166,7 +166,7 @@ AUTH0_DYNAMIC_LOGGER_METHODS
         NSString *title = [NSString stringWithFormat:A0LocalizedString(@"Login with %@"), connection[A0ConnectionDomain]];
         [self.accessButton setTitle:title.uppercaseString forState:UIControlStateNormal];
     } else {
-        [self.accessButton setTitle:A0LocalizedString(@"ACCESS") forState:UIControlStateNormal];
+        [self.accessButton setTitle:A0LocalizedString(@"ВОЙТИ") forState:UIControlStateNormal];
     }
     A0LogVerbose(@"Matched %@ with connection %@", textField.text, connection);
     self.matchedConnection = connection;

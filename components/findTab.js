@@ -238,15 +238,38 @@ export default class FindTab extends React.Component{
 				{this.state.loadDeals ? <Combinator me={'deals'}>
 						<View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
 							{
-								Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$,
-									(chosenTags,searchedDeals) => {
+								Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$, this.props.dealsById$,
+									(chosenTags,searchedDeals,dealsById) => {
+										// console.log('before', this.chosenTags, searchedDeals, dealsById)
+										if (!chosenTags || !searchedDeals || !dealsById) {
+											let result = {};
+											if (this.chosenTags) {
+												result.chosenTags = chosenTags
+											}
+											if (this.searchedDeals) {
+												result.searchedDeals = searchedDeals
+											}
+											if (this.dealsById) {
+												result.dealsById = dealsById
+											}
+											if (this.chosenTags || this.searchedDeals || this.dealsById) {
+												return result
+											}
+											return this.searchedDeals = 'isLoading';
+										}
+										return {chosenTags, searchedDeals, dealsById}
+									}).map(({chosenTags,searchedDeals,dealsById}) => {
 										if (chosenTags) {
 											this.chosenTags = chosenTags
+											this.tagIdString = this.chosenTags.map(tag => tag.id).join(',')
 										}
 										if (searchedDeals) {
 											this.searchedDeals = searchedDeals
 										}
-										if (searchedDeals === 'isLoading') {
+										if (dealsById) {
+											this.dealsById = dealsById
+										}
+										if (this.searchedDeals === 'isLoading' || !this.dealsById) {
 										return <Deals search={true}
 											toggleSearch={this.toggleSearch.bind(this)}
 											data={[]}/>
@@ -256,14 +279,14 @@ export default class FindTab extends React.Component{
 												<Text style={{margin:15,color:'gray',textAlign:'center'}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
 											</View>
 										}
-										if(this.chosenTags){
-											this.tagIdString = this.chosenTags.map(tag => tag.id).join(',')
-										}
-										this.numberOfSearchedDeals=_.values(this.searchedDeals[this.tagIdString]).filter(deal=>deal && deal.id).length
+
+										this.data = _.values(this.searchedDeals[this.tagIdString]).map(path => this.dealsById[path[1]]).filter(x=>x)
+										this.numberOfSearchedDeals=this.data.length
 										return <Deals search={true}
 											getMoreData={this.getMoreData.bind(this)}
 											toggleSearch={this.toggleSearch.bind(this)}
-											data={_.values(this.searchedDeals[this.tagIdString]).filter(deal=>deal && deal.id)}/>
+											data={this.data}
+										/>
 									}
 								)
 							}
@@ -278,12 +301,12 @@ export default class FindTab extends React.Component{
 												(searchedTags, tagSearchText) =>{
 													if (searchedTags==='not found') {
 														return <View style={{...center}}>
-																	<Text style={{margin:15,color:'gray',textAlign:'center'}}>Не найдено.</Text>
+																	<Text style={{margin:10,color:'gray',textAlign:'center'}}>Не найдено.</Text>
 																	<Text style={{color:'gray',textAlign:'center'}}>Попробуйте ввести другой тег.</Text>
 
 																</View>
 													}
-													return searchedTags && searchedTags[tagSearchText] && _.values(searchedTags[tagSearchText]).
+													let tagsToShow = searchedTags && searchedTags[tagSearchText] && _.values(searchedTags[tagSearchText]).
 													filter(tag => tag && tag.text).filter(tag=>{
 														if(this.chosenTags){
 															return !this.chosenTags.map(tag=>tag.id).includes(tag.id)
@@ -292,7 +315,15 @@ export default class FindTab extends React.Component{
 
 													}).map(tag => (
 														<Word chooseTag={this.chooseTag.bind(this)} key={tag.id} isUp={false} tag={tag}/>
-													))
+													));
+													if (_.isEmpty(tagsToShow) && tagsToShow !== undefined) {
+														return <View style={{...center}}>
+																	<Text style={{margin:10,color:'gray',textAlign:'center'}}>Не найдено.</Text>
+																	<Text style={{color:'gray',textAlign:'center'}}>Попробуйте ввести другой тег.</Text>
+
+																</View>
+													}
+													return tagsToShow
 												})
 										}
 										{

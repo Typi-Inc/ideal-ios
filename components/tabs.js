@@ -19,10 +19,12 @@ let {
   LayoutAnimation,
   Text,
   TouchableOpacity,
+  LinkingIOS,
   Image,
   Navigator,
   View,
 } = React;
+var Epay=require('react-native').NativeModules.Epay
 
 // 	store.get('Auth0Token').then(token=>{
   // 		if(token && token.idToken.length>10){
@@ -61,19 +63,27 @@ let {
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'home',height:45,overflow:'visible'}
+	state={selectedTab:'notifications',height:45,overflow:'visible'}
 
-  	static childContextTypes={toggleTabs:React.PropTypes.func}
+  	static childContextTypes={toggleTabs:React.PropTypes.func,goHome:React.PropTypes.func}
 	getChildContext(){
-		return {toggleTabs: this.toggleTabs.bind(this)}
+		return {toggleTabs: this.toggleTabs.bind(this),
+				goHome:this.goHome.bind(this)
+			}
 	}
-  	toggleTabs(call){
-  		this.setState({height:this.state.height>0?0:45,overflow:this.state.height>0?'hidden':'visible'},call)
+	goHome(){
+		this.setState({selectedTab:'search'})
+	}
+  	toggleTabs(val){
+  		this.setState({height:val?0:45,overflow:val?'hidden':'visible'})
   	}
 
   	renderHome(route,navigator){
   		return (
-  			<FeaturedDealsTab deals$={this.props.state$.pluck('featuredDeals')} />
+  			<FeaturedDealsTab
+  				featuredDeals$={this.props.state$.pluck('featuredDeals')} 
+  				dealsById$={this.props.state$.pluck('dealsById')}
+  			/>
   		)
 
   		// return <Deals route={route} data={data}/>
@@ -82,11 +92,11 @@ export default class Tabs extends React.Component{
   		return (<FindTab searchedTags$={this.props.state$.pluck('tagsByText')}
 					chosenTags$={this.props.state$.pluck('chosenTags')}
 					searchedDeals$={this.props.state$.pluck('dealsByTags')}
+					dealsById$={this.props.state$.pluck('dealsById')}
 					tagSearchText$={this.props.state$.pluck('tagSearchText')}
   				/>)
   	}
   	renderProfile(route,navigator){
-  		// console.log(route)
   		if(route.name==='Deal'){
   			return <Deal deal={route.deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} pushedFromLenta={true}/>
   		}else{
@@ -96,8 +106,6 @@ export default class Tabs extends React.Component{
   	}
   	
 	render(){
-
-			// console.log('rerender tab')
 		return (
 			<TabNavigator ref={el=>this.tabBar=el}
 				tabBarStyle={{height:this.state.height,overflow:this.state.overflow}}
@@ -141,7 +149,17 @@ export default class Tabs extends React.Component{
 				    // badgeText="1"
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'notifications' })}>
-				    <Parent/>
+				    <View style={{backgroundColor:'blue',flex:1,...center}}>
+
+				    	<TouchableOpacity onPress={()=>LinkingIOS.openURL(`whatsapp://send?text=https://www.whatsapp.com/\n\n\nhello isken how is going you are going to be spammed ❤️12,🔫 `)}>
+				    		<View><Text>click me</Text></View>
+				    	</TouchableOpacity>
+
+				    	<TouchableOpacity onPress={()=>Epay.pay('fucky')}>
+				    		<View><Text>pay</Text></View>
+				    	</TouchableOpacity>
+
+				    </View>
 				  </TabNavigator.Item>
 
 				    <TabNavigator.Item

@@ -11,10 +11,12 @@
     "falcor-http-datasource": "^0.1.2",
     "lodash": "^3.10.1",
     "react-native": "^0.17.0",
+    "react-native-fbsdkshare": "0.0.7",
     "react-native-keychain": "^0.2.6",
     "react-native-lightbox": "^0.5.0",
     "react-native-lock-ios": "0.0.4",
     "react-native-mapbox-gl": "^3.0.0",
+    "react-native-social-share": "^0.5.0",
     "react-native-spinkit": "0.0.5",
     "react-timer-mixin": "^0.13.3",
     "rx": "^4.0.7"

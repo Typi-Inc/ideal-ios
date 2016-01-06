@@ -39,13 +39,13 @@ export default class CommentBox extends React.Component{
     if(k===1){
       bottom=27
     }else if (k>1){
-      bottom=0
+      bottom=55
     }
     let height;
     if(k===1){
       height=250
     }else if (k>1){
-      height=230
+      height=260
     }
     this.anim=this.anim || new Animated.Value(0)
 		return (

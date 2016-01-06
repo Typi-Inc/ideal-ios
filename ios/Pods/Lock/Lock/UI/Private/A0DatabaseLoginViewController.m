@@ -81,7 +81,7 @@ AUTH0_DYNAMIC_LOGGER_METHODS
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = A0LocalizedString(@"Login");
+        self.title = A0LocalizedString(@"Логин");
     }
     return self;
 }
@@ -111,8 +111,8 @@ AUTH0_DYNAMIC_LOGGER_METHODS
     [self.userField setFieldPlaceholderText:placeholderText];
 
     self.userField.textField.text = self.defaultUsername;
-    [self.passwordField setFieldPlaceholderText:A0LocalizedString(@"Password")];
-    [self.accessButton setTitle:A0LocalizedString(@"ACCESS") forState:UIControlStateNormal];
+    [self.passwordField setFieldPlaceholderText:A0LocalizedString(@"Пароль")];
+    [self.accessButton setTitle:A0LocalizedString(@"ВОЙТИ") forState:UIControlStateNormal];
     [self.passwordField.passwordManagerButton addTarget:self action:@selector(fillLogin:) forControlEvents:UIControlEventTouchUpInside];
     NSMutableArray *validators = [@[
                                     [[A0PasswordValidator alloc] initWithField:self.passwordField.textField],

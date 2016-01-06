@@ -29,7 +29,9 @@ let {
 } = React;
 export default class Deal extends React.Component{
 	state={earnOpen:false,isOpen:this.props.isOpen,hidden:false,num:0,slideUp:0,commentBox:false,text:'',isLoaded:false,loading:this.props.isOpen};
-
+	static contextTypes={
+    	showModal: React.PropTypes.func,hideModal:React.PropTypes.func
+  	}
 //ANIMATE OPENING AND CLOSING BEGHINNING-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	animateScrollToTop(){
 		this.refs['scroll'].scrollWithoutAnimationTo()
@@ -74,10 +76,10 @@ export default class Deal extends React.Component{
 		this.refs['mainView'].setNativeProps({
 			style:{
 				height:k===1?580*h:600*h,
-				width:320*k,
+				// width:320*k,
 				top:-pagey+t,
-				marginLeft:0,
-				borderWidth:0,	
+				// marginLeft:0,
+				// borderWidth:0,	
 			}
 		})
 		this.anim.setValue(0)
@@ -90,10 +92,10 @@ export default class Deal extends React.Component{
 		this.refs['mainView'].setNativeProps({
 			style:{
 				height:360*h,
-				width:300*k,
+				// width:300*k,
 				top:0,
-				marginLeft:10*k,
-				borderWidth:1,
+				// marginLeft:10*k,
+				// borderWidth:1,
 			}
 		})
 		
@@ -199,9 +201,9 @@ export default class Deal extends React.Component{
 		}
 			return (
 			<Animated.View ref='mainView' 
-			style={{flex:1,width:this.state.isOpen?320*k:300*k,height:this.state.isOpen?568*h:360*k,
-				backgroundColor:'white',marginLeft:this.state.isOpen?0:10*k,marginTop:this.state.isOpen?0:10*k,
-				borderWidth:this.state.isOpen?0:1,borderColor:'#e4e4e4'
+			style={{flex:1,width:this.state.isOpen?320*k:320*k,height:this.state.isOpen?568*h:360*k,
+				backgroundColor:'white',marginTop:this.state.isOpen?0:10*k,
+				// borderWidth:this.state.isOpen?0:1,borderColor:'#e4e4e4'
 			}}>
 				{this.state.isOpen ? <DealNavbar closeEarn={this.closeEarn.bind(this)} openEarn={this.openEarn.bind(this)} commentBox={this.state.commentBox} openCommentBox={this.openCommentBox.bind(this)}
 					closeCommentBox={this.closeCommentBox.bind(this)} 
@@ -225,7 +227,7 @@ export default class Deal extends React.Component{
 					this.scrollOffsetY=e.nativeEvent.contentOffset.y
 				}}
 				keyboardShouldPersistTaps={true}
-				stickyHeaderIndices={[1]}
+				stickyHeaderIndices={this.state.isOpen?[1]:null}
 				automaticallAdjustContentInsets={false}
 				scrollEnabled={this.state.isOpen}>
 				 
@@ -273,22 +275,22 @@ export default class Deal extends React.Component{
 					<Animated.View ref={el=>this.dialog=el} style={{
 						height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,182*k]}),
 						backgroundColor:'rgba(0,132,180,0.9)',overflow:'visible',
-						width:299*k,
+						width:320*k,
 						position:'absolute',
 						paddingRight:10*k,paddingLeft:10*k,
 						top:50*k,left:0,justifyContent:'flex-start',alignItems:'center',
 						opacity:this.anim.interpolate({inputRange:[0,0.8,0.9,1],outputRange:[0,1,1,1]}),
 					}}>
 						<Animated.Text style={{color:'white',marginTop:15*k,fontWeight:'900',
-						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.1:.2,1],outputRange:[0.1,this.anim._value>0?0:14,14]}),}}>Cкопируй ссылку.</Animated.Text>
+						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>Cкопируй ссылку.</Animated.Text>
 						<Animated.Text style={{color:'white',marginTop:15*k,fontWeight:'900',
-						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.1:.2,1],outputRange:[0.1,this.anim._value>0?0:14,14]}),}}>Отправь друзьям.</Animated.Text>
+						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>Отправь друзьям.</Animated.Text>
 						<Animated.Text style={{textAlign:'center',color:'white',marginTop:15*k,fontWeight:'900',
-						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.1:.2,1],outputRange:[0.1,this.anim._value>0?0:14,14]}),}}>За каждую покупку друга получи 1000 тг и выше.</Animated.Text>
-						<TouchableOpacity>
-							<View style={{marginTop:19*k,borderWidth:1,borderColor:'white',height:35*k,...center,borderRadius:3*k}}>
-								<Animated.Text style={{color:'white',fontWeight:'700',fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.1:.3,1],outputRange:[0.1,this.anim._value>0?0:14,15]}),margin:10}}>Начать</Animated.Text>
-							</View>
+						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>За каждую покупку друга получи 1000 тг и выше.</Animated.Text>
+						<TouchableOpacity style={{...center}}  onPress={()=>this.context.showModal({component:<Payout/>})}>
+							<Animated.View style={{marginTop:19*k,borderWidth:1,borderColor:'white',width:this.anim.interpolate({inputRange:[0,.3,1],outputRange:[0,this.anim._value>0?0:85*k,85*k]}),height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,35*k]}),...center,borderRadius:3*k}}>
+								<Animated.Text style={{color:'white',fontWeight:'700',fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.3,1],outputRange:[0.1,this.anim._value>0?0.1:14,15]}),margin:10}}>Начать</Animated.Text>
+							</Animated.View>
 						</TouchableOpacity>
 				</Animated.View>
 				<Animated.View ref={el=>this.slideDown1=el} style={this.slideDownStyle1}>

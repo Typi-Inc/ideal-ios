@@ -74,8 +74,6 @@ export default class Info extends React.Component{
 													return (<View><Certificate key={certificate.id} certificate={certificate}/><View style={{...separator}}/></View>)
 												})
 											})
-
-
 									}		
 								</View>
 							</Combinator>

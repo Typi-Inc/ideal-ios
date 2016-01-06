@@ -45,6 +45,8 @@ PODS:
     - FBSDKCoreKit/arc
   - FBSDKLoginKit (4.8.0):
     - FBSDKCoreKit
+  - FBSDKShareKit (4.8.0):
+    - FBSDKCoreKit
   - Lock (1.22.0):
     - CocoaLumberjack (~> 2.0)
     - Lock/Core (= 1.22.0)
@@ -92,6 +94,12 @@ PODS:
   - Mapbox-iOS-SDK (3.0.0)
   - RCTMapboxGL (3.0.0):
     - Mapbox-iOS-SDK (= 3.0.0)
+  - React (0.17.0):
+    - React/Core (= 0.17.0)
+  - react-native-fbsdkshare (0.0.7):
+    - FBSDKCoreKit
+    - FBSDKShareKit
+    - React
   - React/Core (0.17.0)
   - React/RCTActionSheet (0.17.0):
     - React/Core
@@ -118,6 +126,7 @@ DEPENDENCIES:
   - Lock-Facebook (~> 2.2)
   - LockReactNative (from `../node_modules/react-native-lock-ios`)
   - RCTMapboxGL (from `../node_modules/react-native-mapbox-gl/ios`)
+  - react-native-fbsdkshare (from `../node_modules/react-native-fbsdkshare`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTGeolocation (from `../node_modules/react-native`)
@@ -135,6 +144,8 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-mapbox-gl/ios
   React:
     :path: ../node_modules/react-native
+  react-native-fbsdkshare:
+    :path: ../node_modules/react-native-fbsdkshare
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
@@ -142,12 +153,14 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   FBSDKCoreKit: 66a935d17b6e00b6b64e604f2eb9b72c9ab7deb8
   FBSDKLoginKit: d893fcbb98d854496925e9ff73c67b896982d3c4
+  FBSDKShareKit: e7577ee3adf80fc04fb656dd133fbb522250672b
   Lock: 44dc7465a9aae6f0a6b2eb1c3dfe082855faad5b
   Lock-Facebook: 09f2397cbc9ae2e1fc654f7e66248da30343e349
   LockReactNative: 5380650513a98f99a0c408f86917e85e67a2b46e
   Mapbox-iOS-SDK: 5e7bafc554a15ebfc615d8b0fa0a0b5d31faac70
   RCTMapboxGL: 401ce6c335abdb17b4556697b3227158bddcf40b
   React: cbd0828b5f388c80e3398c9b9986a567ecfb37c5
+  react-native-fbsdkshare: 1ad1d8c83847df59e1d1769d1eead6141ccb766d
   SimpleKeychain: 150d76f3b9200de58f033228f6e976c6241a221c
   TouchIDAuth: 0cf861f58a2cacfc1c12cb02de4850729d943c81
 

@@ -11,7 +11,9 @@ let {
   LayoutAnimation,
   Text,
   View,
+  Modal,
   ScrollView,
+  TouchableWithoutFeedback,
   TabBarIOS,
   NavigatorIOS,
   StatusBarIOS,
@@ -19,10 +21,10 @@ let {
 var store = require('react-native-simple-store');
 
 export default class App extends React.Component{
-	state={}
-	static childContextTypes={state$:React.PropTypes.any}
+	state={modalVisible:false}
+	static childContextTypes={state$:React.PropTypes.any,showModal:React.PropTypes.func,hideModal:React.PropTypes.func}
 	getChildContext(){
-		return {state$: this.props.state$}
+		return {state$: this.props.state$,showModal:this.showModal.bind(this),hideModal:this.hideModal.bind(this)}
 	}
 	componentWillMount(){
 		// store.delete('Auth0Token').then(()=>{
@@ -35,6 +37,13 @@ export default class App extends React.Component{
 		// })
 		
 	}
+	showModal(someProps){
+		this.insideModal=someProps.component
+		this.setState({modalVisible:true})
+	}
+	hideModal(){
+		this.setState({modalVisible:false})
+	}
 	render(){
 		StatusBarIOS.setStyle('light-content');
 		// if(this.authToken){
@@ -45,7 +54,17 @@ export default class App extends React.Component{
 					<View ref='status' style={{height:20,backgroundColor:'#0679a2', }}/>
 				
 					<Tabs state$={this.props.state$} ref={el=>this.tabs=el}/>
-					
+					 <Modal
+				          animated={true}
+				          // transparent={this.state.transparent}
+				          visible={this.state.modalVisible}>
+				          <View style={{marginTop:20}}>
+				          	 <TouchableWithoutFeedback onPress={this.hideModal.bind(this)}>
+				          	 	<Text>Закрыть</Text>
+				          	 </TouchableWithoutFeedback>
+				          </View>
+				          {this.insideModal}
+				     </Modal>
 				</View>
 			)
 	}

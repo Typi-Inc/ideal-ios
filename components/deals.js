@@ -67,14 +67,17 @@ export default class Deals extends React.Component{
 	hideNext(item,pagey){
 		if(pagey<60){
 			let nextRef=''+this.props.data[this.props.data.indexOf(item)+1].id
-			this.refs[nextRef].hide()
+			if(this.refs[nextRef]){
+				this.refs[nextRef].hide()
+			}
+			
 		}
 		return;
 	}
 	unHideNext(item){
 		if(this.props.data[this.props.data.indexOf(item)+1]){
 			let nextRef=''+this.props.data[this.props.data.indexOf(item)+1].id 
-			if(this.refs[nextRef].isHidden()){
+			if(this.refs[nextRef]&&this.refs[nextRef].isHidden()){
 				this.refs[nextRef].unHide()
 			}
 		}
@@ -98,7 +101,7 @@ export default class Deals extends React.Component{
 				}else{
 					this.refs[refS].animateOpen(pagey,25*k)
 				}
-				this.context.toggleTabs()
+				this.context.toggleTabs(true)
 				this.props.toggleSearch && this.props.toggleSearch(true)
 			})
 	
@@ -108,7 +111,7 @@ export default class Deals extends React.Component{
 			this.refs[refS].toggleScroll(false)
 			this.refs[refS].closeCommentBox()
 
-			this.context.toggleTabs()
+			this.context.toggleTabs(false)
 			let handle = React.findNodeHandle(this.refs[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
 				LayoutAnimation.configureNext(openAnimation);
@@ -153,7 +156,7 @@ export default class Deals extends React.Component{
 				<ScrollView
 				keyboardShouldPersistTaps={true}
 				scrollEnabled={true}
-				automaticallAdjustContentInsets={true}
+				automaticallAdjustContentInsets={false}
 				contentContainerStyle={{paddingBottom:60}}
 				onScroll={(e)=>{
 					if(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y<2700 && !this.stopFetch){
