@@ -101,9 +101,7 @@ export default class DealCard extends React.Component{
 								<Image  source={{uri:deal.image}} resizeMode={'cover'}  //image of the deal
 								style={{justifyContent:'flex-end',alignItems:'flex-start',
 									height:this.state.isOpen?200*h:180*h,width:this.state.isOpen?320*k:320*k}}>
-									<View style={{backgroundColor:'rgba(0,132,180,0.9)',height:40*k,width:60*k,...center,opacity:1}}>
-										<Text style={{fontSize:20*k,color:'white',fontWeight:'800'}}>-30%</Text>
-									</View>
+									
 								</Image>
 							</LightBox>
 						<TouchableWithoutFeedback onPress={this.state.isOpen ? null:this.props.viewDeal} style={{height:330*h}}>

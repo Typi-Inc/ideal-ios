@@ -19,13 +19,13 @@ let {
   View,
 } = React;
 export default class Info extends React.Component{
-	state={loading:this.props.count===0,open:true,open1:false}
+	state={loading:false,open:true,open1:false}
 	componentDidMount(){
 		// LayoutAnimation.easeInEaseOut()
-	this.setTimeout(()=>{
-		// LayoutAnimation.easeInEaseOut()
-		this.setState({loading:false})
-	},300)
+	// this.setTimeout(()=>{
+	// 	// LayoutAnimation.easeInEaseOut()
+	// 	this.setState({loading:false})
+	// },300)
 		
 	}
 	componentWillMount(){
@@ -62,8 +62,9 @@ export default class Info extends React.Component{
 							<Combinator>
 								<View style={{marginBottom:0*k}}>
 									{	
-										this.context.state$.pluck('dealsById').filter(x=>x).
+										this.context.state$.pluck('dealsById').filter(x=>console.log(x) || x).
 											pluck([this.props.dealId]).filter(x=>x).pluck('certificates').filter(x=>x).map(certificates=>{
+												console.log('certificates are here')
 												if (certificates==='isLoading'){
 						 	  						return <View style={{...center}}>
 						 	  						<Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'0679a2'}/>       

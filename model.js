@@ -7,7 +7,7 @@ var store = require('react-native-simple-store');
 
 let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	let data$ = new Rx.ReplaySubject(1);//data stream of state
-	let state$ = data$.scan((accumulator , newData) =>_.merge(accumulator, newData, 
+	let state$ = data$.scan((accumulator , newData) => _.merge(accumulator, newData, 
 		(a, b) => {
 		if (_.isArray(a) && _.isArray(b) && a.length - b.length === 1) {
 			return b;
@@ -71,7 +71,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		subscribe(data => data && data.json ? data$.onNext(data.json) : data$.onNext({tagsByText: 'not found' }))
 	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => {
 		if (data && data.json) {
-			if (data.json.featuredDeals) {
+			if (data.json.featuredDeals && data.json.featuredDeals !== 'isLoading') {
 				const result = { featuredDeals: {}, dealsById: {} }
 				Object.keys(data.json.featuredDeals).filter(x => !isNaN(x)).forEach(index => {
 					const keysWithPathKeyInside = Object.keys(data.json.featuredDeals[index])
@@ -85,7 +85,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 				})
 				return data$.onNext(result)
 			}
-			if (data.json.dealsByTags) {
+			if (data.json.dealsByTags && data.json.dealsByTags !== 'isLoading') {
 				const tagString = Object.keys(data.json.dealsByTags).
 					filter(key => (key.indexOf('key') === -1) && (key.indexOf('parent') === -1))[0]
 				const result = { dealsByTags: {}, dealsById: {} }
@@ -158,7 +158,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	// 	pluck(`where:idDeal=9c2f19e1-452e-4f22-a4d3-bda10ec0ed64,idLiker={{me}}`).filter(x => x).
 	// 	pluck('count').
 	// 	subscribe(x => console.log(x, '------------dealsById-------------'))
-	// state$.pluck('tagsByText').subscribe(console.log);
+	state$.pluck('dealsByTags').subscribe(console.log);
 	return state$
 }
 

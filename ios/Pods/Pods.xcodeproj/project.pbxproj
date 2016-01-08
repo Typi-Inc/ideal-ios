@@ -634,6 +634,7 @@
 		97996933B25E24DAF9D18F8E188B03CA /* FBSDKMath.m in Sources */ = {isa = PBXBuildFile; fileRef = E971B7EE252E662917449096F4B2B0B6 /* FBSDKMath.m */; };
 		97D0FBE1BFD99E74F7345E1A8698DE51 /* A0FullActiveDirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7EF03F419F44DEFBBFAC989F2B86B5 /* A0FullActiveDirectoryViewController.m */; };
 		97DB61E5F6390D548E74E03113320DC6 /* RCTProfileTrampoline-arm.S in Sources */ = {isa = PBXBuildFile; fileRef = F07172916EA28BC48125966E0F57781D /* RCTProfileTrampoline-arm.S */; };
+		983265F11C3FC23A00CFD3C5 /* Auth0.strings in Resources */ = {isa = PBXBuildFile; fileRef = 983265F31C3FC23A00CFD3C5 /* Auth0.strings */; };
 		99E82D6DC032555656E37AF2367B20D3 /* UIButton+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C151502BE1119E34ECEFB4655C1441B9 /* UIButton+AFNetworking.m */; };
 		99FF54FAAA6CB1BAFC71BBE5D08745BC /* baidu@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C2CCA2C8DD3637DA7134B21984C4EB02 /* baidu@3x.png */; };
 		9A04E971065AF4281E43947994A53D07 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B658A97162486C15968D1F047B4D13 /* UIWebView+AFNetworking.m */; };
@@ -2024,6 +2025,7 @@
 		95FFA9283C545E4C62FD21B3B885F013 /* FBSDKMaleSilhouetteIcon.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBSDKMaleSilhouetteIcon.h; path = FBSDKCoreKit/FBSDKCoreKit/Internal/UI/FBSDKMaleSilhouetteIcon.h; sourceTree = "<group>"; };
 		978150DA4F2FC06DDE239401B74C9584 /* A0CountryCodeTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = A0CountryCodeTableViewController.h; path = Lock/SMS/Private/A0CountryCodeTableViewController.h; sourceTree = "<group>"; };
 		97DCF2376F9C118D9A0F990C1D7D13D7 /* box@3x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "box@3x.png"; path = "Auth0/Social/box@3x.png"; sourceTree = "<group>"; };
+		983265F21C3FC23A00CFD3C5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Auth0.strings; sourceTree = "<group>"; };
 		984433290D82D6222CFC791B65DF178F /* RCTAnimationType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RCTAnimationType.h; sourceTree = "<group>"; };
 		985BE4F94B958BA726D516F27113E01D /* FBSDKGraphErrorRecoveryProcessor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSDKGraphErrorRecoveryProcessor.m; path = FBSDKCoreKit/FBSDKCoreKit/FBSDKGraphErrorRecoveryProcessor.m; sourceTree = "<group>"; };
 		9888BF177CE50FB7114E5C1301857442 /* FBSDKConstants.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSDKConstants.m; path = FBSDKCoreKit/FBSDKCoreKit/FBSDKConstants.m; sourceTree = "<group>"; };
@@ -3784,6 +3786,7 @@
 		8F3B8D6A779EBD3C4677DC28AD04AA0E /* Lock */ = {
 			isa = PBXGroup;
 			children = (
+				983265F31C3FC23A00CFD3C5 /* Auth0.strings */,
 				5A1DEF5EDC808CF673B306321C73FAFE /* Core */,
 				9B9333B08A976F4C040EEB5620AC7854 /* CoreUI */,
 				0585AB557ED9082D3E935B4410B845EF /* Email */,
@@ -5748,6 +5751,7 @@
 				48CBC0D450B3909795F735CEA9FBA854 /* evernote.png in Resources */,
 				951B91F34D93695FDF6A23502675B403 /* evernote@2x.png in Resources */,
 				A0C0ED6C5A888CEFD086447E1266E589 /* evernote@3x.png in Resources */,
+				983265F11C3FC23A00CFD3C5 /* Auth0.strings in Resources */,
 				BDE4949E8EE320A03EEC43A6A7970482 /* exact.png in Resources */,
 				71E26A738412628F3C30C6BAD1E864C8 /* exact@2x.png in Resources */,
 				E9F06248587E4D8F8C03C05A0B2FEADB /* exact@3x.png in Resources */,
@@ -6664,6 +6668,17 @@
 			targetProxy = 2F4413DCEBADE4CF0460194908F81170 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		983265F31C3FC23A00CFD3C5 /* Auth0.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				983265F21C3FC23A00CFD3C5 /* en */,
+			);
+			name = Auth0.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		022FFA8D8F041195969F366D9754A65E /* Debug */ = {

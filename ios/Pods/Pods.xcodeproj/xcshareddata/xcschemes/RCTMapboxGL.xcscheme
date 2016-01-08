@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '3B04B52FC58FF7B71ADF4165'
+               BlueprintIdentifier = '0C46C9441EDD7AE6B6A6EA16'
                BlueprintName = 'RCTMapboxGL'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libRCTMapboxGL.a'>

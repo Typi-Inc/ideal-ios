@@ -560,10 +560,6 @@
 				);
 				INFOPLIST_FILE = ideal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = ideal;
 			};
@@ -581,10 +577,6 @@
 				);
 				INFOPLIST_FILE = ideal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = ideal;
 			};

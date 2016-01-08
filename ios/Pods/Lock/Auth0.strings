@@ -1,0 +1,10 @@
+/* 
+  Auth0.strings
+  Pods
+
+  Created by Ilyas Malgazhdarov on 1/8/16.
+
+*/
+"Email" = "Email";
+"Password" = "Passwort";
+"ACCESS" = "ZUGRIFF";

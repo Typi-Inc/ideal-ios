@@ -46,7 +46,7 @@ export default class Deals extends React.Component{
 			let prev1=this.props.data.indexOf(item)-2
 			if(prev1>-1){
 				let prevRef1=''+this.props.data[prev1].id
-				this.refs[prevRef1].moveUp(pagey)
+				if(this.refs[prevRef1])this.refs[prevRef1].moveUp(pagey)
 			}
 		}
 		return;
@@ -59,7 +59,7 @@ export default class Deals extends React.Component{
 			let prev1=this.props.data.indexOf(item)-2
 			if(prev1>-1){
 				let prevRef1=''+this.props.data[prev1].id
-				this.refs[prevRef1].moveDown(pagey)
+				if(this.refs[prevRef1])this.refs[prevRef1].moveDown(pagey)
 			}
 		}
 		return;
@@ -156,8 +156,8 @@ export default class Deals extends React.Component{
 				<ScrollView
 				keyboardShouldPersistTaps={true}
 				scrollEnabled={true}
-				automaticallAdjustContentInsets={false}
-				contentContainerStyle={{paddingBottom:60}}
+				automaticallAdjustContentInsets={true}
+				contentContainerStyle={{paddingBottom:this.props.search?60:0}}
 				onScroll={(e)=>{
 					if(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y<2700 && !this.stopFetch){
 						this.stopFetch=true
@@ -171,7 +171,7 @@ export default class Deals extends React.Component{
 						return (
 							
 							<Deal ref={refS} //navigator={this.props.navigator}
-							 key={deal.id} deal={deal}  
+							 key={''+deal.id} deal={deal}  
 							 isOpen={false}
 							 viewDeal={!this.state.loadNewer?this.viewDeal.bind(this,deal,refS):null}
 							 closeDeal={this.closeDeal.bind(this,deal,refS)}

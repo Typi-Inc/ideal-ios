@@ -53,7 +53,7 @@ export default class FindTab extends React.Component{
 		
 	}
 	cancel(){
-		LayoutAnimation.easeInEaseOut()
+		LayoutAnimation.configureNext(openAnimation)
 		this.textInput.setNativeProps({style:{width:300*k}})
 		this.cancelText.setNativeProps({style:{fontSize:0.1,marginLeft:0}})
 		this.textInput.blur()
@@ -63,7 +63,7 @@ export default class FindTab extends React.Component{
 			})
 			this.textInput.blur()
 		}
-		onTagTextChange('')
+	// onTagTextChange('')
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
@@ -83,6 +83,7 @@ export default class FindTab extends React.Component{
 					loadDeals: true,
 					placeholderText:'Добавить еще тег'
 				}, () => {
+    //					console.log('toggling tag')
 					toggleTag(tag)
 				})
 			}else{
@@ -139,7 +140,7 @@ export default class FindTab extends React.Component{
 					h2=600
 				}
 				this.slider && this.slider.setNativeProps({style:{flex:0}})
-				!this.state.loadDeals && this.suggestion.setNativeProps({style:{height:h1}})
+				!this.state.loadDeals && this.suggestion&&this.suggestion.setNativeProps({style:{height:h1}})
 				this.state.loadDeals && this.deals && this.deals.setNativeProps({style:{height:h2}})
 			}
 		})
@@ -162,7 +163,8 @@ export default class FindTab extends React.Component{
 			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
 			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},['title','conditions','id','image','discount','payout']],
 			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'business',['name','image']],
-			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'likes','sort:createdAt=desc','count']
+			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'likes','sort:createdAt=desc','count'],
+			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'likedByUser', '{{me}}']
 		])
 	}
 	render(){
@@ -270,9 +272,9 @@ export default class FindTab extends React.Component{
 											this.dealsById = dealsById
 										}
 										if (this.searchedDeals === 'isLoading' || !this.dealsById) {
-										return <Deals search={true}
-											toggleSearch={this.toggleSearch.bind(this)}
-											data={[]}/>
+											return <Deals search={true}
+												toggleSearch={this.toggleSearch.bind(this)}
+												data={[]}/>
 										}
 										if(chosenTags && chosenTags.length>4){
 											return <View style={{...center}}>
@@ -281,7 +283,7 @@ export default class FindTab extends React.Component{
 										}
 
 										this.data = _.values(this.searchedDeals[this.tagIdString]).map(path => this.dealsById[path[1]]).filter(x=>x)
-										this.numberOfSearchedDeals=this.data.length
+										this.numberOfSearchedDeals = this.data.length
 										return <Deals search={true}
 											getMoreData={this.getMoreData.bind(this)}
 											toggleSearch={this.toggleSearch.bind(this)}

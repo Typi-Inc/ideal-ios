@@ -100,7 +100,7 @@
     [self.userField setFieldPlaceholderText:self.forceUsername && !self.requiresUsername ? A0LocalizedString(@"Username") : A0LocalizedString(@"Email")];
     [self.passwordField setFieldPlaceholderText:A0LocalizedString(@"Password")];
     [self.signUpButton setTitle:A0LocalizedString(@"SIGN UP") forState:UIControlStateNormal];
-    self.messageLabel.text = self.forceUsername ? A0LocalizedString(@"Введите Ваш email и пароль") : A0LocalizedString(@"Введите Ваш email и пароль");
+    self.messageLabel.text = self.forceUsername ? A0LocalizedString(@"Enter your email and password") : A0LocalizedString(@"Enter your email and password");
     if (self.customMessage) {
         self.messageLabel.text = self.customMessage;
     }

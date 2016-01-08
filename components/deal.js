@@ -174,6 +174,7 @@ export default class Deal extends React.Component{
 			
 	}
 	render(){
+		this.state.isOpen?console.log('render deal'):null
 		this.earn=this.earn || new Animated.Value(0)
 		this.slideDownStyle1={
 			position:'absolute',
@@ -230,8 +231,6 @@ export default class Deal extends React.Component{
 				stickyHeaderIndices={this.state.isOpen?[1]:null}
 				automaticallAdjustContentInsets={false}
 				scrollEnabled={this.state.isOpen}>
-				 
-					
 					<DealCard ref={el=>this.dealCard=el} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
 					{this.state.isOpen?<View><View style={{paddingRight:20,paddingLeft:20,marginBottom:10*k}}>
 						<View style={{height:5*k}}/>
