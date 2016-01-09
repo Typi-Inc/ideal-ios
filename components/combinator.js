@@ -41,7 +41,6 @@ class Combinator extends React.Component {
     this.subscription.dispose();
   }
   render() {
-    // console.log('combinator is in the house',this.props.me)
     return this.state;
   }
 }

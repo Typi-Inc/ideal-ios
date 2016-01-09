@@ -21,12 +21,7 @@ export default class Comments extends React.Component{
     	state$: React.PropTypes.any
   	}
 	componentDidMount(){
-		// this.setTimeout(()=>{
-		// 	LayoutAnimation.easeInEaseOut()
-		// 	this.setState({loading:false})
-		// },300)
-		// this.context.state$.pluck('dealsById').subscribe(console.log);
-		
+	
 	}
 	componentWillMount(){
 		getQuery([

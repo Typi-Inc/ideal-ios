@@ -37,7 +37,7 @@ class Like extends React.Component{
 
  	 }
 	render(){
-		return <TouchableWithoutFeedback onPress={this.props.like}><View style={{height:45,width:45,...center,}}><Image ref={el=>this.image=el} style={{height:!this.props.bool?22*k:26*k,width:!this.props.bool?23*k:29*k,marginRight:this.props.isOpen?k>1?10*k:6*k:6*k}} source={{uri:!this.props.bool?'likeGrey':'likeRed',isStatic:true}}/></View></TouchableWithoutFeedback>
+		return <TouchableWithoutFeedback onPress={this.props.like}><View style={{height:45,width:45,...center,}}><Image ref={el=>this.image=el} style={{height:!this.props.bool?22*k:24*k,width:!this.props.bool?23*k:26*k,marginRight:this.props.isOpen?k>1?10*k:6*k:6*k}} source={{uri:!this.props.bool?'likeGrey':'likeRed',isStatic:true}}/></View></TouchableWithoutFeedback>
 	}
 }
 

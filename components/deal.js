@@ -160,7 +160,6 @@ export default class Deal extends React.Component{
 	openHelper(){
 		Animated.spring(this.anim,{toValue:this.anim._value===0?1:0,tension:40,velocity:this.anim._value===0?20:0,friction:10}).start()
 		UIManager.measure(React.findNodeHandle(this.dialog),(x,y,w,h,px,py)=>{
-			// console.log(x,y,py)
 		})
 	}
 	openEarn(){
@@ -175,7 +174,6 @@ export default class Deal extends React.Component{
 			
 	}
 	render(){
-		this.state.isOpen?console.log('render deal'):null
 		this.earn=this.earn || new Animated.Value(0)
 		this.slideDownStyle1={
 			position:'absolute',
@@ -193,7 +191,6 @@ export default class Deal extends React.Component{
 		this.anim=this.anim || new Animated.Value(0)
 		this.scrollOffsetY=this.scrollOffsetY || 0
 		let deal=this.props.deal
-		// console.log('deal',deal)
 		this.move=this.move || 0
 		this.keyboard=this.keyboard || 0
 		if(this.state.loading){

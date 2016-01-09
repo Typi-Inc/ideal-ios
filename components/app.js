@@ -27,15 +27,6 @@ export default class App extends React.Component{
 		return {state$: this.props.state$,showModal:this.showModal.bind(this),hideModal:this.hideModal.bind(this)}
 	}
 	componentWillMount(){
-		// store.delete('Auth0Token').then(()=>{
-		// 	store.get('Auth0Token').then(res=>{
-		// 		console.log(res)
-		// 		if(res){
-		// 			this.authToken=res
-		// 		}
-		// 	})
-		// })
-		
 	}
 	showModal(someProps){
 		this.insideModal=someProps.component

@@ -49,8 +49,10 @@ export default class FindTab extends React.Component{
 		LayoutAnimation.easeInEaseOut()
 		this.textInput.setNativeProps({style:{width:255*k}})
 		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
+		this.hideDeals()
 		if(this.chosenTags){
-			this.setState({loadDeals: false})
+			// this.setState({loadDeals: false})
+			
 
 			onTagTextChange('')
 		}
@@ -63,20 +65,19 @@ export default class FindTab extends React.Component{
 		this.textInput.blur()
 		if(this.chosenTags&&this.chosenTags[0]){
 			// toggleTag('')
-					this.setState({
-						loadDeals: true,
-					})
+				this.showDeals()
 			this.textInput.blur()
 		}
-	// onTagTextChange('')
+	onTagTextChange('')
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
 		this.setState({placeholderText:'Добавить еще тег'},()=>{
 				toggleTag(tag);
-				this.setState({
-					loadDeals: true,
-				})
+				// this.setState({
+				// 	loadDeals: true,
+				// })
+			this.showDeals()
 		})
 		this.setTimeout(()=>this.cancel(),0)
 	}
@@ -84,18 +85,22 @@ export default class FindTab extends React.Component{
 		this.anim.setValue(0)
 		if(this.chosenTags[0] && this.searchedDeals!=='isLoading') {
 			if(this.chosenTags.length>1){
+
+				this.hideDeals()
 					this.setState({
-					loadDeals: true,
+					
 					placeholderText:'Добавить еще тег'
 				}, () => {
-    //					console.log('toggling tag')
+    				this.cancel()
 					toggleTag(tag)
+					
 				})
 			}else{
 				this.setState({
-					loadDeals: false,
+					// loadDeals: false,
 					placeholderText:'Искать по тегам'
 				}, () => {
+					this.hideDeals()
 					toggleTag(tag)
 					onTagTextChange('')
 				})
@@ -154,20 +159,24 @@ export default class FindTab extends React.Component{
 		onTagTextChange('')
 	}
 	componentDidMount() {
-		this.subscription = this.context.state$.subscribe(state => {
-			this.dealsById = state.dealsById
-		})
-
         this._keyboardWillShowSubscription= DeviceEventEmitter.addListener('keyboardWillShow', this.handleKeyboardAppear.bind(this));
         this._keyboardWillHideSubscription= DeviceEventEmitter.addListener('keyboardWillHide', this.handleKeyboardDisappear.bind(this));
     }
     componentWillUnmount() {
-    	this.subscription.dispose()
         this._keyboardWillShowSubscription.remove();
         this._keyboardWillHideSubscription.remove();
     }
+    showDeals(){
+    	this.deals.setNativeProps({style:{opacity:1}})
+    	this.bis.setNativeProps({style:{width:0*k,opacity:0}})
+
+    }
+    hideDeals(){
+    	this.deals.setNativeProps({style:{opacity:0}})
+    	this.bis.setNativeProps({style:{width:320*k,opacity:1}})
+
+    }
     getMoreData(){
-    	// console.log('loading more data',this.tagIdString,this.numberOfSearchedDeals)
 		getQuery([
 			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
 			['dealsByTags',this.tagIdString,{from:this.numberOfSearchedDeals,to:this.numberOfSearchedDeals+10},['title','conditions','id','image','discount','payout']],
@@ -177,7 +186,6 @@ export default class FindTab extends React.Component{
 		])
 	}
 	render(){
-		// console.log(this.state.loadDeals, 'load Deals ?')
 		this.anim=this.anim || new Animated.Value(0)
 		this.latestScroll=this.latestScroll || 0
 		return (
@@ -221,9 +229,7 @@ export default class FindTab extends React.Component{
 							 		{
 							 			this.props.chosenTags$.map(
 							 				chosenTags=>{
-							 					// console.log(chosenTags);
 							 					if(chosenTags){
-									 				// console.log(searchedDeals)
 									 				return <View style={{flexDirection:'row'}}>
 								 						{chosenTags.map(tag=>{
 															return <Word cannotClick={this.state.loadDeals} cancelTag={this.cancelTag.bind(this)} key={tag.id+'chosen'} isUp={true} tag={tag}/>
@@ -241,82 +247,61 @@ export default class FindTab extends React.Component{
 					</View>
 				
 		
-				<View style={{flex:1}}>
+				<View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
 
-				{this.state.loadDeals ? 
-						<View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
+				
+						<View ref={el=>this.deals=el} style={{height:500*k}}>
 
 							<Combinator  me={'deals'}>
+
 							{
 								this.context.state$.map(state => {
-									// console.log(state.dealsById, 'dealsById')
-									return {chosenTags: state.chosenTags, searchedDeals: state.dealsByTags}
-								}).
-								map(
-								// Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$, this.props.dealsById$,
-									({chosenTags,searchedDeals}) => {
-										if (!chosenTags || !searchedDeals) {
-											let result = {};
-											if (this.chosenTags) {
-												result.chosenTags = chosenTags
-											}
-											if (this.searchedDeals) {
-												result.searchedDeals = searchedDeals
-											}
-											if (this.chosenTags || this.searchedDeals || this.dealsById) {
-												return result
-											}
-											return this.searchedDeals = 'isLoading';
-										}
-										return {chosenTags, searchedDeals}
-									}).map(({chosenTags,searchedDeals}) => {
-										if (chosenTags) {
-											this.chosenTags = chosenTags
-											this.tagIdString = this.chosenTags.map(tag => tag.id).join(',')
-										}
-										if (searchedDeals) {
-											this.searchedDeals = searchedDeals
-										}
-										if (this.searchedDeals === 'isLoading' || !this.dealsById) {
-											return <Deals search={true}
+									if (state.chosenTags) {
+										this.chosenTags = state.chosenTags
+										this.tagIdString = state.chosenTags.map(x => x.id).join(',')
+									}
+									if (!state.dealsById) {
+										return <Deals search={true}
 												toggleSearch={this.toggleSearch.bind(this)}
 												data={[]}/>
-										}
-										if(chosenTags && chosenTags.length>4){
-											return <View style={{...center}}>
-												<Text style={{margin:15,color:'gray',textAlign:'center'}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
-											</View>
-										}
-										if (this.dealsById) {
-											this.data = _.values(this.searchedDeals[this.tagIdString]).map(path => this.dealsById[path[1]]).filter(x=>x)										
-										} else {
-											this.data = []
-										}
-										this.numberOfSearchedDeals = this.data.length
-										return <Deals search={true}
-											getMoreData={this.getMoreData.bind(this)}
-											toggleSearch={this.toggleSearch.bind(this)}
-											data={this.data}
-										/>
 									}
-								)
+									if (state.chosenTags && state.chosenTags.length>4) {
+											return <View style={{...center}}>
+												<Text style={{margin:10,color:'gray',textAlign:'center',width:300*k}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
+											</View>
+									}
+									let data;
+									if (state.dealsByTags && state.dealsById && state.chosenTags) {
+										data = _.values(state.dealsByTags[this.tagIdString]).map(path => state.dealsById[path[1]]).filter(x=>x)										
+									} else {
+										return <View style={{...center}}>
+											<Text style={{margin:15,color:'gray',textAlign:'center'}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
+										</View>
+									}
+									this.numberOfSearchedDeals = data ? data.length : 0
+									return <Deals search={true}
+										getMoreData={this.getMoreData.bind(this)}
+										toggleSearch={this.toggleSearch.bind(this)}
+										data={data}
+									/>
+								})
 							}
 							</Combinator>
 						</View>
-					 : <View>
+					  <View ref={el=>this.bis=el} style={{position:'absolute',left:0}}
+					  >
 						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
 							<ScrollView keyboardShouldPersistTaps={true}>
 								<Combinator me={'suggestion tags'}>
-									<View style={{flexDirection:'row',flexWrap:'wrap',...center}}> 
+									<View style={{flexDirection:'row',flexWrap:'wrap',...center,width:320*k,marginRight:100}}> 
 										{
-											Observable.combineLatest(this.props.searchedTags$, this.props.tagSearchText$, 
-												(searchedTags, tagSearchText) =>{
+											this.context.state$.map(state => {
+												let {tagsByText: searchedTags, tagSearchText} = state
 													if (searchedTags==='not found') {
 														return <View style={{...center}}>
-																	<Text style={{margin:10,color:'gray',textAlign:'center'}}>Не найдено.</Text>
-																	<Text style={{color:'gray',textAlign:'center'}}>Попробуйте ввести другой тег.</Text>
-
-																</View>
+															<Text style={{margin:10,color:'gray',textAlign:'center'}}>Не найдено.</Text>
+															<Text style={{color:'gray',textAlign:'center'}}>Попробуйте ввести другой тег.</Text>
+														</View>
 													}
 													let tagsToShow = searchedTags && searchedTags[tagSearchText] && _.values(searchedTags[tagSearchText]).
 													filter(tag => tag && tag.text).filter(tag=>{
@@ -330,10 +315,9 @@ export default class FindTab extends React.Component{
 													));
 													if (_.isEmpty(tagsToShow) && tagsToShow !== undefined) {
 														return <View style={{...center}}>
-																	<Text style={{margin:10,color:'gray',textAlign:'center'}}>Не найдено.</Text>
-																	<Text style={{color:'gray',textAlign:'center'}}>Попробуйте ввести другой тег.</Text>
-
-																</View>
+															<Text style={{margin:10,color:'gray',textAlign:'center'}}>Не найдено.</Text>
+															<Text style={{color:'gray',textAlign:'center'}}>Попробуйте ввести другой тег.</Text>
+														</View>
 													}
 													return tagsToShow
 												})
@@ -369,7 +353,7 @@ export default class FindTab extends React.Component{
 								</View>
 						</View>
 					</View>
-				}
+				
 				</View>
 				<Animated.View style={{flex:1,position:'absolute',bottom:0,height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,this.state.citySelectionHeight]}),
 				backgroundColor:'rgba(0,132,180,0.9)',width:320*k,justifyContent:'flex-start',alignItems:'center',opacity:this.anim,

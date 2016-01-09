@@ -29,7 +29,6 @@ export default class Info extends React.Component{
 		
 	}
 	componentWillMount(){
-		console.log('sending query')
 		getQuery([
 			['dealsById',this.props.dealId,'certificates','sort:createdAt=desc', 'edges', {from: 0, to: 20}, ['title','oldPrice','newPrice','id']],
 			// ['dealsById',this.props.dealId,'certificates','sort:createdAt=desc', 'edges', {from: 0, to: 20}, 'author',['name','image']],
@@ -39,7 +38,6 @@ export default class Info extends React.Component{
     	state$: React.PropTypes.any
   	}
   	componentWillUnmount(){
-  		console.log('unmounting certificates')
   	}
 	render(){
 		this.anim=this.anim || new Animated.Value(0)
