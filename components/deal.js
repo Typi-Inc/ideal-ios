@@ -10,6 +10,7 @@ import CommentBox from './comment-box'
 import Spinner from 'react-native-spinkit'
 import Loading from './loading'
 import Payout from './payout'
+import _ from 'lodash'
 let UIManager = require('NativeModules').UIManager;
 
 let {
@@ -210,9 +211,9 @@ export default class Deal extends React.Component{
 					closeCommentBox={this.closeCommentBox.bind(this)} 
 					toggleScroll={this.toggleScroll.bind(this)} 
 					navigator={this.props.navigator} 
-					closeDeal={this.props.closeDeal}/>:<DealAuthor 
-					viewDeal={this.props.viewDeal} isOpen={this.state.isOpen} 
-					openHelper={this.openHelper.bind(this)} business={deal.business}/>
+					closeDeal={this.props.closeDeal}/>:<DealAuthor
+						viewDeal={this.props.viewDeal} isOpen={this.state.isOpen} 
+						openHelper={this.openHelper.bind(this)} business={deal.business}/>
 				}
 				<ScrollView 
 				ref='scroll'
@@ -268,7 +269,7 @@ export default class Deal extends React.Component{
 						<DealContent 
 						ref='deal-content' isOpen={this.state.isOpen}
 						closeCommentBox={this.closeCommentBox.bind(this)} 
-						openCommentBox={this.openCommentBox.bind(this)} deal={deal} conditions={deal.conditions}/>:<View/>}
+						openCommentBox={this.openCommentBox.bind(this)} deal={deal} conditions={deal.conditions}/>:null}
 				</ScrollView>
 					{this.state.commentBox?<CommentBox pushedFromLenta={this.props.pushedFromLenta && this.props.pushedFromLenta} ref='comment-box' submitComment={this.submitComment.bind(this)}/>:<View/>}
 					<Animated.View ref={el=>this.dialog=el} style={{

@@ -3,6 +3,7 @@ import falcor from 'falcor';
 import FalcorHttpDatasource from 'falcor-http-datasource';
 import _ from 'lodash';
 // import deepAssign from 'deep-assign';
+
 var store = require('react-native-simple-store');
 
 let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
@@ -11,6 +12,12 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		(a, b) => {
 		if (_.isArray(a) && _.isArray(b) && a.length - b.length === 1) {
 			return b;
+		}
+		if (b && b['\u001eparent']) {
+			delete b['\u001eparent']
+		}
+		if (b && b['\u001ekey']) {
+			delete b['\u001ekey']
 		}
 	}))
 	let rootModel;
@@ -69,43 +76,55 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		}).switchLatest().
 		// filter(data => data && data.json).
 		subscribe(data => data && data.json ? data$.onNext(data.json) : data$.onNext({tagsByText: 'not found' }))
-	getQuery$.subscribe(paths => rootModel.get(...paths).then(data => {
-		if (data && data.json) {
-			if (data.json.featuredDeals && data.json.featuredDeals !== 'isLoading') {
-				const result = { featuredDeals: {}, dealsById: {} }
-				Object.keys(data.json.featuredDeals).filter(x => !isNaN(x)).forEach(index => {
-					const keysWithPathKeyInside = Object.keys(data.json.featuredDeals[index])
-					const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
-					const path = data.json.featuredDeals[index][pathKey]
-					result.featuredDeals[index] = path
-					if (!result.dealsById[path[1]]) {
-						result.dealsById[path[1]] = {}
+	getQuery$.subscribe(paths => {
+		if (paths[0].includes('certificates')) {
+			data$.onNext({
+				[paths[0][0]] : {
+					[paths[0][1]]: {
+						[paths[0][2]] : 'isLoading'
 					}
-					_.merge(result.dealsById[path[1]], data.json.featuredDeals[index])
-				})
-				return data$.onNext(result)
-			}
-			if (data.json.dealsByTags && data.json.dealsByTags !== 'isLoading') {
-				const tagString = Object.keys(data.json.dealsByTags).
-					filter(key => (key.indexOf('key') === -1) && (key.indexOf('parent') === -1))[0]
-				const result = { dealsByTags: {}, dealsById: {} }
-				result.dealsByTags[tagString] = {}
-				const deals = data.json.dealsByTags[tagString]
-				Object.keys(deals).filter(x => !isNaN(x)).forEach(index => {
-					const keysWithPathKeyInside = Object.keys(deals[index])
-					const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
-					const path = deals[index][pathKey]
-					result.dealsByTags[tagString][index] = path
-					if (!result.dealsById[path[1]]) {
-						result.dealsById[path[1]] = {}
-					}
-					_.merge(result.dealsById[path[1]], deals[index])
-				})
-				return data$.onNext(result)
-			}
-			return data$.onNext(data.json);
+				}
+			})
 		}
-	}))
+		rootModel.get(...paths).then(data => {
+			if (data && data.json) {
+				if (data.json.featuredDeals) {
+					const result = { featuredDeals: {}, dealsById: {} }
+					Object.keys(data.json.featuredDeals).filter(x => !isNaN(x)).forEach(index => {
+						const keysWithPathKeyInside = Object.keys(data.json.featuredDeals[index])
+						const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
+						const path = data.json.featuredDeals[index][pathKey]
+						result.featuredDeals[index] = path
+						if (!result.dealsById[path[1]]) {
+							result.dealsById[path[1]] = {}
+						}
+						_.merge(result.dealsById[path[1]], data.json.featuredDeals[index])
+					})
+					return data$.onNext(result)
+				}
+				if (data.json.dealsByTags) {
+					const tagString = Object.keys(data.json.dealsByTags).
+						filter(key => (key.indexOf('key') === -1) && (key.indexOf('parent') === -1))[0]
+					const result = { dealsByTags: {}, dealsById: {} }
+					result.dealsByTags[tagString] = {}
+					const deals = data.json.dealsByTags[tagString]
+					Object.keys(deals).filter(x => !isNaN(x)).forEach(index => {
+						const keysWithPathKeyInside = Object.keys(deals[index])
+						const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
+						const path = deals[index][pathKey]
+						result.dealsByTags[tagString][index] = path
+						if (!result.dealsById[path[1]]) {
+							result.dealsById[path[1]] = {}
+						}
+						_.merge(result.dealsById[path[1]], deals[index])
+					})
+					return data$.onNext(result)
+				}
+				return data$.onNext(data.json)
+			}
+		})
+	}
+	)
 	callQuery$.subscribe(args => rootModel.call(...args).then(data => data && data.json && data$.onNext(data.json)))
 
 	toggleTag$.
@@ -158,7 +177,22 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	// 	pluck(`where:idDeal=9c2f19e1-452e-4f22-a4d3-bda10ec0ed64,idLiker={{me}}`).filter(x => x).
 	// 	pluck('count').
 	// 	subscribe(x => console.log(x, '------------dealsById-------------'))
-	state$.pluck('dealsByTags').subscribe(console.log);
+	// state$.pluck('dealsById').subscribe(x=>{
+	// 	if (!x) {
+	// 		console.log('dealsById are undefined')
+	// 	}
+	// 	if (x && x['c4df1b9a-ca35-42c9-8bdc-57b330bd4f21']) {
+	// 		console.log(x['c4df1b9a-ca35-42c9-8bdc-57b330bd4f21'], 'here you go deal')
+	// 	}	
+	// })
+	// state$.pluck('dealsById').filter(x=>x).
+	// 	pluck('c4df1b9a-ca35-42c9-8bdc-57b330bd4f21').filter(x=>x).
+	// 	pluck('certificates').filter(x=>x).subscribe(x => console.log(x, 'deal in stream'))
+	// state$.pluck('dealsById').filter(x=>x).
+	// 	pluck('c4df1b9a-ca35-42c9-8bdc-57b330bd4f21').
+	// 	filter(x=>x).subscribe(x => console.log(x, 'deal in stream'))
+	// state$.subscribe(x => console.log(x.dealsById, 'dealsById in stream'))
+	// state$.subscribe(x => console.log(x, 'state'))
 	return state$
 }
 

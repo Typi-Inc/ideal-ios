@@ -29,66 +29,44 @@ export default class Info extends React.Component{
 		
 	}
 	componentWillMount(){
+		console.log('sending query')
 		getQuery([
 			['dealsById',this.props.dealId,'certificates','sort:createdAt=desc', 'edges', {from: 0, to: 20}, ['title','oldPrice','newPrice','id']],
 			// ['dealsById',this.props.dealId,'certificates','sort:createdAt=desc', 'edges', {from: 0, to: 20}, 'author',['name','image']],
 		])
-
 	}
 	static contextTypes={
     	state$: React.PropTypes.any
   	}
-	toggleDeals(){
-		// LayoutAnimation.configureNext(openAnimation)
-		Animated.spring(this.anim,{toValue:this.anim._value>0?0:1}).start()
-		this.setState({open:!this.state.open})
-	}
-	toggleDeals1(){
-		// LayoutAnimation.easeInEaseOut()
-		Animated.spring(this.anim1,{toValue:this.anim1._value>0?0:1}).start()
-		this.setState({open1:!this.state.open1})
-	}
+  	componentWillUnmount(){
+  		console.log('unmounting certificates')
+  	}
 	render(){
 		this.anim=this.anim || new Animated.Value(0)
 		this.anim1=this.anim1 || new Animated.Value(0)
-		if(!this.state.loading){
-			return (
-			<View style={{marginBottom:this.state.open?80*k:300*k}}>
-
-		
-				
-					{
-						this.state.open?<View style={this.animatedStyle}>
-							<Combinator>
-								<View style={{marginBottom:0*k}}>
-									{	
-										this.context.state$.pluck('dealsById').filter(x=>console.log(x) || x).
-											pluck([this.props.dealId]).filter(x=>x).pluck('certificates').filter(x=>x).map(certificates=>{
-												console.log('certificates are here')
-												if (certificates==='isLoading'){
-						 	  						return <View style={{...center}}>
-						 	  						<Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
-													 </View>
-												}
-												return _.values(certificates['sort:createdAt=desc'].edges).filter(certificate=>certificate && certificate.title).map(certificate=>{
-													// console.log(certificate,'certificate here')
-													return (<View><Certificate key={certificate.id} certificate={certificate}/><View style={{...separator}}/></View>)
-												})
+		return (
+			<View style={{marginBottom:80*k}}>
+					<Combinator>
+						<View style={{marginBottom:0*k}}>
+							{	
+								this.context.state$.pluck('dealsById').filter(x=>x).
+									pluck(this.props.dealId).filter(x=>x).
+									pluck('certificates').map(certificates=>{
+										if (certificates&&certificates['sort:createdAt=desc']&&certificates['sort:createdAt=desc'].edges){
+											return _.values(certificates['sort:createdAt=desc'].edges).filter(certificate=>certificate && certificate.title).map(certificate=>{
+												// console.log(certificate,'certificate here')
+												return (<View><Certificate key={certificate.id} certificate={certificate}/><View style={{...separator}}/></View>)
 											})
-									}		
-								</View>
-							</Combinator>
-						
-						</View>:false
-					}
-					
-
-			
-
+										}
+			 	  						return (<View style={{...center}}>
+			 	  							<Spinner style={{marginTop:15*k}} isVisible size={30} type={'WanderingCubes'} color={'0679a2'}/>       
+										</View>)
+									})
+							}		
+						</View>
+					</Combinator>
 			</View>		
-     		)
-		}
-		return <Loading size={30} color={'#0679a2'} isVisible={this.state.loading}/>
+ 		)
 		
 	}
 }

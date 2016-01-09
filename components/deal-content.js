@@ -7,6 +7,7 @@ import Info from './info'
 import Comments from './comments'
 import Address from './address'
 import {deal} from './mock'
+import _ from 'lodash'
 
 let UIManager = require('NativeModules').UIManager;
 let {
@@ -34,8 +35,8 @@ export default class DealContent extends React.Component{
 		// })
 		
 	}
+
 	render(){
-		// console.log(this.props.deal);
 		let tabView,commentBox;
 		if(this.state.num===0){
 			tabView=<Info dealId={this.props.deal.id} count={this.state.count} />

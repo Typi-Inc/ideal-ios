@@ -29,6 +29,9 @@ let PickerItemIOS=PickerIOS.Item
 let UIManager = require('NativeModules').UIManager;
 
 export default class FindTab extends React.Component{
+	static contextTypes={
+    	state$: React.PropTypes.any
+  	}
 	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:{text:'Almaty'},loadDeals:false,placeholderText:'Искать по тегам',tagCount:0}
 	shouldComponentUpdate(p,s){
 		if(s.loadDeals===this.state.loadDeals){
@@ -48,6 +51,7 @@ export default class FindTab extends React.Component{
 		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
 		if(this.chosenTags){
 			this.setState({loadDeals: false})
+
 			onTagTextChange('')
 		}
 		
@@ -58,9 +62,10 @@ export default class FindTab extends React.Component{
 		this.cancelText.setNativeProps({style:{fontSize:0.1,marginLeft:0}})
 		this.textInput.blur()
 		if(this.chosenTags&&this.chosenTags[0]){
-			this.setState({
-				loadDeals: true,
-			})
+			// toggleTag('')
+					this.setState({
+						loadDeals: true,
+					})
 			this.textInput.blur()
 		}
 	// onTagTextChange('')
@@ -144,16 +149,20 @@ export default class FindTab extends React.Component{
 				this.state.loadDeals && this.deals && this.deals.setNativeProps({style:{height:h2}})
 			}
 		})
-		
 	}
 	componentWillMount() {
 		onTagTextChange('')
 	}
 	componentDidMount() {
+		this.subscription = this.context.state$.subscribe(state => {
+			this.dealsById = state.dealsById
+		})
+
         this._keyboardWillShowSubscription= DeviceEventEmitter.addListener('keyboardWillShow', this.handleKeyboardAppear.bind(this));
         this._keyboardWillHideSubscription= DeviceEventEmitter.addListener('keyboardWillHide', this.handleKeyboardDisappear.bind(this));
     }
     componentWillUnmount() {
+    	this.subscription.dispose()
         this._keyboardWillShowSubscription.remove();
         this._keyboardWillHideSubscription.remove();
     }
@@ -190,7 +199,6 @@ export default class FindTab extends React.Component{
 										onChangeText={(text) => {
 											if(!text.includes('+')){
 												onTagTextChange(text)
-
 											}
 										}}
 										value={text1}
@@ -210,7 +218,6 @@ export default class FindTab extends React.Component{
 						 	<Combinator me={'chosenTags'}>
 						 		<View style={{flexDirection:'row',...center}}>
 		 						<Word city={true} ref={el=>this.city=el} chooseTag={this.chooseCity.bind(this)} isUp={false} tag={this.state.city}/>
-
 							 		{
 							 			this.props.chosenTags$.map(
 							 				chosenTags=>{
@@ -223,7 +230,6 @@ export default class FindTab extends React.Component{
 														})}
 								 					</View>
 									 			}
-
 							 				})
 									}
 						 		</View>
@@ -237,13 +243,19 @@ export default class FindTab extends React.Component{
 		
 				<View style={{flex:1}}>
 
-				{this.state.loadDeals ? <Combinator me={'deals'}>
+				{this.state.loadDeals ? 
 						<View ref={el=>this.deals=el} style={{flex:1,height:500*k}}>
+
+							<Combinator  me={'deals'}>
 							{
-								Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$, this.props.dealsById$,
-									(chosenTags,searchedDeals,dealsById) => {
-										// console.log('before', this.chosenTags, searchedDeals, dealsById)
-										if (!chosenTags || !searchedDeals || !dealsById) {
+								this.context.state$.map(state => {
+									// console.log(state.dealsById, 'dealsById')
+									return {chosenTags: state.chosenTags, searchedDeals: state.dealsByTags}
+								}).
+								map(
+								// Observable.combineLatest(this.props.chosenTags$, this.props.searchedDeals$, this.props.dealsById$,
+									({chosenTags,searchedDeals}) => {
+										if (!chosenTags || !searchedDeals) {
 											let result = {};
 											if (this.chosenTags) {
 												result.chosenTags = chosenTags
@@ -251,25 +263,19 @@ export default class FindTab extends React.Component{
 											if (this.searchedDeals) {
 												result.searchedDeals = searchedDeals
 											}
-											if (this.dealsById) {
-												result.dealsById = dealsById
-											}
 											if (this.chosenTags || this.searchedDeals || this.dealsById) {
 												return result
 											}
 											return this.searchedDeals = 'isLoading';
 										}
-										return {chosenTags, searchedDeals, dealsById}
-									}).map(({chosenTags,searchedDeals,dealsById}) => {
+										return {chosenTags, searchedDeals}
+									}).map(({chosenTags,searchedDeals}) => {
 										if (chosenTags) {
 											this.chosenTags = chosenTags
 											this.tagIdString = this.chosenTags.map(tag => tag.id).join(',')
 										}
 										if (searchedDeals) {
 											this.searchedDeals = searchedDeals
-										}
-										if (dealsById) {
-											this.dealsById = dealsById
 										}
 										if (this.searchedDeals === 'isLoading' || !this.dealsById) {
 											return <Deals search={true}
@@ -281,8 +287,11 @@ export default class FindTab extends React.Component{
 												<Text style={{margin:15,color:'gray',textAlign:'center'}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
 											</View>
 										}
-
-										this.data = _.values(this.searchedDeals[this.tagIdString]).map(path => this.dealsById[path[1]]).filter(x=>x)
+										if (this.dealsById) {
+											this.data = _.values(this.searchedDeals[this.tagIdString]).map(path => this.dealsById[path[1]]).filter(x=>x)										
+										} else {
+											this.data = []
+										}
 										this.numberOfSearchedDeals = this.data.length
 										return <Deals search={true}
 											getMoreData={this.getMoreData.bind(this)}
@@ -292,8 +301,9 @@ export default class FindTab extends React.Component{
 									}
 								)
 							}
+							</Combinator>
 						</View>
-					</Combinator> : <View>
+					 : <View>
 						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
 							<ScrollView keyboardShouldPersistTaps={true}>
 								<Combinator me={'suggestion tags'}>
@@ -348,9 +358,7 @@ export default class FindTab extends React.Component{
 							<View ref={el=>this.slider=el}/>
 						</View>
 						<View style={{flex:100}}>
-							<Combinator>
 								<View >
-									
 									{this.props.isLoadingTags?
 										(<View style={{backgroundColor:'rgba(255,255,255,0.8)',
 											width:320*k,top:0*k,flexDirection:'column',
@@ -358,13 +366,8 @@ export default class FindTab extends React.Component{
 						 	 				  <Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'#aaaaaa'}/>       
 					    				  </View>):<View/>
 									}
-
 								</View>
-							</Combinator>
-
 						</View>
-
-						
 					</View>
 				}
 				</View>

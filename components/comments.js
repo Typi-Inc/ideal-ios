@@ -56,7 +56,7 @@ export default class Comments extends React.Component{
 
 					{	
 						this.context.state$.pluck('dealsById').filter(x=>x).
-							pluck([this.props.dealId]).filter(x=>x).pluck('comments').filter(x=>x).map(comments=>{
+							pluck(this.props.dealId).filter(x=>x).pluck('comments').filter(x=>x).map(comments=>{
 								if (comments==='isLoading'){
 		 	  						return <View style={{...center}}>
 		 	  						<Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
