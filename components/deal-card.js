@@ -63,15 +63,13 @@ export default class DealCard extends React.Component{
 					[this.props.deal.id]
 				)
 			} else {
-				console.log('her')
 				lock.show({closable:true}, (err, profile, token) => {
-					console.log('calling jenniffer')
 					if (err) {
 						return;
 					}
 						store.save('Auth0Token',{idToken:token.idToken}).then(res=>{
 							toggleAuth(token.idToken)
-							console.log(profile)
+							// console.log(profile)
 							callQuery(
 								['users', 'create'],
 								[profile],
@@ -106,45 +104,51 @@ export default class DealCard extends React.Component{
 							</LightBox>
 						<TouchableWithoutFeedback onPress={this.state.isOpen ? null:this.props.viewDeal} style={{height:330*h}}>
 							<View>
-							<View style={{marginLeft:!this.state.isOpen?5*k:10*k,flexDirection:'row', //title of the deal
-								justifyContent:'space-between',alignItems:'center'}}>
-								<View style={{width:260*k}}>
-									<Text>
-										<Text style={{fontSize:14*k,fontWeight:'400',}}>{deal.title}</Text>
-										<Text style={{fontSize:14*k,fontWeight:'600',}}> «{deal.business.name}»</Text>
-									</Text>
-								</View>
-								<View style={{width:1,backgroundColor:'e4e4e4',height:46*k,}}/>
-									<View style={{flexDirection:'row',marginLeft:this.state.isOpen ?3*k:1*k}}>
-										<Like like={this.like.bind(this)} bool={this.props.deal.likedByUser['{{me}}']} isOpen={this.state.isOpen}/>
+								<View style={{marginLeft:!this.state.isOpen?5*k:10*k,flexDirection:'row', //title of the deal
+									justifyContent:'space-between',alignItems:'center'}}>
+									<View style={{width:260*k}}>
+										<Text>
+											<Text style={{fontSize:14*k,fontWeight:'400',}}>{deal.title}</Text>
+											<Text style={{fontSize:14*k,fontWeight:'600',}}> «{deal.business.name}»</Text>
+										</Text>
 									</View>
-							</View> 
-							<View style={{height:1,backgroundColor:'e4e4e4'}}/>
+									<View style={{width:1,backgroundColor:'e4e4e4',height:46*k,}}/>
+										<View style={{flexDirection:'row',marginLeft:this.state.isOpen ?3*k:1*k}}>
+											<Like like={this.like.bind(this)} bool={this.props.deal.likedByUser['{{me}}']} isOpen={this.state.isOpen}/>
+										</View>
+								</View> 
+								<View style={{height:1,backgroundColor:'e4e4e4'}}/>
 
 
 
-							<View style={{marginTop:10*k,flexDirection:'row',
-								justifyContent:'center',alignItems:'center' //tag row starting here
-								}}>
-
-								<View style={{flexDirection:'row',flexWrap:'wrap',flex:2,marginLeft:!this.state.isOpen?5*k:10*k}}>
-									{deal.tags&&_.values(deal.tags['sort:createdAt=desc'].edges).filter(tag=>tag.text).map((tag,i)=>{
-										return <Text style={{fontSize:10*k,color:'gray',fontWeight:'500'}} key={i}>  {tag.text.toUpperCase()}</Text>
-									})}
+								<View style={{flexDirection:'row',marginTop:10*k}}>
+									<View style={{flex:2}}>
+										<View style={{flexDirection:'row',flexWrap:'wrap',flex:2,marginLeft:!this.state.isOpen?5*k:10*k,width:200*k}}>
+											{deal.tags&&_.values(deal.tags['sort:createdAt=desc'].edges).filter(tag=>tag.text).map((tag,i)=>{
+												return <Text style={{fontSize:10*k,color:'gray',fontWeight:'500'}} key={i}>  {tag.text.toUpperCase()}</Text>
+											})}
+										</View>
+											<View style={{flexDirection:'row',marginBottom:10*k,alignItems:'center',marginTop:10*k,marginLeft:!this.state.isOpen?10*k:15*k}}>
+												<Image source={{uri:'sharing6',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:2,marginRight:3}}/>
+												<Text style={{color:'gray'}}>114</Text>
+												<Image source={{uri:'cartGreen',isStatic:true}} style={{height:10*k,width:10*k,marginRight:3,marginLeft:8}}/>
+												<Text style={{color:'gray'}}>19</Text>
+												<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
+												<Text style={{color:'gray'}}>{deal.likes['sort:createdAt=desc'].count}</Text>
+												
+											</View>
+										
+									</View>
+									<View style={{flex:1,flexDirection:'row',...center,marginTop:10*k}}>
+										<Text style={{textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:13*k,color:'gray',textDecorationColor:'red'}}>1000 </Text>
+										<Text style={{fontSize:17*k,fontWeight:'600',fontFamily:'Monaco'}}>700<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
+									</View>
 								</View>
-								<View style={{flex:1,flexDirection:'row',...center,}}>
-									<Text style={{textDecorationLine:'line-through',fontSize:15*k,color:'gray',textDecorationColor:'red'}}>1000  </Text>
-									<Text style={{fontSize:20*k,fontWeight:'600'}}>700</Text>
-								</View>
-							</View>
-							<View style={{flexDirection:'row',marginBottom:14*k,alignItems:'center',marginTop:10*k,marginLeft:!this.state.isOpen?10*k:15*k}}>
-								<Image source={{uri:'cartGreen',isStatic:true}} style={{height:10*k,width:10*k,marginRight:3}}/>
-								<Text style={{color:'gray'}}>19</Text>
-								<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
-								<Text style={{color:'gray'}}>{deal.likes['sort:createdAt=desc'].count}</Text>
-								<Image source={{uri:'Earn blue green',isStatic:true}} style={{height:22*k,width:16*k,marginLeft:8,marginRight:3,marginBottom:4*k,transform:[{rotate:'15deg'}]}}/>
-								<Text style={{color:'gray'}}>1000 тг</Text>
-							</View>
+
+
+
+
+								
 							</View>
 						</TouchableWithoutFeedback>
 					</Animated.View>

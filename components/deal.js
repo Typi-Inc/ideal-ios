@@ -230,30 +230,30 @@ export default class Deal extends React.Component{
 				automaticallAdjustContentInsets={false}
 				scrollEnabled={this.state.isOpen}>
 					<DealCard ref={el=>this.dealCard=el} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
-					{this.state.isOpen?<View><View style={{paddingRight:20,paddingLeft:20,marginBottom:10*k}}>
+					{this.state.isOpen?<View><View style={{paddingRight:15,paddingLeft:15,marginBottom:10*k}}>
 						<View style={{height:5*k}}/>
-					   <SegmentedControlIOS values={['Сделки', 'Контакты', 'Комменты']} 
+					   <SegmentedControlIOS values={['Сделки', 'Инфо', 'Комменты']} 
 					   tintColor={'#0084b4'} selectedIndex={0}
 					   onValueChange={(e)=>{
 					   		if(e==='Сделки'){
 					   			if(this.scrollOffsetY<300*k){
-					   				this.refs['scroll'].scrollTo(330*k)
+					   				this.refs['scroll'].scrollTo(300*k)
 					   			}else{
-					   				this.refs['scroll'].scrollWithoutAnimationTo(330*k)
+					   				this.refs['scroll'].scrollWithoutAnimationTo(300*k)
 					   			}	
 					   			this.refs['deal-content'].changeTab(0)
-					   		}else if(e==='Контакты'){
+					   		}else if(e==='Инфо'){
 					   			if(this.scrollOffsetY<300*k){
-					   				this.refs['scroll'].scrollTo(330*k)
+					   				this.refs['scroll'].scrollTo(300*k)
 					   			}else{
-					   				this.refs['scroll'].scrollWithoutAnimationTo(330*k)
+					   				this.refs['scroll'].scrollWithoutAnimationTo(300*k)
 					   			}
 					   			this.refs['deal-content'].changeTab(1)
 					   		}else{
 					   			if(this.scrollOffsetY<300*k){
-					   				this.refs['scroll'].scrollTo(330*k)
+					   				this.refs['scroll'].scrollTo(300*k)
 					   			}else{
-					   				this.refs['scroll'].scrollWithoutAnimationTo(330*k)
+					   				this.refs['scroll'].scrollWithoutAnimationTo(300*k)
 					   			}
 					   			this.refs['deal-content'].changeTab(2)
 					   		}

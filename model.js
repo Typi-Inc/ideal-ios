@@ -8,6 +8,7 @@ var store = require('react-native-simple-store');
 
 let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	let data$ = new Rx.ReplaySubject(1);//data stream of state
+	data$.onNext({featuredDeals:'isLoading'})
 	let state$ = data$.scan((accumulator , newData) => _.merge(accumulator, newData, 
 		(a, b) => {
 		if (_.isArray(a) && _.isArray(b) && a.length - b.length === 1) {
@@ -78,6 +79,15 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		subscribe(data => data && data.json ? data$.onNext(data.json) : data$.onNext({tagsByText: 'not found' }))
 	getQuery$.subscribe(paths => {
 		if (paths[0].includes('certificates')) {
+			data$.onNext({
+				[paths[0][0]] : {
+					[paths[0][1]]: {
+						[paths[0][2]] : 'isLoading'
+					}
+				}
+			})
+		}
+		if (paths[0].includes('comments')) {
 			data$.onNext({
 				[paths[0][0]] : {
 					[paths[0][1]]: {

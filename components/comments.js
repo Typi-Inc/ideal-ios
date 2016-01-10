@@ -35,7 +35,7 @@ export default class Comments extends React.Component{
 		if(!this.state.loading){
 			return (
 
-				<View style={{marginBottom:300}}>
+				<View style={{marginBottom:60}}>
 
 				<TouchableOpacity>
 							<View style={{height:30*k,...center}}>

@@ -96,7 +96,7 @@ export default class DealNavbar extends React.Component{
 		this.animatedStyle1={
 			height:this.anim1.interpolate({inputRange:[0,.4,.8,1],outputRange:[35*k,35*k,40*k,55*k]}),
 			borderRadius:this.anim1.interpolate({inputRange:[0,1],outputRange:[3*k,0*k]}),
-			width:this.anim1.interpolate({inputRange:[0,1],outputRange:[100*k,320*k]}),
+			width:this.anim1.interpolate({inputRange:[0,1],outputRange:[110*k,320*k]}),
 			backgroundColor:'#0679a2',
 			left:this.anim1.interpolate({inputRange:[0,1],outputRange:[0*k,-100*k]}),
 			marginLeft:50*k,
@@ -123,11 +123,12 @@ export default class DealNavbar extends React.Component{
 			width:this.anim1.interpolate({inputRange:[0,0.5,0.8,1],outputRange:[0*k,10,60,70*k]}),
 			// opacity:this.anim1.interpolate({inputRange:[0,.1,.5,1],outputRange:[0,1,1,1]}),			
 			...center,
-			marginRight:this.anim1.interpolate({inputRange:[0,.5,1],outputRange:[0*k,10,65*k]}),
-			marginLeft:this.anim1.interpolate({inputRange:[0,1],outputRange:[0*k,10*k]}),
+			marginRight:this.anim1.interpolate({inputRange:[0,.5,1],outputRange:[0*k,10,55*k]}),
+			marginLeft:this.anim1.interpolate({inputRange:[0,1],outputRange:[0*k,35*k]}),
 		}
 		this.slideDownStyle1={
 			position:'absolute',
+
 			opacity:this.anim1.interpolate({inputRange:[0,.1,.5,.8,.9,1],outputRange:[0,0,.0,0,.1,1]}),
 			top:this.anim1.interpolate({inputRange:[0,1],outputRange:[50*k,50*k]}),
 			left:this.anim1.interpolate({inputRange:[0,1],outputRange:[160*k,0*k]}),
@@ -195,7 +196,7 @@ export default class DealNavbar extends React.Component{
 							<TouchableOpacity style={this.buttonAnimatedStyle1} onPress={this.backEarnClick.bind(this)}>
 								<Animated.Image style={this.imageAnimatedStyle1} source={{uri:'crossWhite',isStatic:true}}/>
 							</TouchableOpacity>
-							<Animated.Text ref={el=>this.earnText=el} style={this.textAnimatedStyle1}>Заработать</Animated.Text>
+							<Animated.Text ref={el=>this.earnText=el} style={this.textAnimatedStyle1}>Рекомендовать</Animated.Text>
 							<Animated.View style={{backgroundColor:'blue',width:this.anim1.interpolate({inputRange:[0,1],outputRange:[0,120*k]})}}/>
 						</Animated.View>
 

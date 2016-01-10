@@ -29,14 +29,19 @@ export default class Auth extends React.Component{
 	render(){
 		if(!this.state.loggedIn){
 			lock.show({closable:true}, (err, profile, token) => {
-				this.context.goHome()
+				if(!token)this.context.goHome()
+
 				if (err) {
 					return;
 				}
 				store.save('Auth0Token',{idToken:token.idToken}).then(res=>{
 					toggleAuth(token.idToken)
 					callQuery(['users', 'create'],[profile],['id'])
+
 				})
+				this.setTimeout(()=>{
+					this.setState({loggedIn:true})
+				},100)
 			});
 		}
 		if(this.state.loggedIn){

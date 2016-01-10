@@ -145,6 +145,7 @@ export default class Deals extends React.Component{
 		// console.log('mounting deals in home ')
 	}
 	render(){
+		console.log('render deals')
 		this.canOpen=1
 		this.y=this.y || 0;
 		if(this.props.data[0]){
