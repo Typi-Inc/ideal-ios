@@ -32,10 +32,18 @@ export default class FindTab extends React.Component{
 	static contextTypes={
     	state$: React.PropTypes.any
   	}
-	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:220*k,hideSearch:false,chosenTags:[],city:{text:'Almaty'},loadDeals:false,placeholder:'Искать по тегам',tagCount:0}
+	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:{text:'Almaty'},loadDeals:false,placeholderText:'Искать по тегам',tagCount:0}
+	shouldComponentUpdate(p,s){
+		if(s.loadDeals===this.state.loadDeals){
+			return false
+		}//else if(s.placeholderText===this.state.placeholderText) return false
+		return true
+	}
 	chooseCity(city){
 		LayoutAnimation.easeInEaseOut()
+		this.setState({city:city,loadDeals:true},()=>{
 		Animated.spring(this.anim,{toValue:this.anim._value>0?0:1}).start()
+		})
 	}
 	focus(){
 		LayoutAnimation.easeInEaseOut()
@@ -43,8 +51,12 @@ export default class FindTab extends React.Component{
 		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
 		this.hideDeals()
 		if(this.chosenTags){
+			// this.setState({loadDeals: false})
+			
+
 			onTagTextChange('')
 		}
+		
 	}
 	cancel(){
 		LayoutAnimation.configureNext(openAnimation)
@@ -60,9 +72,13 @@ export default class FindTab extends React.Component{
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
-		toggleTag(tag);
-		this.textInput.setNativeProps({placeholder:'Добавить еще тег'})
-		this.showDeals()
+		this.setState({placeholderText:'Добавить еще тег'},()=>{
+				toggleTag(tag);
+				// this.setState({
+				// 	loadDeals: true,
+				// })
+			this.showDeals()
+		})
 		this.setTimeout(()=>this.cancel(),0)
 	}
 	cancelTag(tag){
@@ -71,14 +87,24 @@ export default class FindTab extends React.Component{
 			if(this.chosenTags.length>1){
 
 				this.hideDeals()
-				this.textInput.setNativeProps({placeholder:'Добавить еще тег'})
+					this.setState({
+					
+					placeholderText:'Добавить еще тег'
+				}, () => {
     				this.cancel()
-					toggleTag(tag)				
+					toggleTag(tag)
+					
+				})
 			}else{
-				this.textInput.setNativeProps({placeholder:'Искать по тегам'})
-				this.hideDeals()
-				toggleTag(tag)
-				onTagTextChange('')
+				this.setState({
+					// loadDeals: false,
+					placeholderText:'Искать по тегам'
+				}, () => {
+					this.hideDeals()
+					toggleTag(tag)
+					onTagTextChange('')
+				})
+
 			}
 		}
 	}
@@ -94,6 +120,10 @@ export default class FindTab extends React.Component{
 		}
 		this.searchPanel.setNativeProps({style:{height:val?0:100*k}})
 		this.deals.setNativeProps({style:{height:val?h1:h2}})
+		// this.setState({citySelectionHeight:200*k})
+		// this.setState({hideSearch:val})
+		// if(!val && this.state.tagCount>1) this.scroll.scrollTo(0,this.latestScroll)
+
 	}
 	handleKeyboardAppear(){
 		let height;
@@ -156,7 +186,7 @@ export default class FindTab extends React.Component{
 		])
 	}
 	render(){
-		console.log('render find tab')
+		console.log('render findtab')
 		this.anim=this.anim || new Animated.Value(0)
 		this.latestScroll=this.latestScroll || 0
 		return (
@@ -168,7 +198,7 @@ export default class FindTab extends React.Component{
 								{this.props.tagSearchText$.map(text1 => {
 									return <TextInput ref={el=>this.textInput=el}		    	
 							    		maxLength={40} 
-							    		placeholder={'Искать по тегам'}
+							    		placeholder={this.state.placeholderText}
 							    		clearTextOnFocus={true}
 							    		clearButtonMode={'while-editing'}
 							    		onFocus={this.focus.bind(this)}
@@ -329,8 +359,10 @@ export default class FindTab extends React.Component{
 				<Animated.View style={{flex:1,position:'absolute',bottom:0,height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,this.state.citySelectionHeight]}),
 				backgroundColor:'rgba(0,132,180,0.9)',width:320*k,justifyContent:'flex-start',alignItems:'center',opacity:this.anim,
 				}}>
-
-						<Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,0.2,1],outputRange:[0.1,15,15]}),fontWeight:'600',color:'white',marginTop:40*k,width:250*k,textAlign:'center'}}>Пока мы только в Алматы. Скоро и в других городах!</Animated.Text>
+						<TouchableOpacity  style={{...center,height:40}} onPress={this.chooseCity.bind(this,'Almaty')}><Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,1],outputRange:[0.1,15]}),fontWeight:'700',color:'white'}}>Almaty</Animated.Text></TouchableOpacity>
+						<TouchableOpacity style={{...center,height:40}} onPress={this.chooseCity.bind(this,'Astana')}><Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,1],outputRange:[0.1,15]}),fontWeight:'700',color:'white'}}>Astana</Animated.Text></TouchableOpacity>
+						<TouchableOpacity style={{...center,height:40}} onPress={this.chooseCity.bind(this,'Moscow')}><Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,1],outputRange:[0.1,15]}),fontWeight:'700',color:'white'}}>Moscow</Animated.Text></TouchableOpacity>
+						<TouchableOpacity style={{...center,height:40}} onPress={this.chooseCity.bind(this,'London')}><Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,1],outputRange:[0.1,15]}),fontWeight:'700',color:'white'}}>London</Animated.Text></TouchableOpacity>
 				</Animated.View>
 			</View>	
 		)
