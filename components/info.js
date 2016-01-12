@@ -26,11 +26,10 @@ export default class Info extends React.Component{
 	// 	// LayoutAnimation.easeInEaseOut()
 	// 	this.setState({loading:false})
 	// },300)
-		
 	}
 	componentWillMount(){
 		getQuery([
-			['dealsById',this.props.dealId,'certificates','sort:createdAt=desc', 'edges', {from: 0, to: 20}, ['title','oldPrice','newPrice','id']],
+			['dealsById',this.props.deal.get('id'),'certificates','sort:createdAt=desc', 'edges', {from: 0, to: 20}, ['title','oldPrice','newPrice','id']],
 			// ['dealsById',this.props.dealId,'certificates','sort:createdAt=desc', 'edges', {from: 0, to: 20}, 'author',['name','image']],
 		])
 	}
@@ -42,27 +41,22 @@ export default class Info extends React.Component{
 	render(){
 		this.anim=this.anim || new Animated.Value(0)
 		this.anim1=this.anim1 || new Animated.Value(0)
+		let certificates = this.props.deal.getIn(['certificates', 'sort:createdAt=desc', 'edges'])
 		return (
 			<View style={{marginBottom:80*k}}>
-					<Combinator>
-						<View style={{marginBottom:0*k}}>
-							{	
-								this.context.state$.pluck('dealsById').filter(x=>x).
-									pluck(this.props.dealId).filter(x=>x).
-									pluck('certificates').map(certificates=>{
-										if (certificates&&certificates['sort:createdAt=desc']&&certificates['sort:createdAt=desc'].edges){
-											return _.values(certificates['sort:createdAt=desc'].edges).filter(certificate=>certificate && certificate.title).map(certificate=>{
-												// console.log(certificate,'certificate here')
-												return (<View><Certificate key={certificate.id} certificate={certificate}/><View style={{...separator}}/></View>)
-											})
-										}
-			 	  						return (<View style={{...center}}>
-			 	  							<Spinner style={{marginTop:15*k}} isVisible size={30} type={'WanderingCubes'} color={'0679a2'}/>       
-										</View>)
-									})
-							}		
+				{
+					certificates ?
+					certificates.toArray().map(certificate => (
+						<View key={`${certificate.get('id')}${this.props.deal.get('id')}`} >
+							<Certificate certificate={certificate}/>
+							<View style={{...separator}}/>
 						</View>
-					</Combinator>
+					)) : (
+						<View  style={{...center}}>
+  							<Spinner style={{marginTop:15*k}} isVisible size={30} type={'WanderingCubes'} color={'0679a2'}/>       
+						</View>
+					)
+				}
 			</View>		
  		)
 		

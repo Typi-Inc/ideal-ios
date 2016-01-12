@@ -19,6 +19,7 @@
     "react-native-mapbox-gl": "^3.0.0",
     "react-native-social-share": "^0.5.0",
     "react-native-spinkit": "0.0.5",
+    "react-pure-render": "^1.0.2",
     "react-timer-mixin": "^0.13.3",
     "rx": "^4.0.7"
   }

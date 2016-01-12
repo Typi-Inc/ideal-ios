@@ -25,41 +25,34 @@ export default class DealContent extends React.Component{
 	changeTab(num){
 		// this.requestAnimationFrame(()=>{
 			// LayoutAnimation.configureNext(openAnimation)
-			this.setState({num:num,count:this.state.count+1,commentCount:num===2?this.state.commentCount+1:this.state.commentCount},()=>{
-				if(num===2){
+			this.setState({
+				num:num,
+				count:this.state.count+1,
+				commentCount:num===2?this.state.commentCount+1:this.state.commentCount
+			}, ()=>{
+				if (num===2) {
 					this.props.openCommentBox()
-				}else{
+				} else {
 					this.props.closeCommentBox()
 				}	
 			})
 		// })
-		
 	}
 
 	render(){
 		let tabView,commentBox;
-		if(this.state.num===0){
-			tabView=<Info dealId={this.props.deal.id} count={this.state.count} />
-
-		}else if (this.state.num===1){
-			tabView=<Address/>
-		}else{
-			tabView=<Comments dealId={this.props.deal.id} count={this.state.commentCount} />
-			// this.setTimeout(()=>this.props.openCommentBox(),300)
-		
+		if (this.state.num===0){
+			tabView = <Info deal={this.props.deal} count={this.state.count} />
+		} else if (this.state.num===1) {
+			tabView = <Address/>
+		} else {
+			tabView = <Comments deal={this.props.deal} />
 		}
 		return (	
-				<View style={{marginTop:0,marginBottom:20}}>
-				   
-				 
-					
+			<View style={{marginTop:0,marginBottom:20}}>
 				{tabView}	
-					
-				</View>
-				
-
-
-     		)
+			</View>
+ 		)
 	}
 }
 Object.assign(DealContent.prototype, TimerMixin);

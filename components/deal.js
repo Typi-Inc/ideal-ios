@@ -37,19 +37,22 @@ export default class Deal extends React.Component{
 	animateScrollToTop(){
 		this.refs['scroll'].scrollWithoutAnimationTo()
 	}
-
+	shouldComponentUpdate(nextProps, nextState) {
+		console.log(this.props.deal === nextProps.deal)
+		return this.props.deal !== nextProps.deal
+	}
 	toggleOpen(open){
 		this.setState({isOpen:open})
 	}
 	moveUp(pagey){
-		this.refs['mainView'].setNativeProps({
+		this.mainView.setNativeProps({
 			style:{
 				top:-pagey,
 			}
 		})
 	}
 	moveDown(pagey){
-		this.refs['mainView'].setNativeProps({
+		this.mainView.setNativeProps({
 			style:{
 				top:0,
 			}
@@ -59,7 +62,8 @@ export default class Deal extends React.Component{
 		return this.state.hidden
 	}
 	hide(){
-		this.refs['mainView'].setNativeProps({
+		console.log('hiding')
+		this.mainView.setNativeProps({
 			style:{
 				top:300*k,
 			}
@@ -67,7 +71,7 @@ export default class Deal extends React.Component{
 		this.state.hidden=true
 	}
 	unHide(){
-		this.refs['mainView'].setNativeProps({
+		this.mainView.setNativeProps({
 			style:{
 				top:0,
 			}
@@ -75,7 +79,7 @@ export default class Deal extends React.Component{
 		this.state.hidden=false
 	}
 	animateOpen(pagey,t){
-		this.refs['mainView'].setNativeProps({
+		this.mainView.setNativeProps({
 			style:{
 				height:k===1?600*h:600*k,
 				// width:320*k,
@@ -91,7 +95,7 @@ export default class Deal extends React.Component{
 	}	
 	
 	animateClose(pagey){
-		this.refs['mainView'].setNativeProps({
+		this.mainView.setNativeProps({
 			style:{
 				height:355*k,
 				// width:300*k,
@@ -174,8 +178,8 @@ export default class Deal extends React.Component{
 		Animated.timing(this.earn,{toValue:0,duration:200}).start()
 			
 	}
-	shouldComponentUpdate(nextprops,nextstate){
-		return !_.isEqual(this.state,nextstate)||!_.isEqual(this.props,nextprops)
+	shouldComponentUpdate(nextProps,nextState){
+		return this.props.deal !== nextProps.deal || this.state !== nextState
 	}
 	render(){
 		this.earn=this.earn || new Animated.Value(0)
@@ -203,7 +207,7 @@ export default class Deal extends React.Component{
 	      </View>)
 		}
 			return (
-			<Animated.View ref='mainView' 
+			<Animated.View ref={el=>this.mainView=el} 
 			style={{flex:1,width:this.state.isOpen?320*k:320*k,height:355*k,
 				backgroundColor:'white',marginTop:this.state.isOpen?0:10*k,
 				// borderWidth:this.state.isOpen?0:1,borderColor:'#e4e4e4'
@@ -214,7 +218,7 @@ export default class Deal extends React.Component{
 					navigator={this.props.navigator} 
 					closeDeal={this.props.closeDeal}/>:<DealAuthor
 						viewDeal={this.props.viewDeal} isOpen={this.state.isOpen} 
-						openHelper={this.openHelper.bind(this)} business={deal.business}/>
+						openHelper={this.openHelper.bind(this)} business={deal.get('business')}/>
 				}
 				<ScrollView 
 				ref='scroll'
@@ -270,7 +274,7 @@ export default class Deal extends React.Component{
 						<DealContent 
 						ref='deal-content' isOpen={this.state.isOpen}
 						closeCommentBox={this.closeCommentBox.bind(this)} 
-						openCommentBox={this.openCommentBox.bind(this)} deal={deal} conditions={deal.conditions}/>:null}
+						openCommentBox={this.openCommentBox.bind(this)} deal={deal} conditions={deal.get('conditions')}/>:null}
 				</ScrollView>
 					{this.state.commentBox?<CommentBox pushedFromLenta={this.props.pushedFromLenta && this.props.pushedFromLenta} ref='comment-box' submitComment={this.submitComment.bind(this)}/>:<View/>}
 					<Animated.View ref={el=>this.dialog=el} style={{

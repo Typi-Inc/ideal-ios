@@ -6,6 +6,7 @@ import { Observable } from 'rx'
 import Deals from './deals'
 import {getFeaturedDeals} from '../model'
 import {getQuery} from '../intent/getQuery';
+import { List } from 'immutable'
 let UIManager = require('NativeModules').UIManager;
 let {
   Text,
@@ -13,24 +14,26 @@ let {
 } = React;
 
 
-export default class FeaturedDealsTab extends React.Component{
+export default class FeaturedDealsTab extends React.Component {
+	static contextTypes={
+    	state$: React.PropTypes.any
+  	}
 	componentWillMount() {
 		getQuery([
-			['featuredDeals',{from:0,to:10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, 'text'],
-			['featuredDeals',{from:0,to:10}, ['title','conditions','id','image','discount']],
-			['featuredDeals',{from:0,to:10},'business',['name','image']],
-			['featuredDeals',{from:0,to:10},'likes','sort:createdAt=desc','count'],
-			['featuredDeals',{from:0,to:10},'likedByUser', '{{me}}']
+			['featuredDeals',{from:0,to:9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, ['id', 'text']],
+			['featuredDeals',{from:0,to:9}, ['title','conditions','id','image','discount']],
+			['featuredDeals',{from:0,to:9},'business',['name','image']],
+			['featuredDeals',{from:0,to:9},'likes','sort:createdAt=desc','count'],
+			['featuredDeals',{from:0,to:9},'likedByUser', '{{me}}']
 		])
 	}
-
 	getMoreData(){
 		getQuery([
-			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, 'text'],
-			['featuredDeals',{from:this.deals.length,to:this.deals.length+10}, ['title','conditions','id','image','discount']],
-			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'business',['name','image']],
-			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likes','sort:createdAt=desc','count'],
-			['featuredDeals',{from:this.deals.length,to:this.deals.length+10},'likedByUser', '{{me}}']
+			['featuredDeals',{from:this.size,to:this.size+9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, ['id', 'text']],
+			['featuredDeals',{from:this.size,to:this.size+9}, ['title','conditions','id','image','discount']],
+			['featuredDeals',{from:this.size,to:this.size+9},'business',['name','image']],
+			['featuredDeals',{from:this.size,to:this.size+9},'likes','sort:createdAt=desc','count'],
+			['featuredDeals',{from:this.size,to:this.size+9},'likedByUser', '{{me}}']
 		])
 	}
 	render(){
@@ -38,15 +41,15 @@ export default class FeaturedDealsTab extends React.Component{
 			<Combinator>
 				<View style={{flex:1}}>
 					{
-						Observable.combineLatest(this.props.featuredDeals$, this.props.dealsById$, (featuredDeals, dealsById) => {
+						this.context.state$.map(state => {
+							let dealsById = state.get('dealsById')
+							let featuredDeals = state.get('featuredDeals');
 							if (!dealsById || !featuredDeals) {
-								return <Deals
-									data={[]}/>
+								return <Deals data={List()} />
 							}
-							return {featuredDeals, dealsById}
-						}).filter(x => x).map(({featuredDeals, dealsById}) => {
-							this.deals = _.values(featuredDeals).map(path => dealsById[path[1]])
-							return <Deals status={'featured deals'} getMoreData={this.getMoreData.bind(this)}  data={this.deals} />
+							let deals = featuredDeals.valueSeq().map(path => dealsById.get(path.get(1))).toList()
+							this.size = deals.size
+							return <Deals getMoreData={this.getMoreData.bind(this)} data={deals} />
 						})
 					}
 				</View>

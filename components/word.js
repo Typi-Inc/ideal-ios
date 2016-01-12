@@ -16,12 +16,12 @@ let {
 export default class Word extends React.Component{
 	state={isUp:this.props.isUp,canClick:true}
 	choose(){
-		LayoutAnimation.configureNext(openAnimation)
+		// LayoutAnimation.configureNext(openAnimation)
 		// this.setState({isUp:!this.state.isUp})
 		this.props.chooseTag(this.props.tag)
 	}
 	cancel(){
-		LayoutAnimation.configureNext(openAnimation)
+		// LayoutAnimation.configureNext(openAnimation)
 		
 		if(this.props.city && this.props.city){
 			return;
@@ -76,7 +76,7 @@ export default class Word extends React.Component{
 	 						fontSize:13,
 	 						textAlign:'justify',
 	 						fontWeight:this.props.city && this.props.city?'700': '500'
-	 					}}>{tag.text}</Animated.Text>
+	 					}}>{tag.get('text')}</Animated.Text>
 	 					{!this.state.isUp?<View/>:this.props.city && this.props.city?false:
 		 					<Animated.Image ref='cross' 
 		 					source={{uri:'crossWhite',isStatic:true}} 

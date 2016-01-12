@@ -1,27 +1,33 @@
 import Rx from 'rx';
 import falcor from 'falcor';
 import FalcorHttpDatasource from 'falcor-http-datasource';
+import { Map, fromJS, List } from 'immutable';
 import _ from 'lodash';
-// import deepAssign from 'deep-assign';
+import store from 'react-native-simple-store'
 
-var store = require('react-native-simple-store');
-
-let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
-	let data$ = new Rx.ReplaySubject(1);//data stream of state
-	data$.onNext({featuredDeals:'isLoading'})
-	let state$ = data$.scan((accumulator , newData) => _.merge(accumulator, newData, 
-		(a, b) => {
-		if (_.isArray(a) && _.isArray(b) && a.length - b.length === 1) {
-			return b;
-		}
+const removeCircular = (json) => {
+	return _.merge({}, json, (a, b) => {
 		if (b && b['\u001eparent']) {
 			delete b['\u001eparent']
 		}
 		if (b && b['\u001ekey']) {
 			delete b['\u001ekey']
 		}
-	}))
-	let rootModel;
+	})
+}
+
+let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
+	let data$ = new Rx.ReplaySubject(1);
+	data$.onNext({featuredDeals:'isLoading'})
+	let state$ = data$.scan((accumulator, newData) => {
+		if (newData.chosenTags) {
+			return accumulator.merge(fromJS(newData))
+		}
+		return accumulator.mergeDeep(fromJS(removeCircular(newData)))
+	}, Map())
+	let rootModel = new falcor.Model({
+		source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+	});
 	store.get('Auth0Token').then(token=>{
 		if(token&&token.idToken){
 			rootModel = new falcor.Model({
@@ -139,6 +145,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 
 	toggleTag$.
 	  scan((acc, nextTag) => {
+	  	nextTag = nextTag.toJS()
 	  	if(acc.filter(tag=>tag.id===nextTag.id).length>0){
 	  		acc.splice(acc.indexOf(acc.filter(tag=>tag.id===nextTag.id)[0]),1)
 	  		return acc
@@ -146,15 +153,14 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		acc.unshift(nextTag)
 		return acc
 	}, []).map(tags => {
-		// console.log(tags, 'in a map');
 		data$.onNext({ chosenTags: tags, dealsByTags: 'isLoading' })
 		let tagIdString=tags.length === 0 ? '' : tags.map(tag => tag.id).join(',');
 		return Rx.Observable.fromPromise(rootModel.get(
-			['dealsByTags',tagIdString,{from:0,to:10},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'text'],
-			['dealsByTags',tagIdString,{from:0,to:10},['title','conditions','id','image','discount','payout']],
-			['dealsByTags',tagIdString,{from:0,to:10},'business',['name','image']],
-			['dealsByTags',tagIdString,{from:0,to:10},'likes','sort:createdAt=desc','count'],
-			['dealsByTags',tagIdString,{from:0,to:10},'likedByUser', '{{me}}']
+			['dealsByTags',tagIdString,{from:0,to:9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 9}, ['id','text']],
+			['dealsByTags',tagIdString,{from:0,to:9},['title','conditions','id','image','discount','payout']],
+			['dealsByTags',tagIdString,{from:0,to:9},'business',['name','image']],
+			['dealsByTags',tagIdString,{from:0,to:9},'likes','sort:createdAt=desc','count'],
+			['dealsByTags',tagIdString,{from:0,to:9},'likedByUser', '{{me}}']
 
 		))
 	})//.delay(100)

@@ -46,22 +46,16 @@ export default class DealCard extends React.Component{
 	static contextTypes={
     	state$: React.PropTypes.any
   	}
-  	componentWillMount() {
-  		// getQuery([
-  		// 	['dealsById', this.props.deal.id, 'likes', `where:idDeal=${this.props.deal.id},idLiker={{me}}`, 'count']
-  		// ])
-  	}
 	componentWillReceiveProps(props){
 		this.setState({isOpen:props.isOpen})
 	}
 	like(){
 		// this.setState({isLiked:!this.state.isLiked,liked:!this.state.isLiked?this.state.liked+1:this.state.liked-1})
-		this.props.disable()
 		store.get('Auth0Token').then(res=>{
 			if (res) {
 				callQuery(
 					['like', 'toggle'],
-					[this.props.deal.id]
+					[this.props.deal.get('id')]
 				)
 			} else {
 				lock.show({closable:true}, (err, profile, token) => {
@@ -85,8 +79,8 @@ export default class DealCard extends React.Component{
 	renderLightBox(){
 		return (
 			
-				<Image  source={{uri:this.props.deal.image}}  //image of the deal
-				style={{justifyContent:'flex-end',
+				<Image source={{uri:this.props.deal.get('image')}}  //image of the deal
+					style={{justifyContent:'flex-end',
 					height:this.state.isOpen?200*h:180*h}}>
 				</Image>
 			)
@@ -97,7 +91,7 @@ export default class DealCard extends React.Component{
 		return (
 						<Animated.View  >
 							<LightBox canOpen={this.state.isOpen} viewDeal={this.props.viewDeal} onClose={()=>LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)} renderContent={this.renderLightBox.bind(this)}>
-								<Image  source={{uri:deal.image}} resizeMode={'cover'}  //image of the deal
+								<Image  source={{uri:deal.get('image')}} resizeMode={'cover'}  //image of the deal
 								style={{justifyContent:'flex-end',alignItems:'flex-start',
 									height:this.state.isOpen?200*h:180*h,width:this.state.isOpen?320*k:320*k}}>
 									
@@ -109,13 +103,13 @@ export default class DealCard extends React.Component{
 									justifyContent:'space-between',alignItems:'center'}}>
 									<View style={{width:260*k}}>
 										<Text>
-											<Text style={{fontSize:14*k,fontWeight:'400',}}>{deal.title}</Text>
-											<Text style={{fontSize:14*k,fontWeight:'600',}}> «{deal.business.name}»</Text>
+											<Text style={{fontSize:14*k,fontWeight:'400',}}>{deal.get('title')}</Text>
+											<Text style={{fontSize:14*k,fontWeight:'600',}}> «{deal.getIn(['business', 'name'])}»</Text>
 										</Text>
 									</View>
 									<View style={{width:1,backgroundColor:'e4e4e4',height:46*k,}}/>
 										<View style={{flexDirection:'row',marginLeft:this.state.isOpen ?3*k:1*k}}>
-											<Like like={this.like.bind(this)} bool={this.props.deal.likedByUser['{{me}}']} isOpen={this.state.isOpen}/>
+											<Like like={this.like.bind(this)} bool={this.props.deal.getIn(['likedByUser', '{{me}}'])} isOpen={this.state.isOpen}/>
 										</View>
 								</View> 
 								<View style={{height:1,backgroundColor:'e4e4e4'}}/>
@@ -125,9 +119,11 @@ export default class DealCard extends React.Component{
 								<View style={{flexDirection:'row',marginTop:10*k}}>
 									<View style={{flex:2}}>
 										<View style={{flexDirection:'row',flexWrap:'wrap',flex:2,marginLeft:!this.state.isOpen?5*k:10*k,width:200*k}}>
-											{deal.tags&&_.values(deal.tags['sort:createdAt=desc'].edges).filter(tag=>tag.text).map((tag,i)=>{
-												return <Text style={{fontSize:10*k,color:'gray',fontWeight:'500'}} key={i}>  {tag.text.toUpperCase()}</Text>
-											})}
+											{
+												deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => (
+													<Text style={{fontSize:10*k,color:'gray',fontWeight:'500'}} key={`${tag.get('id')}${deal.get('id')}`}>  {tag.get('text').toUpperCase()}</Text>
+												))
+											}
 										</View>
 											<View style={{flexDirection:'row',marginBottom:10*k,alignItems:'center',marginTop:10*k,marginLeft:!this.state.isOpen?10*k:15*k}}>
 												<Image source={{uri:'sharing6',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:2,marginRight:3}}/>
@@ -135,7 +131,7 @@ export default class DealCard extends React.Component{
 												<Image source={{uri:'cartGreen',isStatic:true}} style={{height:10*k,width:10*k,marginRight:3,marginLeft:8}}/>
 												<Text style={{color:'gray'}}>19</Text>
 												<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
-												<Text style={{color:'gray'}}>{deal.likes['sort:createdAt=desc'].count}</Text>
+												<Text style={{color:'gray'}}>{deal.getIn(['likes', 'sort:createdAt=desc', 'count'])}</Text>
 												
 											</View>
 										
