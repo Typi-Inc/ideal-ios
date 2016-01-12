@@ -56,6 +56,7 @@ export default class DealCard extends React.Component{
 	}
 	like(){
 		// this.setState({isLiked:!this.state.isLiked,liked:!this.state.isLiked?this.state.liked+1:this.state.liked-1})
+		this.props.disable()
 		store.get('Auth0Token').then(res=>{
 			if (res) {
 				callQuery(
@@ -140,8 +141,8 @@ export default class DealCard extends React.Component{
 										
 									</View>
 									<View style={{flex:1,flexDirection:'row',...center,marginTop:10*k}}>
-										<Text style={{textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:13*k,color:'gray',textDecorationColor:'red'}}>1000 </Text>
-										<Text style={{fontSize:17*k,fontWeight:'600',fontFamily:'Monaco'}}>700<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
+										<Text style={{textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:15*k,color:'gray',textDecorationColor:'red'}}>1000 </Text>
+										<Text style={{ marginRight:10*k,fontSize:19*k,fontWeight:'600',fontFamily:'Monaco'}}>700<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
 									</View>
 								</View>
 

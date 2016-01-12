@@ -8,10 +8,8 @@ class Combinator extends React.Component {
     // Keep track of whether the component has mounted
     this.componentHasMounted = false;
     // Subscribe to child prop changes so we know when to re-render
-  }
-  componentWillMount() {
-    if (this.props.children.subscribe) {
-      this.subscription = this.props.children.subscribe(
+    if (props.children.subscribe) {
+      this.subscription = props.children.subscribe(
         children => {
           // LayoutAnimation.easeInEaseOut()
           !this.componentHasMounted
@@ -20,7 +18,7 @@ class Combinator extends React.Component {
         }
       )
     } else {
-      this.subscription = combineTemplate(this.props.children).subscribe(
+      this.subscription = combineTemplate(props.children).subscribe(
         children => {
           // LayoutAnimation.easeInEaseOut()
           !this.componentHasMounted
@@ -41,6 +39,9 @@ class Combinator extends React.Component {
     this.subscription.dispose();
   }
   render() {
+    if (this.props.me === 'deals') {
+      // console.log('rerendering')
+    }
     return this.state;
   }
 }

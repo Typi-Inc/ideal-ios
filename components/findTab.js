@@ -40,10 +40,7 @@ export default class FindTab extends React.Component{
 		return true
 	}
 	chooseCity(city){
-		LayoutAnimation.easeInEaseOut()
-		this.setState({city:city,loadDeals:true},()=>{
 		Animated.spring(this.anim,{toValue:this.anim._value>0?0:1}).start()
-		})
 	}
 	focus(){
 		LayoutAnimation.easeInEaseOut()
@@ -51,9 +48,6 @@ export default class FindTab extends React.Component{
 		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
 		this.hideDeals()
 		if(this.chosenTags){
-			// this.setState({loadDeals: false})
-			
-
 			onTagTextChange('')
 		}
 		
@@ -64,22 +58,18 @@ export default class FindTab extends React.Component{
 		this.cancelText.setNativeProps({style:{fontSize:0.1,marginLeft:0}})
 		this.textInput.blur()
 		if(this.chosenTags&&this.chosenTags[0]){
-			// toggleTag('')
-				this.showDeals()
+			this.showDeals()
 			this.textInput.blur()
 		}
-	onTagTextChange('')
+		onTagTextChange('')
 	}
 	chooseTag(tag){
 		this.anim.setValue(0)
 		this.setState({placeholderText:'Добавить еще тег'},()=>{
-				toggleTag(tag);
-				// this.setState({
-				// 	loadDeals: true,
-				// })
+			toggleTag(tag);
 			this.showDeals()
 		})
-		this.setTimeout(()=>this.cancel(),0)
+		this.cancel()
 	}
 	cancelTag(tag){
 		this.anim.setValue(0)
@@ -120,10 +110,6 @@ export default class FindTab extends React.Component{
 		}
 		this.searchPanel.setNativeProps({style:{height:val?0:100*k}})
 		this.deals.setNativeProps({style:{height:val?h1:h2}})
-		// this.setState({citySelectionHeight:200*k})
-		// this.setState({hideSearch:val})
-		// if(!val && this.state.tagCount>1) this.scroll.scrollTo(0,this.latestScroll)
-
 	}
 	handleKeyboardAppear(){
 		let height;
@@ -206,6 +192,9 @@ export default class FindTab extends React.Component{
 							    			width:300*k,borderColor:'#cccccc',paddingLeft:10*k,
 							    			backgroundColor:'transparent',alignSelf:'center'}}
 										onChangeText={(text) => {
+											if(text.includes('+')){
+												text = ''
+											}
 											if(!text.includes('+')){
 												onTagTextChange(text)
 											}
@@ -241,7 +230,7 @@ export default class FindTab extends React.Component{
 									}
 						 		</View>
 						 	</Combinator>
-			
+
 						 	</View>
 						</ScrollView>
 						<View style={{...separator,}}/>
@@ -249,12 +238,8 @@ export default class FindTab extends React.Component{
 				
 		
 				<View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
-
-				
 						<View ref={el=>this.deals=el} style={{height:500*k}}>
-
 							<Combinator  me={'deals'}>
-
 							{
 								this.context.state$.map(state => {
 									if (state.chosenTags) {
@@ -262,7 +247,7 @@ export default class FindTab extends React.Component{
 										this.tagIdString = state.chosenTags.map(x => x.id).join(',')
 									}
 									if (!state.dealsById) {
-										return <Deals search={true}
+										return <Deals status={'loading status'} search={true}
 												toggleSearch={this.toggleSearch.bind(this)}
 												data={[]}/>
 									}
@@ -271,26 +256,23 @@ export default class FindTab extends React.Component{
 												<Text style={{margin:10,color:'gray',textAlign:'center',width:300*k}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
 											</View>
 									}
-									let data;
 									if (state.dealsByTags && state.dealsById && state.chosenTags) {
-										data = _.values(state.dealsByTags[this.tagIdString]).map(path => state.dealsById[path[1]]).filter(x=>x)										
-									} else {
-										return <View style={{...center}}>
-											<Text style={{margin:15,color:'gray',textAlign:'center'}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
-										</View>
+										this.data = _.values(state.dealsByTags[this.tagIdString]).map(path => state.dealsById[path[1]]).filter(x=>x)							
+										this.numberOfSearchedDeals = this.data ? this.data.length : 0
+										return <Deals status={'deals itsel'} search={true}
+											getMoreData={this.getMoreData.bind(this)}
+											toggleSearch={this.toggleSearch.bind(this)}
+											data={this.data}
+										/>
 									}
-									this.numberOfSearchedDeals = data ? data.length : 0
-									return <Deals search={true}
-										getMoreData={this.getMoreData.bind(this)}
-										toggleSearch={this.toggleSearch.bind(this)}
-										data={data}
-									/>
+									return <View style={{...center}}>
+										<Text style={{margin:15,color:'gray',textAlign:'center'}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
+									</View>
 								})
 							}
 							</Combinator>
 						</View>
-					  <View ref={el=>this.bis=el} style={{position:'absolute',left:0}}
-					  >
+					  <View ref={el=>this.bis=el} style={{position:'absolute',left:0}}>
 						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
 							<ScrollView keyboardShouldPersistTaps={true}>
 								<Combinator me={'suggestion tags'}>
@@ -359,10 +341,8 @@ export default class FindTab extends React.Component{
 				<Animated.View style={{flex:1,position:'absolute',bottom:0,height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,this.state.citySelectionHeight]}),
 				backgroundColor:'rgba(0,132,180,0.9)',width:320*k,justifyContent:'flex-start',alignItems:'center',opacity:this.anim,
 				}}>
-						<TouchableOpacity  style={{...center,height:40}} onPress={this.chooseCity.bind(this,'Almaty')}><Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,1],outputRange:[0.1,15]}),fontWeight:'700',color:'white'}}>Almaty</Animated.Text></TouchableOpacity>
-						<TouchableOpacity style={{...center,height:40}} onPress={this.chooseCity.bind(this,'Astana')}><Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,1],outputRange:[0.1,15]}),fontWeight:'700',color:'white'}}>Astana</Animated.Text></TouchableOpacity>
-						<TouchableOpacity style={{...center,height:40}} onPress={this.chooseCity.bind(this,'Moscow')}><Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,1],outputRange:[0.1,15]}),fontWeight:'700',color:'white'}}>Moscow</Animated.Text></TouchableOpacity>
-						<TouchableOpacity style={{...center,height:40}} onPress={this.chooseCity.bind(this,'London')}><Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,1],outputRange:[0.1,15]}),fontWeight:'700',color:'white'}}>London</Animated.Text></TouchableOpacity>
+					<Animated.Text style={{fontSize:this.anim.interpolate({inputRange:[0,0.2,1],outputRange:[0.1,15,15]}),fontWeight:'600',color:'white',marginTop:40*k,width:250*k,textAlign:'center'}}>Пока мы только в Алматы. Скоро и в других городах!</Animated.Text>
+						
 				</Animated.View>
 			</View>	
 		)

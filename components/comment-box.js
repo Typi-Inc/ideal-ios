@@ -37,13 +37,13 @@ export default class CommentBox extends React.Component{
 	render(){
     let bottom;
     if(k===1){
-      bottom=27
+      bottom=45
     }else if (k>1){
       bottom=55
     }
     let height;
     if(k===1){
-      height=250
+      height=255
     }else if (k>1){
       height=260
     }

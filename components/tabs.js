@@ -9,6 +9,7 @@ import FindTab from './findTab'
 import Navbar from './navbar'
 import {data} from './mock'
 import Auth from './auth'
+import Imut from './imut'
 var Auth0Lock = require('react-native-lock-ios');
 var lock = new Auth0Lock({clientId: 'TWpDN8HdEaplEXJYemOcNYSXi64oQmf8', domain: 'ideal.eu.auth0.com'});
 import Parent from './parent'
@@ -63,7 +64,7 @@ var Epay=require('react-native').NativeModules.Epay
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'notifications',height:45,overflow:'visible'}
+	state={selectedTab:'search',height:45,overflow:'visible'}
 
   	static childContextTypes={toggleTabs:React.PropTypes.func,goHome:React.PropTypes.func}
 	getChildContext(){
@@ -149,17 +150,7 @@ export default class Tabs extends React.Component{
 				    // badgeText="1"
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'notifications' })}>
-				    <View style={{backgroundColor:'blue',flex:1,...center}}>
-
-				    	<TouchableOpacity onPress={()=>LinkingIOS.openURL(`whatsapp://send?text=https://www.whatsapp.com/\n\n\nhello isken how is going you are going to be spammed ❤️12,🔫 `)}>
-				    		<View><Text>click me</Text></View>
-				    	</TouchableOpacity>
-
-				    	<TouchableOpacity onPress={()=>Epay.pay('fucky')}>
-				    		<View><Text>pay</Text></View>
-				    	</TouchableOpacity>
-
-				    </View>
+				    	<Imut/>
 				  </TabNavigator.Item>
 
 				    <TabNavigator.Item
@@ -186,5 +177,15 @@ export default class Tabs extends React.Component{
 
 Object.assign(Tabs.prototype, TimerMixin);
 
+// <View style={{backgroundColor:'blue',flex:1,...center}}>
 
+// 				    	<TouchableOpacity onPress={()=>LinkingIOS.openURL(`whatsapp://send?text=https://www.whatsapp.com/\n\n\nhello isken how is going you are going to be spammed ❤️12,🔫 `)}>
+// 				    		<View><Text>click me</Text></View>
+// 				    	</TouchableOpacity>
+
+// 				    	<TouchableOpacity onPress={()=>Epay.pay('fucky')}>
+// 				    		<View><Text>pay</Text></View>
+// 				    	</TouchableOpacity>
+
+// 				    </View>
 				   

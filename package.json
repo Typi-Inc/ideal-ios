@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "deep-assign": "^2.0.0",
+    "deep-equal": "^1.0.1",
     "falcor": "github:dzannotti/falcor",
     "falcor-http-datasource": "^0.1.2",
     "lodash": "^3.10.1",

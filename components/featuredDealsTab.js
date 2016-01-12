@@ -46,7 +46,7 @@ export default class FeaturedDealsTab extends React.Component{
 							return {featuredDeals, dealsById}
 						}).filter(x => x).map(({featuredDeals, dealsById}) => {
 							this.deals = _.values(featuredDeals).map(path => dealsById[path[1]])
-							return <Deals getMoreData={this.getMoreData.bind(this)}  data={this.deals} />
+							return <Deals status={'featured deals'} getMoreData={this.getMoreData.bind(this)}  data={this.deals} />
 						})
 					}
 				</View>

@@ -37,6 +37,7 @@ export default class Deal extends React.Component{
 	animateScrollToTop(){
 		this.refs['scroll'].scrollWithoutAnimationTo()
 	}
+
 	toggleOpen(open){
 		this.setState({isOpen:open})
 	}
@@ -76,7 +77,7 @@ export default class Deal extends React.Component{
 	animateOpen(pagey,t){
 		this.refs['mainView'].setNativeProps({
 			style:{
-				height:k===1?580*h:600*h,
+				height:k===1?600*h:600*k,
 				// width:320*k,
 				top:-pagey+t,
 				// marginLeft:0,
@@ -92,7 +93,7 @@ export default class Deal extends React.Component{
 	animateClose(pagey){
 		this.refs['mainView'].setNativeProps({
 			style:{
-				height:360*h,
+				height:355*k,
 				// width:300*k,
 				top:0,
 				// marginLeft:10*k,
@@ -173,6 +174,9 @@ export default class Deal extends React.Component{
 		Animated.timing(this.earn,{toValue:0,duration:200}).start()
 			
 	}
+	shouldComponentUpdate(nextprops,nextstate){
+		return !_.isEqual(this.state,nextstate)||!_.isEqual(this.props,nextprops)
+	}
 	render(){
 		this.earn=this.earn || new Animated.Value(0)
 		this.slideDownStyle1={
@@ -200,7 +204,7 @@ export default class Deal extends React.Component{
 		}
 			return (
 			<Animated.View ref='mainView' 
-			style={{flex:1,width:this.state.isOpen?320*k:320*k,height:this.state.isOpen?568*h:360*k,
+			style={{flex:1,width:this.state.isOpen?320*k:320*k,height:355*k,
 				backgroundColor:'white',marginTop:this.state.isOpen?0:10*k,
 				// borderWidth:this.state.isOpen?0:1,borderColor:'#e4e4e4'
 			}}>
@@ -229,7 +233,7 @@ export default class Deal extends React.Component{
 				stickyHeaderIndices={this.state.isOpen?[1]:null}
 				automaticallAdjustContentInsets={false}
 				scrollEnabled={this.state.isOpen}>
-					<DealCard ref={el=>this.dealCard=el} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
+					<DealCard  ref={el=>this.dealCard=el} disable={this.props.disable} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
 					{this.state.isOpen?<View><View style={{paddingRight:15,paddingLeft:15,marginBottom:10*k}}>
 						<View style={{height:5*k}}/>
 					   <SegmentedControlIOS values={['Сделки', 'Инфо', 'Комменты']} 
