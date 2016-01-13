@@ -11,8 +11,6 @@ let {
 export default class Comment extends React.Component{
 	state={}
 	render(){
-		console.log('here')
-		console.log(this.props.comment.getIn(['author', 'image']), 'asdasdasdasd')
 		return (
 			<View>
 				<View style={{flexDirection:'row',marginTop:7*k}}>

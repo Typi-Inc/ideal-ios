@@ -124,8 +124,8 @@ export default class FindTab extends React.Component{
 					h2=600
 				}
 				this.slider && this.slider.setNativeProps({style:{flex:0}})
-				!this.state.loadDeals && this.suggestion&&this.suggestion.setNativeProps({style:{height:h1}})
-				this.state.loadDeals && this.deals && this.deals.setNativeProps({style:{height:h2}})
+				this.suggestion&&this.suggestion.setNativeProps({style:{height:h1}})
+				this.deals && this.deals.setNativeProps({style:{height:h2}})
 			}
 		})
 	}
@@ -160,7 +160,6 @@ export default class FindTab extends React.Component{
 		])
 	}
 	render(){
-		console.log('render findtab')
 		this.anim=this.anim || new Animated.Value(0)
 		this.latestScroll=this.latestScroll || 0
 		return (
@@ -261,7 +260,7 @@ export default class FindTab extends React.Component{
 												<Text style={{margin:10,color:'gray',textAlign:'center',width:300*k}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
 											</View>
 										}
-										if (state.dealsByTags.get && state.dealsById && state.chosenTags) {
+										if (state.dealsByTags && state.dealsByTags.get && state.dealsById && state.chosenTags) {
 											this.data = state.dealsByTags.get(this.tagIdString).valueSeq().
 												map(path => state.dealsById.get(path.get(1))).filter(x=>x).toList()
 											this.numberOfSearchedDeals = this.data ? this.data.size : 0
@@ -292,6 +291,7 @@ export default class FindTab extends React.Component{
 							 					filter(x => x.searchedTags).
 							 					// distinctUntilChanged().
 							 					map(({searchedTags, tagSearchText}) => {
+
 													if (searchedTags==='not found') {
 														return <View style={{...center}}>
 															<Text style={{margin:10,color:'gray',textAlign:'center'}}>Не найдено.</Text>
@@ -305,7 +305,7 @@ export default class FindTab extends React.Component{
 										 	 				  	<Spinner style={{marginTop:15*k}} isVisible={true} size={30} type={'WanderingCubes'} color={'#aaaaaa'}/>       
 									    				  </View>
 													}
-													let tagsToShow = searchedTags.get(tagSearchText).toArray().
+													let tagsToShow = searchedTags.get(tagSearchText) && searchedTags.get(tagSearchText).toArray().
 														filter(tag => tag && tag.get('text')).
 														filter(tag => {
 															if(this.chosenTags) {

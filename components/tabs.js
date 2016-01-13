@@ -64,7 +64,7 @@ var Epay=require('react-native').NativeModules.Epay
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'search',height:45,overflow:'visible'}
+	state={selectedTab:'notifications',height:45,overflow:'visible'}
 
   	static childContextTypes={toggleTabs:React.PropTypes.func,goHome:React.PropTypes.func}
 	getChildContext(){
@@ -81,21 +81,13 @@ export default class Tabs extends React.Component{
 
   	renderHome(route,navigator){
   		return (
-  			<FeaturedDealsTab
-  				featuredDeals$={this.props.state$.pluck('featuredDeals')} 
-  				dealsById$={this.props.state$.pluck('dealsById')}
-  			/>
+  			<FeaturedDealsTab />
   		)
 
   		// return <Deals route={route} data={data}/>
   	}
   	renderSearchTab(route,navigator){
-  		return (<FindTab searchedTags$={this.props.state$.pluck('tagsByText')}
-					chosenTags$={this.props.state$.pluck('chosenTags')}
-					searchedDeals$={this.props.state$.pluck('dealsByTags')}
-					dealsById$={this.props.state$.pluck('dealsById')}
-					tagSearchText$={this.props.state$.pluck('tagSearchText')}
-  				/>)
+  		return (<FindTab />)
   	}
   	renderProfile(route,navigator){
   		if(route.name==='Deal'){

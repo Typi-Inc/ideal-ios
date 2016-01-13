@@ -120,7 +120,7 @@ export default class DealCard extends React.Component{
 									<View style={{flex:2}}>
 										<View style={{flexDirection:'row',flexWrap:'wrap',flex:2,marginLeft:!this.state.isOpen?5*k:10*k,width:200*k}}>
 											{
-												deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => (
+												deal.getIn(['tags', 'sort:createdAt=desc', 'edges'])&&deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => (
 													<Text style={{fontSize:10*k,color:'gray',fontWeight:'500'}} key={`${tag.get('id')}${deal.get('id')}`}>  {tag.get('text').toUpperCase()}</Text>
 												))
 											}

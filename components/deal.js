@@ -38,7 +38,6 @@ export default class Deal extends React.Component{
 		this.refs['scroll'].scrollWithoutAnimationTo()
 	}
 	shouldComponentUpdate(nextProps, nextState) {
-		console.log(this.props.deal === nextProps.deal)
 		return this.props.deal !== nextProps.deal
 	}
 	toggleOpen(open){
@@ -179,7 +178,7 @@ export default class Deal extends React.Component{
 			
 	}
 	shouldComponentUpdate(nextProps,nextState){
-		return this.props.deal !== nextProps.deal || this.state !== nextState
+		return !this.props.deal.equals(nextProps.deal) || this.state !== nextState
 	}
 	render(){
 		this.earn=this.earn || new Animated.Value(0)

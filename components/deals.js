@@ -48,7 +48,6 @@ export default class Deals extends React.Component{
 		if(pagey<100){
 			let nextRef = this.props.data.getIn([currentIndex + 1, 'id'])
 			if(this[nextRef]){
-				console.log('herehe')
 				this[nextRef].hide()
 			}
 			
@@ -120,10 +119,10 @@ export default class Deals extends React.Component{
 		this.props.getMoreData();
 	}
 	shouldComponentUpdate(nextProps,nextState){
-		return this.props.data !== nextProps.data || this.state !== nextState
+		return !this.props.data.equals(nextProps.data)|| this.state !== nextState
 	}
 	render(){
-		console.log('render deals')
+		console.log('render deals',this.props.status)
 		if(this.props.data.get(0)) {
 			return (
 				<View style={{flex:1,backgroundColor:'#e8e8ee'}}>

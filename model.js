@@ -1,7 +1,7 @@
 import Rx from 'rx';
 import falcor from 'falcor';
 import FalcorHttpDatasource from 'falcor-http-datasource';
-import { Map, fromJS, List } from 'immutable';
+import { OrderedMap, Map, fromJS, List } from 'immutable';
 import _ from 'lodash';
 import store from 'react-native-simple-store'
 
@@ -19,12 +19,17 @@ const removeCircular = (json) => {
 let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	let data$ = new Rx.ReplaySubject(1);
 	data$.onNext({featuredDeals:'isLoading'})
-	let state$ = data$.scan((accumulator, newData) => {
+	let state$ = data$.delay(0).scan((accumulator, newData) => {
 		if (newData.chosenTags) {
-			return accumulator.merge(fromJS(newData))
+			return accumulator.merge(fromJS(newData, (key, value) => value.toOrderedMap()))
 		}
-		return accumulator.mergeDeep(fromJS(removeCircular(newData)))
+		return accumulator.mergeDeep(fromJS(removeCircular(newData), (key, value) => value.toOrderedMap()))
 	}, Map())
+	state$.featuredDeals$ = state$.map(x => Map({
+		featuredDeals: x.get('featuredDeals'),
+		dealsById: x.get('dealsById')
+	}))
+	
 	let rootModel = new falcor.Model({
 		source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
 	});

@@ -41,16 +41,17 @@ export default class FeaturedDealsTab extends React.Component {
 			<Combinator>
 				<View style={{flex:1}}>
 					{
-						this.context.state$.map(state => {
-							let dealsById = state.get('dealsById')
-							let featuredDeals = state.get('featuredDeals');
-							if (!dealsById || !featuredDeals) {
-								return <Deals data={List()} />
-							}
-							let deals = featuredDeals.valueSeq().map(path => dealsById.get(path.get(1))).toList()
-							this.size = deals.size
-							return <Deals getMoreData={this.getMoreData.bind(this)} data={deals} />
-						})
+						this.context.state$.
+							map(state => {
+								let dealsById = state.get('dealsById')
+								let featuredDeals = state.get('featuredDeals')
+								if (!featuredDeals || featuredDeals === 'isLoading') {
+									return <Deals data={List()} />
+								}
+								let deals = featuredDeals.valueSeq().map(path => dealsById.get(path.get(1))).toList()
+								this.size = deals.size
+								return <Deals status={'featured tab status'} getMoreData={this.getMoreData.bind(this)} data={deals} />
+							})
 					}
 				</View>
 			</Combinator>

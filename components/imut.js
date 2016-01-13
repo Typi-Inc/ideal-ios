@@ -1,89 +1,55 @@
 import React from 'react-native'
-import Rx from 'rx'
-import _ from 'lodash'
-import Combinator from './combinator'
-import { Map, fromJS } from 'immutable'
-const {
-	View,
-	Text,
-	TouchableOpacity
-} = React;
 import TimerMixin from 'react-timer-mixin'
+let {
+  LayoutAnimation,
+  Text,
+  View,
+  Animated,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  PickerIOS,
+  DeviceEventEmitter
+} = React;
+let PickerItemIOS=PickerIOS.Item
+let UIManager = require('NativeModules').UIManager;
 
-let count = 0
-let like = false
+import { OrderedMap, Map, fromJS } from 'immutable'
+let count = 1;
 
-let data$ = new Rx.ReplaySubject(1)
-let state$ = data$.scan((acc, data) => acc.mergeDeep(acc, fromJS(data)), Map())
-
-data$.onNext({
-	count:count,
-	like:like
-})
-data$.onNext({
-	count:count+1,
-	like:like
-})
-
-Rx.Observable.interval(2000).timeInterval().subscribe(() => {
-	data$.onNext({
-		count:count+1,
-		like:like
-	})
-	data$.onNext({
-		count:count+1,
-		like:like
-	})
-	count++
-})
-
-export default class Imut extends React.Component {
-	like() {
-		data$.onNext({
-			count: count+1,
-			like: !like
-		})
-		like = !like
+export default class FindTab extends React.Component{
+	state = {
+		map: Map({
+			obj: OrderedMap({
+							'0': 'value0',
+							'1': 'value1'
+						})
+		}).toOrderedMap()
+	}
+	handlePress() {
 		count++
+		this.setState({
+			map: this.state.map.mergeDeep(Map({
+				obj: OrderedMap({
+									[count]: 'value' + count
+								})
+			}))	
+		})
 	}
 	render() {
-		return (
-			<Combinator>
-			{
-				state$.map(data => (
-					<View style={{marginTop:120,...center}}>
-						<Text>Count {data.get('count')}</Text>
-						{
-							data.get('count')
-							? 
-							<Like like={this.like.bind(this)} data={data} /> 
-							:
-							<Text>No Like</Text>
-							
-
-						}
-					</View>
-				))
-			}
-			</Combinator>
-		)
-	}
-}
-
-class Like extends React.Component {
-	// shouldComponentUpdate(nextProps,s) {
- //  		return !_.isEqual(nextProps.data,this.props.data)
-	// }
-	render() {
+		console.log(Map.isMap(this.state.map))
 		return (
 			<View>
-				<Text>Liked {this.props.data.get('like') ? 'true' : 'false'}</Text>
-				<TouchableOpacity onPress={this.props.like}><Text> like me </Text></TouchableOpacity>
+				<TouchableOpacity onPress={this.handlePress.bind(this)}><Text>Add another</Text></TouchableOpacity>
+				{
+					this.state.map.get('obj').toArray().map(val => (
+						<Text key={val}>{val}</Text>
+					))
+				}
 			</View>
 		)
 	}
 }
-
-Object.assign(Imut.prototype, TimerMixin);
-
+Object.assign(FindTab.prototype, TimerMixin);
 
