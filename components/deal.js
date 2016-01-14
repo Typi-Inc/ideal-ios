@@ -29,7 +29,7 @@ let {
   ScrollView
 } = React;
 export default class Deal extends React.Component{
-	state={earnOpen:false,isOpen:this.props.isOpen,hidden:false,num:0,slideUp:0,commentBox:false,text:'',isLoaded:false,loading:this.props.isOpen};
+	state={earnOpen:false,isOpen:this.props.isOpen,buyText:'Купить',hidden:false,num:0,slideUp:0,commentBox:false,text:'',isLoaded:false,loading:this.props.isOpen};
 	static contextTypes={
     	showModal: React.PropTypes.func,hideModal:React.PropTypes.func
   	}
@@ -61,7 +61,6 @@ export default class Deal extends React.Component{
 		return this.state.hidden
 	}
 	hide(){
-		console.log('hiding')
 		this.mainView.setNativeProps({
 			style:{
 				top:300*k,
@@ -96,7 +95,7 @@ export default class Deal extends React.Component{
 	animateClose(pagey){
 		this.mainView.setNativeProps({
 			style:{
-				height:355*k,
+				height:this.heightOfCard,
 				// width:300*k,
 				top:0,
 				// marginLeft:10*k,
@@ -180,7 +179,22 @@ export default class Deal extends React.Component{
 	shouldComponentUpdate(nextProps,nextState){
 		return !this.props.deal.equals(nextProps.deal) || this.state !== nextState
 	}
+	setBuyText(){
+		this.setState({buyText:'Купить'})
+	}
 	render(){
+		this.heightOfCard=this.heightOfCard||345*k;
+		let lengthOfTags=0||lengthOfTags
+		if(this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']))lengthOfTags=this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => tag.get('text')).join(' ').length
+		if(lengthOfTags>0){
+			if(lengthOfTags>27&&lengthOfTags<50){
+				this.heightOfCard=355*k
+			}else if(lengthOfTags>=50 && lengthOfTags<75){
+				this.heightOfCard=365*k
+			}else if(lengthOfTags>=75 && lengthOfTags<100){
+				this.heightOfCard=375*k
+			}
+		}
 		this.earn=this.earn || new Animated.Value(0)
 		this.slideDownStyle1={
 			position:'absolute',
@@ -207,11 +221,11 @@ export default class Deal extends React.Component{
 		}
 			return (
 			<Animated.View ref={el=>this.mainView=el} 
-			style={{flex:1,width:this.state.isOpen?320*k:320*k,height:355*k,
+			style={{flex:1,width:this.state.isOpen?320*k:320*k,height:this.heightOfCard,
 				backgroundColor:'white',marginTop:this.state.isOpen?0:10*k,
 				// borderWidth:this.state.isOpen?0:1,borderColor:'#e4e4e4'
 			}}>
-				{this.state.isOpen ? <DealNavbar closeEarn={this.closeEarn.bind(this)} openEarn={this.openEarn.bind(this)} commentBox={this.state.commentBox} openCommentBox={this.openCommentBox.bind(this)}
+				{this.state.isOpen ? <DealNavbar buyText={this.state.buyText} closeEarn={this.closeEarn.bind(this)} openEarn={this.openEarn.bind(this)} commentBox={this.state.commentBox} openCommentBox={this.openCommentBox.bind(this)}
 					closeCommentBox={this.closeCommentBox.bind(this)} 
 					toggleScroll={this.toggleScroll.bind(this)} 
 					navigator={this.props.navigator} 
@@ -270,7 +284,7 @@ export default class Deal extends React.Component{
 
 					{this.state.isOpen?
 
-						<DealContent 
+						<DealContent setBuyText={this.setBuyText}
 						ref='deal-content' isOpen={this.state.isOpen}
 						closeCommentBox={this.closeCommentBox.bind(this)} 
 						openCommentBox={this.openCommentBox.bind(this)} deal={deal} conditions={deal.get('conditions')}/>:null}

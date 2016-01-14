@@ -90,15 +90,14 @@ export default class DealCard extends React.Component{
 		this.anim=this.anim || new Animated.Value(0)	
 		return (
 						<Animated.View  >
-							<LightBox canOpen={this.state.isOpen} viewDeal={this.props.viewDeal} onClose={()=>LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)} renderContent={this.renderLightBox.bind(this)}>
-								<Image  source={{uri:deal.get('image')}} resizeMode={'cover'}  //image of the deal
+								
+						<TouchableWithoutFeedback onPress={this.state.isOpen ? null:this.props.viewDeal} style={{height:330*h}}>
+							<View>
+							<Image  source={{uri:deal.get('image')}} resizeMode={'cover'}  //image of the deal
 								style={{justifyContent:'flex-end',alignItems:'flex-start',
 									height:this.state.isOpen?200*h:180*h,width:this.state.isOpen?320*k:320*k}}>
 									
 								</Image>
-							</LightBox>
-						<TouchableWithoutFeedback onPress={this.state.isOpen ? null:this.props.viewDeal} style={{height:330*h}}>
-							<View>
 								<View style={{marginLeft:!this.state.isOpen?5*k:10*k,flexDirection:'row', //title of the deal
 									justifyContent:'space-between',alignItems:'center'}}>
 									<View style={{width:260*k}}>

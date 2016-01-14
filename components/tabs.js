@@ -10,6 +10,8 @@ import Navbar from './navbar'
 import {data} from './mock'
 import Auth from './auth'
 import Imut from './imut'
+import Cart from './cart'
+
 var Auth0Lock = require('react-native-lock-ios');
 var lock = new Auth0Lock({clientId: 'TWpDN8HdEaplEXJYemOcNYSXi64oQmf8', domain: 'ideal.eu.auth0.com'});
 import Parent from './parent'
@@ -64,7 +66,7 @@ var Epay=require('react-native').NativeModules.Epay
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'notifications',height:45,overflow:'visible'}
+	state={selectedTab:'home',height:43,overflow:'visible'}
 
   	static childContextTypes={toggleTabs:React.PropTypes.func,goHome:React.PropTypes.func}
 	getChildContext(){
@@ -106,9 +108,9 @@ export default class Tabs extends React.Component{
 			>
 				  <TabNavigator.Item
 				    selected={this.state.selectedTab === 'search'}
-				    // title="Search"
-				    renderIcon={() => <Image style={{height:20,width:20}} source={require('image!magnifying-glass32-8')} />}
-				    renderSelectedIcon={() => <Image style={{height:20,width:20}} source={require('image!magnifying-glass32-7')}/>}
+				    // title="Поиск"
+				    renderIcon={() => <Image style={{height:19,width:19}} source={require('image!magnifying-glass32-8')} />}
+				    renderSelectedIcon={() => <Image style={{height:19,width:19}} source={require('image!magnifying-glass32-7')}/>}
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() =>this.setState({ selectedTab: 'search' })}>
  						<Navigator
@@ -120,9 +122,9 @@ export default class Tabs extends React.Component{
 
 				  <TabNavigator.Item
 				    selected={this.state.selectedTab === 'home'}
-				    // title="Home"
-				    renderIcon={() => <Image style={{height:23,width:23}} source={require('image!house204')} />}
-				    renderSelectedIcon={() => <Image style={{height:23,width:23}} source={require('image!house58')}/>}
+				    // title="Лучшее"
+				    renderIcon={() => <Image style={{height:22,width:22}} source={require('image!star')} />}
+				    renderSelectedIcon={() => <Image style={{height:22,width:22}} source={require('image!stara')}/>}
 				    // badgeText="1"
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'home' })}>
@@ -133,12 +135,23 @@ export default class Tabs extends React.Component{
 						/>
 
 				  </TabNavigator.Item>
+				  <TabNavigator.Item
+				    selected={this.state.selectedTab === 'cart'}
+				    // title="Корзина"
+				    renderIcon={() => <Image style={{height:21,width:21}} source={require('image!cart')} />}
+				    renderSelectedIcon={() => <Image style={{height:21,width:21}} source={require('image!carta')}/>}
+				    // badgeText="1"
+				    renderBadge={()=><View style={{width:15,height:15,borderRadius:7,backgroundColor:'#00b484',...center}}><Text style={{fontSize:10,color:'white',backgroundColor:'transparent'}}>12</Text></View>}
+				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
+				    onPress={() => this.setState({ selectedTab: 'cart' })}>
+				    	<Cart/>
+				  </TabNavigator.Item>
 
 				    <TabNavigator.Item
 				    selected={this.state.selectedTab === 'notifications'}
-				    // title="Activity"
-				    renderIcon={() => <Image style={{height:20,width:20}} source={require('image!notification5')} />}
-				    renderSelectedIcon={() => <Image style={{height:20,width:20}} source={require('image!notifications-2')}/>}
+				    // title="Уведомления"
+				    renderIcon={() => <Image style={{height:21,width:18}} source={require('image!notification')} />}
+				    renderSelectedIcon={() => <Image style={{height:21,width:18}} source={require('image!notificationa')}/>}
 				    // badgeText="1"
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'notifications' })}>
@@ -147,9 +160,9 @@ export default class Tabs extends React.Component{
 
 				    <TabNavigator.Item
 				    selected={this.state.selectedTab === 'profile'}
-				    // title="Profile"
-				    renderIcon={() => <Image style={{height:22,width:22}} source={require('image!profile10')} />}
-				    renderSelectedIcon={() => <Image style={{height:22,width:22}} source={require('image!users91')}/>}
+				    // title="Профиль"
+				    renderIcon={() => <Image style={{height:21,width:21}} source={require('image!profile')} />}
+				    renderSelectedIcon={() => <Image style={{height:21,width:21}} source={require('image!profilea')}/>}
 				    // badgeText="1"
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'profile' })}>

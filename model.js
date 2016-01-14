@@ -25,10 +25,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		}
 		return accumulator.mergeDeep(fromJS(removeCircular(newData), (key, value) => value.toOrderedMap()))
 	}, Map())
-	state$.featuredDeals$ = state$.map(x => Map({
-		featuredDeals: x.get('featuredDeals'),
-		dealsById: x.get('dealsById')
-	}))
+	
 	
 	let rootModel = new falcor.Model({
 		source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
@@ -159,6 +156,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		return acc
 	}, []).map(tags => {
 		data$.onNext({ chosenTags: tags, dealsByTags: 'isLoading' })
+
 		let tagIdString=tags.length === 0 ? '' : tags.map(tag => tag.id).join(',');
 		return Rx.Observable.fromPromise(rootModel.get(
 			['dealsByTags',tagIdString,{from:0,to:9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 9}, ['id','text']],
@@ -167,7 +165,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 			['dealsByTags',tagIdString,{from:0,to:9},'likes','sort:createdAt=desc','count'],
 			['dealsByTags',tagIdString,{from:0,to:9},'likedByUser', '{{me}}']
 
-		))
+		)).delay(100)
 	})//.delay(100)
 	.switchLatest().
 	   subscribe(data => {

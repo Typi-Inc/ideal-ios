@@ -209,7 +209,7 @@ export default class DealNavbar extends React.Component{
 						<TouchableOpacity style={this.buttonAnimatedStyle2} onPress={this.buyBack.bind(this)}>
 								<Animated.Image style={this.imageAnimatedStyle2} source={{uri:'crossWhite',isStatic:true}}/>
 							</TouchableOpacity>
-						<Animated.Text style={this.textAnimatedStyle2}>Купить</Animated.Text>
+						<Animated.Text style={this.textAnimatedStyle2}>{this.props.buyText}</Animated.Text>
 						<Animated.View style={{backgroundColor:'blue',width:this.anim2.interpolate({inputRange:[0,1],outputRange:[0,125*k]})}}/>
 
 					</Animated.View>

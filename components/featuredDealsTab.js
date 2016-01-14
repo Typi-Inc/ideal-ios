@@ -20,8 +20,9 @@ export default class FeaturedDealsTab extends React.Component {
   	}
 	componentWillMount() {
 		getQuery([
-			['featuredDeals',{from:0,to:9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, ['id', 'text']],
 			['featuredDeals',{from:0,to:9}, ['title','conditions','id','image','discount']],
+			['featuredDeals',{from:0,to:9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, ['id', 'text']],
+			
 			['featuredDeals',{from:0,to:9},'business',['name','image']],
 			['featuredDeals',{from:0,to:9},'likes','sort:createdAt=desc','count'],
 			['featuredDeals',{from:0,to:9},'likedByUser', '{{me}}']
@@ -29,11 +30,12 @@ export default class FeaturedDealsTab extends React.Component {
 	}
 	getMoreData(){
 		getQuery([
-			['featuredDeals',{from:this.size,to:this.size+9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, ['id', 'text']],
 			['featuredDeals',{from:this.size,to:this.size+9}, ['title','conditions','id','image','discount']],
 			['featuredDeals',{from:this.size,to:this.size+9},'business',['name','image']],
 			['featuredDeals',{from:this.size,to:this.size+9},'likes','sort:createdAt=desc','count'],
-			['featuredDeals',{from:this.size,to:this.size+9},'likedByUser', '{{me}}']
+			['featuredDeals',{from:this.size,to:this.size+9},'likedByUser', '{{me}}'],
+			['featuredDeals',{from:this.size,to:this.size+9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 6}, ['id', 'text']],
+
 		])
 	}
 	render(){

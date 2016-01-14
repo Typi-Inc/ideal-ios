@@ -82,7 +82,7 @@ export default class Deals extends React.Component{
 				}else{
 					this[refS].animateOpen(pagey,25*k)
 				}
-				this.context.toggleTabs(true)
+				// this.context.toggleTabs(true)
 				this.props.toggleSearch && this.props.toggleSearch(true)
 			})
 	
@@ -93,7 +93,7 @@ export default class Deals extends React.Component{
 			this[refS].closeCommentBox()
 			let currentIndex = this.props.data.findIndex(value => value.get('id') === refS)
 
-			this.context.toggleTabs(false)
+			// this.context.toggleTabs(false)
 			let handle = React.findNodeHandle(this[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
 				LayoutAnimation.configureNext(openAnimation);

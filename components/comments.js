@@ -42,7 +42,7 @@ export default class Comments extends React.Component{
 						comments.toArray().map(comment => (
 							<Comment key={`${comment.get('id')}${this.props.deal.get('id')}`} comment={comment} />
 						)) : (
-							<View style={{...center}}>
+							<View style={{...center,marginBottom:200*k}}>
 	 	  						<Spinner
 	 	  							style={{marginTop:15*k}}
 	 	  							isVisible={this.state.renderPlaceholderOnly}

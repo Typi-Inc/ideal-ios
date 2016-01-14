@@ -67,7 +67,7 @@ export default class FindTab extends React.Component{
 		this.cancel()
 	}
 	cancelTag(tag){
-		this.anim.setValue(0)
+		if(this.anim._value>0)this.anim.setValue(0)
 
 		if(this.chosenTags.get(0) && this.searchedDeals!=='isLoading') {
 			if(this.chosenTags.size>1){

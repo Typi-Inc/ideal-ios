@@ -19,13 +19,12 @@ let {
   View,
 } = React;
 export default class Info extends React.Component{
-	state={loading:false,open:true,open1:false}
+	state={loading:true,open:true,open1:false,totalBuyCount:0}
 	componentDidMount(){
+		this.setTimeout(()=>{
 		// LayoutAnimation.easeInEaseOut()
-	// this.setTimeout(()=>{
-	// 	// LayoutAnimation.easeInEaseOut()
-	// 	this.setState({loading:false})
-	// },300)
+			this.setState({loading:false})
+		},0)
 	}
 	componentWillMount(){
 		getQuery([
@@ -38,17 +37,26 @@ export default class Info extends React.Component{
   	}
   	componentWillUnmount(){
   	}
+  	totalBuyCount(val,type){
+  		this.setState({totalBuyCount:this.state.totalBuyCount+val})
+  	}
 	render(){
+		if(this.state.loading){
+			return <View style={{height:500*k}}></View>
+		}
 		this.anim=this.anim || new Animated.Value(0)
 		this.anim1=this.anim1 || new Animated.Value(0)
 		let certificates = this.props.deal.getIn(['certificates', 'sort:createdAt=desc', 'edges'])
 		return (
-			<View style={{marginBottom:80*k}}>
+			<View style={{marginBottom:100*k}}>
+				<View style={{...center,height:40*k}}>
+					<Text style={{color:'gray'}}>Осталось 3 дня</Text>
+				</View>
+				<View style={{...separator}}/> 
 				{
-					certificates ?
-					certificates.toArray().map(certificate => (
+					certificates ? certificates.toArray().map(certificate => (
 						<View key={`${certificate.get('id')}${this.props.deal.get('id')}`} >
-							<Certificate certificate={certificate}/>
+							<Certificate totalBuyCount={this.totalBuyCount.bind(this)} certificate={certificate}/>
 							<View style={{...separator}}/>
 						</View>
 					)) : (

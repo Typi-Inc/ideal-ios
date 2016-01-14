@@ -14,44 +14,55 @@ let {
 export default class Certificate extends React.Component{
 	state={count:0}
 	plus(){
+		this.setState({count:this.state.count+1})
+		// totalBuyCount()
 
 	}
 	minus(){
-
+		if(this.state.count===0){
+			return;
+		}
+		this.setState({count:this.state.count-1})
 	}
 	render(){
 		let certificate=this.props.certificate
 		return (
 
 				<View>
-					<View style={{flexDirection:'row',marginTop:10,marginBottom:7*k}}>
-						<Text style={{marginLeft:8*k,fontSize:13*k,flex:3,
-							color:'black',
-							textAlign:'auto'}}>
-							{certificate.get('title')}
-						</Text>
-						<Text style={{fontSize:14*k,marginLeft:20*k,flex:1,fontWeight:'400',fontFamily:'Monaco'}}>{certificate.get('newPrice')}<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
-					</View>
+					<View style={{flexDirection:'row',marginTop:10,marginBottom:7*k,justifyContent:'flex-end',alignItems:'center'}}>
+						<View style={{justifyContent:'center',alignItems:'center',flex:3.6}}>
+							<Text style={{marginLeft:8*k,fontSize:13*k,width:220*k,
+								color:'black',
+								textAlign:'auto',marginBottom:7*k}}>
+								{certificate.get('title')}
+							</Text>
+							<View style={{flexDirection:'row',marginRight:10*k,...center,width:200*k,height:30*k,borderRadius:3*k,borderWidth:1,alignSelf:'center',borderColor:'#bbbbbb'}}>
+								<TouchableOpacity onPress={this.minus.bind(this)} style={{flex:2,...center,height:35*k,backgroundColor:'transparent'}}>
+									<Text style={{fontSize:15*k,fontWeight:'500',color:this.state.count>0?'black':'gray'}}>-</Text>
+								</TouchableOpacity>
 
-					<View style={{flexDirection:'row',...center,width:200*k,height:25*k,borderRadius:3*k,borderWidth:1,alignSelf:'center',borderColor:'#bbbbbb'}}>
-						<TouchableOpacity style={{flex:2,...center,height:35*k,backgroundColor:'transparent'}}>
-							<Text style={{fontSize:15*k,fontWeight:'500',color:'black'}}>-</Text>
-						</TouchableOpacity>
-
-						<View style={{height:25*k,width:1,backgroundColor:'#bbbbbb'}}/>
-						<Text style={{flex:1,marginLeft:21*k,alignSelf:'center'}}>30</Text>
-						<View style={{height:25*k,width:1,backgroundColor:'#bbbbbb'}}/>
+								<View style={{height:30*k,width:1,backgroundColor:'#bbbbbb'}}/>
+								<Text style={{flex:0.8,marginLeft:this.state.count>9?16*k:18*k,alignSelf:'center'}}>{this.state.count}</Text>
+								<View style={{height:30*k,width:1,backgroundColor:'#bbbbbb'}}/>
 
 
-						<TouchableOpacity style={{flex:2,...center,height:35*k,backgroundColor:'transparent'}}>
-							<Text style={{fontSize:15*k,fontWeight:'500',color:'#0679a2'}}>+</Text>
-						</TouchableOpacity>
+								<TouchableOpacity onPress={this.plus.bind(this)} style={{flex:2,...center,height:35*k,backgroundColor:'transparent'}}>
+									<Text style={{fontSize:15*k,fontWeight:'500',color:'#0679a2'}}>+</Text>
+								</TouchableOpacity>
 
 
+							</View>
+
+						</View>
+						<View style={{flex:1,marginLeft:5*k}}>
+							<Text style={{textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:12*k,color:'gray',textDecorationColor:'red'}}>{certificate.get('oldPrice')?certificate.get('oldPrice')+' ':''}</Text>
+							<Text style={{fontSize:14*k,fontWeight:'400',fontFamily:'Monaco'}}>{certificate.get('newPrice')}<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
+						</View>
 					</View>
 
 					
-					<View style={{height:10*k}}/>
+
+					
 
 				</View>
 

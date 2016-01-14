@@ -42,7 +42,7 @@ export default class DealContent extends React.Component{
 	render(){
 		let tabView,commentBox;
 		if (this.state.num===0){
-			tabView = <Info deal={this.props.deal} count={this.state.count} />
+			tabView = <Info setBuyText={this.props.setBuyText} deal={this.props.deal} count={this.state.count} />
 		} else if (this.state.num===1) {
 			tabView = <Address/>
 		} else {

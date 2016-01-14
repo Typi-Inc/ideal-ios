@@ -1,5 +1,6 @@
 import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
+import Loading from './loading'
 let UIManager = require('NativeModules').UIManager;
 let {
   AppRegistry,
@@ -13,9 +14,19 @@ let {
 } = React;
 import {openAnimation,scrollToTopAnimation,closeImageAnimation} from './animations'
 export default class Address extends React.Component{
-	state={}
-	
+	state={loading:true}
+	componentWillMount(){
+		this.setTimeout(()=>{
+		// LayoutAnimation.easeInEaseOut()
+			this.setState({loading:false})
+		},500)
+	}
 	render(){
+		if(this.state.loading){
+			return(
+				<Loading color={'#0679a2'}/>
+				)
+		}
 		return (
 			<View style={{flex:1,backgroundColor:'white',marginBottom:60,marginTop:10*k}}>
 				<View style={{flexDirection:'row'}}>
