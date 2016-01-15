@@ -7,6 +7,7 @@ import Loading from './loading'
 import {getQuery} from '../intent/getQuery'
 import Combinator from './combinator'
 import _ from 'lodash'
+import {toggleItemToCart} from '../intent/toggleItemToCart' 
 import Spinner from 'react-native-spinkit'
 let UIManager = require('NativeModules').UIManager;
 let {
@@ -20,7 +21,6 @@ let {
 } = React;
 export default class Cart extends React.Component{
 	state={}
-
 	static contextTypes={
     	state$: React.PropTypes.any
   	}
@@ -28,7 +28,41 @@ export default class Cart extends React.Component{
   	}
 	render(){
 		return (
-			<View style={{flex:1,backgroundColor:'white'}}>
+			<View style={{flex:1,backgroundColor:'#e8e8ee'}}>
+
+				<Combinator>
+					<View>
+						{
+							this.context.state$.map(state=>state.get('chosenItems')).distinctUntilChanged().
+							map(chosenItems=>{
+								if(!chosenItems)return <View style={{backgroundColor:'white',...center,flex:1,height:520*k}}>
+												<Text>Ваша корзина пуста</Text>
+													</View>;
+								let totalSum=chosenItems.valueSeq().toArray().map(item=>{
+									if(!item)return;
+									return item.get('certificates').valueSeq().toArray()
+										.map(certificate=>certificate.get('newPrice')*certificate.get('count')).reduce((x,y)=>x+y)
+								}).reduce((x,y)=>x+y, 0)
+								if (totalSum>0){
+									return <View style={{backgroundColor:'white'}}>
+												<Text style={{fontSize:14*k,fontWeight:'bold',marginTop:10*k,marginLeft:10*k,marginBottom:10*k}}>Итого к оплате: {totalSum} тенге</Text>
+												<View style={{...separator}}/>
+												<TouchableOpacity><View style={{backgroundColor:'white',height:40*k,justifyContent:'center',padding:10}}><Text>Оплатить банковской картой</Text></View></TouchableOpacity>
+												<View style={{...separator}}/>
+												<TouchableOpacity onPress={()=>toggleItemToCart({kill:true})}><View style={{backgroundColor:'white',height:40*k,justifyContent:'center',padding:10}}><Text>Очистить корзину</Text></View></TouchableOpacity>
+												<View style={{...separator}}/>
+											</View>
+								}else{
+									return <View style={{backgroundColor:'white',...center,flex:1,height:520*k}}>
+												<Text>Ваша корзина пуста</Text>
+
+											</View>
+								}
+							})
+						}
+
+					</View>
+				</Combinator>
 				<Combinator>
 					<ScrollView>
 						{
@@ -38,34 +72,22 @@ export default class Cart extends React.Component{
 									if (!chosenItems) {
 										return;
 									}
-									// let dealIds = chosenItems.valueSeq().map(item => item.get('dealId')).toSet().toArray()
-									// console.log(dealIds)
-									// let deals = dealIds.map(id => {
-									// 	let items = chosenItems.valueSeq().filter(item => item.get('dealId')===id).toList().toJS()
-									// 	return{
-									// 		id: items[0].dealId,
-									// 		title: items[0].dealTitle,
-									// 		businessName:items[0].businessName,
-									// 		certificates:items
-									// 	}
-									// })
-								// console.log(chosenItems.toList().toJS(),'here')
-
-									// let items=chosenItems.toList()
-									// console.log(items)
-									// chosenItems.valueSeq().map(x=>console.log(x))
-									// if (items.size>0){
-
 										return <View>
 											{ 
 												chosenItems.valueSeq().toArray().map(item=>{
 													if(!item) return;
 													// console.log(item.get('certificates'))
-													return <View key={item.get('id')}>
-														<View style={{marginTop:5*k,marginLeft:7*k}}>
-															<Text style={{margin:5*k}}>{item.get('title')} 
-																<Text style={{fontWeight:'bold'}}> «{item.get('businessName')}»</Text>
-															</Text>
+													return <View key={item.get('id')} style={{backgroundColor:'white',marginTop:10*k}}>
+
+															<View style={{flexDirection:'row',marginTop:5*k,marginLeft:7*k,alignItems:'center'}}>
+																<Image source={{uri:item.get('image')}} style={{margin:5*k,height:45*k,width:45*k}}/>
+
+															<View style={{width:260*k}}>
+																<Text style={{margin:5*k}}>{item.get('title')} 
+																	<Text style={{fontWeight:'bold'}}> «{item.get('businessName')}»</Text>
+																</Text>
+															</View>
+
 														</View>
 														<View style={{...separator}}/>
 															{
@@ -74,7 +96,8 @@ export default class Cart extends React.Component{
 																	return <CartCertificate deal={{
 																		id:item.get('id'),
 																		title:item.get('title'),
-																		businessName:item.get('businessName')
+																		businessName:item.get('businessName'),
+																		image:item.get('image')
 																	}} key={certificate.get('id')} certificate={certificate}/>
 																})
 															}

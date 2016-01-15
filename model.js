@@ -28,12 +28,12 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 	
 	
 	let rootModel = new falcor.Model({
-		source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+		source: new FalcorHttpDatasource('http://169.254.26.217:9090/model.json'),
 	});
 	store.get('Auth0Token').then(token=>{
 		if(token&&token.idToken){
 			rootModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
+	  			source: new FalcorHttpDatasource('http://169.254.26.217:9090/model.json', {
 	  				headers: {
 	  					'Authorization': 'Bearer '+token.idToken
 	  				}
@@ -41,7 +41,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 			}).batch(20)
 		}else{
 		    rootModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+	  			source: new FalcorHttpDatasource('http://169.254.26.217:9090/model.json'),
 			})
 		}
 	})
@@ -49,7 +49,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 		let newModel;
 		if(idToken){
 			 newModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
+	  			source: new FalcorHttpDatasource('http://169.254.26.217:9090/model.json', {
 	  				headers: {
 	  					'Authorization': 'Bearer '+idToken
 	  				}
@@ -96,6 +96,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 		// 		}
 		// 	})
 		// }
+
 		if (paths[0].includes('comments')) {
 			data$.onNext({
 				[paths[0][0]] : {
@@ -109,10 +110,12 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 			if (data && data.json) {
 				if (data.json.featuredDeals) {
 					const result = { featuredDeals: {}, dealsById: {} }
+
 					Object.keys(data.json.featuredDeals).filter(x => !isNaN(x)).forEach(index => {
 						const keysWithPathKeyInside = Object.keys(data.json.featuredDeals[index])
 						const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
 						const path = data.json.featuredDeals[index][pathKey]
+						
 						result.featuredDeals[index] = path
 						if (!result.dealsById[path[1]]) {
 							result.dealsById[path[1]] = {}
@@ -131,11 +134,15 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 						const keysWithPathKeyInside = Object.keys(deals[index])
 						const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
 						const path = deals[index][pathKey]
+
 						result.dealsByTags[tagString][index] = path
 						if (!result.dealsById[path[1]]) {
 							result.dealsById[path[1]] = {}
 						}
 						_.merge(result.dealsById[path[1]], deals[index])
+						// if(!result.dealsById[path[1]]['tags']){
+						// 	console.log('--------------------------',rootModel.getCache(),'----------------------')
+						// }
 					})
 					return data$.onNext(result)
 				}
@@ -148,8 +155,11 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 	// toggleItemToCart$.subscribe(item=>data$.onNext({'item':item}))
 	toggleItemToCart$.
 		scan((acc,nextItem)=>{
+			if(nextItem.kill){
+				acc={};
+				return acc;
+			}
 			let nextItemDealId=Object.keys(nextItem)[0]
-			// console.log(nextItem[nextItemDealId])
 			let nextItemCertificateId = Object.keys(nextItem[nextItemDealId].certificates)[0]
 			if (nextItem[nextItemDealId].certificates[nextItemCertificateId].count===0) {
 				delete acc[nextItemDealId].certificates[nextItemCertificateId]
@@ -201,11 +211,15 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 					const keysWithPathKeyInside = Object.keys(deals[index])
 					const pathKey = keysWithPathKeyInside.filter(key => key.indexOf('path') > -1)[0]
 					const path = deals[index][pathKey]
+
 					result.dealsByTags[tagString][index] = path
 					if (!result.dealsById[path[1]]) {
 						result.dealsById[path[1]] = {}
 					}
 					_.merge(result.dealsById[path[1]], deals[index])
+					// if(!result.dealsById[path[1]]['tags']){
+					// 		console.log('--------------------------',rootModel.getCache(),'----------------------')
+					// 	}
 				})
 				return data$.onNext(result)
 			}

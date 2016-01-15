@@ -25,6 +25,7 @@ export default class Certificate extends React.Component{
 				id: this.context.deal.id,
 				title: this.context.deal.title,
 				businessName: this.context.deal.business.name,
+				image:this.context.deal.image,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),
@@ -55,6 +56,7 @@ export default class Certificate extends React.Component{
 				id: this.context.deal.id,
 				title: this.context.deal.title,
 				businessName: this.context.deal.business.name,
+				image:this.context.deal.image,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),

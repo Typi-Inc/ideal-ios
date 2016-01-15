@@ -22,7 +22,7 @@ export default class CommentBox extends React.Component{
         //   style:{height:height}
 
         // })},0)
-    Animated.spring(this.anim,{toValue:1,velocity:18,tension:48,friction:10}).start()
+    Animated.spring(this.anim,{toValue:1,velocity:9,tension:48,friction:10}).start()
 
   }
   hide(){

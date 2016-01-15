@@ -25,6 +25,7 @@ export default class CartCertificate extends React.Component{
 				id: this.props.deal.id,
 				title: this.props.deal.title,
 				businessName: this.props.deal.businessName,
+				image:this.props.deal.image,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),
@@ -55,6 +56,7 @@ export default class CartCertificate extends React.Component{
 				id: this.props.deal.id,
 				title: this.props.deal.title,
 				businessName: this.props.deal.businessName,
+				image:this.props.deal.image,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),
@@ -117,9 +119,9 @@ export default class CartCertificate extends React.Component{
 							</View>
 
 						</View>
-						<View style={{flex:1,marginLeft:5*k}}>
-							<Text style={{fontSize:14*k,fontWeight:'400',fontFamily:'Monaco'}}>{certificate.get('newPrice')}<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
-						
+						<View style={{flex:1.2,marginLeft:5*k}}>
+							<Text style={{fontSize:14*k,fontWeight:'400',fontFamily:'Monaco'}}>{certificate.get('count')+' x '}{certificate.get('newPrice')}</Text>
+							<Text style={{fontSize:14*k,fontWeight:'400',fontFamily:'Monaco'}}>{certificate.get('count')*certificate.get('newPrice')}<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
 						</View>
 					</View>
 
