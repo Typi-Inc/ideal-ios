@@ -173,6 +173,7 @@ export default class FindTab extends React.Component{
 										map(state => state.get('tagSearchText')).
 										distinctUntilChanged().
 										map(text => {
+
 											return <TextInput ref={el=>this.textInput=el}
 									    		maxLength={40}
 									    		placeholder={this.state.placeholderText}
@@ -184,7 +185,7 @@ export default class FindTab extends React.Component{
 									    			backgroundColor:'transparent',alignSelf:'center'}}
 												onChangeText={(text) => {
 													if(text.includes('+')){
-														text = ''
+														this.cancel()
 													}
 													if(!text.includes('+')){
 														onTagTextChange(text)

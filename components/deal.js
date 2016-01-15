@@ -33,6 +33,10 @@ export default class Deal extends React.Component{
 	static contextTypes={
     	showModal: React.PropTypes.func,hideModal:React.PropTypes.func
   	}
+  	static childContextTypes={deal:React.PropTypes.any}
+	getChildContext(){
+		return {deal:this.props.deal.toJS()}
+	}
 //ANIMATE OPENING AND CLOSING BEGHINNING-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	animateScrollToTop(){
 		this.refs['scroll'].scrollWithoutAnimationTo()

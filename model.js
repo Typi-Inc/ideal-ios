@@ -16,15 +16,15 @@ const removeCircular = (json) => {
 	})
 }
 
-let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
+let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleItemToCart$ }) => {
 	let data$ = new Rx.ReplaySubject(1);
 	data$.onNext({featuredDeals:'isLoading'})
-	let state$ = data$.delay(0).scan((accumulator, newData) => {
-		if (newData.chosenTags) {
+	let state$ = data$.scan((accumulator, newData) => {
+		if (newData.chosenTags || newData.chosenItems) {
 			return accumulator.merge(fromJS(newData, (key, value) => value.toOrderedMap()))
 		}
 		return accumulator.mergeDeep(fromJS(removeCircular(newData), (key, value) => value.toOrderedMap()))
-	}, Map())
+	}, Map()).shareReplay(1)
 	
 	
 	let rootModel = new falcor.Model({
@@ -69,7 +69,8 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	// 	// ['dealsById','23ad5fbc-a991-4cff-88bf-2ede82fcadc5','comments','sort:createdAt=desc', 'edges', {from: 0, to: 10}, ['text','id']],
 	// 		// ['dealsById','23ad5fbc-a991-4cff-88bf-2ede82fcadc5','comments','sort:createdAt=desc', 'edges', {from: 0, to: 10}, 'author',['name','image']],
 	// ).then(console.log)
-			
+
+
 	tagSearchText$.subscribe(text =>data$.onNext({'tagSearchText': text}))
 	tagSearchText$.debounce(250).
 		map(key=> {
@@ -86,15 +87,15 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 		// filter(data => data && data.json).
 		subscribe(data => data && data.json ? data$.onNext(data.json) : data$.onNext({tagsByText: 'not found' }))
 	getQuery$.subscribe(paths => {
-		if (paths[0].includes('certificates')) {
-			data$.onNext({
-				[paths[0][0]] : {
-					[paths[0][1]]: {
-						[paths[0][2]] : 'isLoading'
-					}
-				}
-			})
-		}
+		// if (paths[0].includes('certificates')) {
+		// 	data$.onNext({
+		// 		[paths[0][0]] : {
+		// 			[paths[0][1]]: {
+		// 				[paths[0][2]] : 'isLoading'
+		// 			}
+		// 		}
+		// 	})
+		// }
 		if (paths[0].includes('comments')) {
 			data$.onNext({
 				[paths[0][0]] : {
@@ -144,7 +145,27 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$ }) => {
 	}
 	)
 	callQuery$.subscribe(args => rootModel.call(...args).then(data => data && data.json && data$.onNext(data.json)))
-
+	// toggleItemToCart$.subscribe(item=>data$.onNext({'item':item}))
+	toggleItemToCart$.
+		scan((acc,nextItem)=>{
+			let nextItemDealId=Object.keys(nextItem)[0]
+			// console.log(nextItem[nextItemDealId])
+			let nextItemCertificateId = Object.keys(nextItem[nextItemDealId].certificates)[0]
+			if (nextItem[nextItemDealId].certificates[nextItemCertificateId].count===0) {
+				delete acc[nextItemDealId].certificates[nextItemCertificateId]
+				if (Object.keys(acc).length > 0 && Object.keys(acc[nextItemDealId].certificates).length === 0) {
+					delete acc[nextItemDealId]
+					return acc;
+				}
+				return acc;
+			}
+			_.merge(acc,nextItem)	
+			return acc
+	},{}).subscribe(items=>{
+		// console.log(items)
+		data$.onNext({chosenItems:items,chosenItemsInCartCount:Object.keys(items).length})
+	})
+	
 	toggleTag$.
 	  scan((acc, nextTag) => {
 	  	nextTag = nextTag.toJS()

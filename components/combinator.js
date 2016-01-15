@@ -1,6 +1,7 @@
 import React from 'react-native';
 import _ from 'lodash';
 import combineTemplate from './combineTemplate';
+import shallowEqual from './shallowEqual'
 let {LayoutAnimation}=React
 class Combinator extends React.Component {
   constructor(props, context) {
@@ -29,7 +30,8 @@ class Combinator extends React.Component {
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(nextState, this.state)
+    return !shallowEqual(this.props, nextProps) ||
+         !shallowEqual(this.state, nextState);
   }
   componentDidMount() {
     this.componentHasMounted = true;

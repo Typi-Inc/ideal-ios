@@ -13,18 +13,18 @@ let {
   TouchableWithoutFeedback,
   Image
 } = React;
-export default class Certificate extends React.Component{
+export default class CartCertificate extends React.Component{
 	state={}
-	static contextTypes={deal:React.PropTypes.any,state$:React.PropTypes.any}
+	static contextTypes={state$:React.PropTypes.any}
 	plus(){
 		// this.setState({count:this.state.count+1})
 		
 		// totalBuyCount()
 		toggleItemToCart({
-			[this.context.deal.id]: {
-				id: this.context.deal.id,
-				title: this.context.deal.title,
-				businessName: this.context.deal.business.name,
+			[this.props.deal.id]: {
+				id: this.props.deal.id,
+				title: this.props.deal.title,
+				businessName: this.props.deal.businessName,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),
@@ -37,9 +37,9 @@ export default class Certificate extends React.Component{
 		// toggleItemToCart({
 		// 	[this.props.certificate.get('id')]: {
 		// 		...this.props.certificate.toJS(),
-		// 		dealId:this.context.deal.id,
-		// 		businessName:this.context.deal.business.name,
-		// 		dealTitle:this.context.deal.title,
+		// 		dealId:this.props.deal.id,
+		// 		businessName:this.props.deal.business.name,
+		// 		dealTitle:this.props.deal.title,
 		// 		count: this.count+1,
 
 		// 	}
@@ -51,10 +51,10 @@ export default class Certificate extends React.Component{
 			return;
 		}
 		toggleItemToCart({
-			[this.context.deal.id]: {
-				id: this.context.deal.id,
-				title: this.context.deal.title,
-				businessName: this.context.deal.business.name,
+			[this.props.deal.id]: {
+				id: this.props.deal.id,
+				title: this.props.deal.title,
+				businessName: this.props.deal.businessName,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),
@@ -96,7 +96,7 @@ export default class Certificate extends React.Component{
 														this.count = 0
 														return this.count
 													}	
-													let cert = chosenItems.getIn([this.context.deal.id,'certificates',this.props.certificate.get('id')]);
+													let cert = chosenItems.getIn([this.props.deal.id,'certificates',this.props.certificate.get('id')]);
 													if (!cert) {
 														this.count = 0
 														return this.count;
@@ -118,8 +118,8 @@ export default class Certificate extends React.Component{
 
 						</View>
 						<View style={{flex:1,marginLeft:5*k}}>
-							<Text style={{textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:12*k,color:'gray',textDecorationColor:'red'}}>{certificate.get('oldPrice')?certificate.get('oldPrice')+' ':''}</Text>
 							<Text style={{fontSize:14*k,fontWeight:'400',fontFamily:'Monaco'}}>{certificate.get('newPrice')}<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
+						
 						</View>
 					</View>
 
@@ -135,7 +135,7 @@ export default class Certificate extends React.Component{
      		)
 	}
 }
-Object.assign(Certificate.prototype, TimerMixin);
+Object.assign(CartCertificate.prototype, TimerMixin);
 
 //<View style={{flex:1,flexDirection:'row',...center,marginLeft:10*k,marginTop:6*k}}>
 //						<Text style={{textDecorationLine:'line-through',fontSize:12*k,color:'gray',textDecorationColor:'red'}}>{certificate.oldPrice}  </Text>

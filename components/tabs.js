@@ -11,7 +11,7 @@ import {data} from './mock'
 import Auth from './auth'
 import Imut from './imut'
 import Cart from './cart'
-
+import Combinator from './combinator'
 var Auth0Lock = require('react-native-lock-ios');
 var lock = new Auth0Lock({clientId: 'TWpDN8HdEaplEXJYemOcNYSXi64oQmf8', domain: 'ideal.eu.auth0.com'});
 import Parent from './parent'
@@ -66,12 +66,12 @@ var Epay=require('react-native').NativeModules.Epay
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'home',height:43,overflow:'visible'}
-
+	state={selectedTab:'search',height:43,overflow:'visible',countOfDealsInCart:0}
+	static contextTypes={state$:React.PropTypes.any,}
   	static childContextTypes={toggleTabs:React.PropTypes.func,goHome:React.PropTypes.func}
 	getChildContext(){
 		return {toggleTabs: this.toggleTabs.bind(this),
-				goHome:this.goHome.bind(this)
+				goHome:this.goHome.bind(this),
 			}
 	}
 	goHome(){
@@ -99,8 +99,13 @@ export default class Tabs extends React.Component{
   		}
   		
   	}
+  	setCountOfDealsInCart(val){
+  		this.setState({countOfDealsInCart:val})
+  	}
+
   	
 	render(){
+
 		return (
 			<TabNavigator ref={el=>this.tabBar=el}
 				tabBarStyle={{height:this.state.height,overflow:this.state.overflow}}
@@ -141,7 +146,19 @@ export default class Tabs extends React.Component{
 				    renderIcon={() => <Image style={{height:21,width:21}} source={require('image!cart')} />}
 				    renderSelectedIcon={() => <Image style={{height:21,width:21}} source={require('image!carta')}/>}
 				    // badgeText="1"
-				    renderBadge={()=><View style={{width:15,height:15,borderRadius:7,backgroundColor:'#00b484',...center}}><Text style={{fontSize:10,color:'white',backgroundColor:'transparent'}}>12</Text></View>}
+				    renderBadge={()=>(
+				    	<View style={{backgroundColor:'transparent'}}>
+				    	<Combinator>
+					    	{this.context.state$.map(state=>state.get('chosenItemsInCartCount')).map(count=>{
+					    		if(!count||count===0) return <View/>
+					    		return <View style={{width:15,height:15,
+					    			borderRadius:7,backgroundColor:'#00b484',...center}}>
+					    			<Text style={{fontSize:10,
+					    				color:'white',backgroundColor:'transparent'}}>{count}</Text>
+					    			</View>
+
+					    	})}
+				    	</Combinator></View>)}
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'cart' })}>
 				    	<Cart/>
