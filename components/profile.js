@@ -4,6 +4,7 @@ import {openAnimation,scrollToTopAnimation,closeImageAnimation} from './animatio
 import {profile,data} from './mock'
 import Lenta from './lenta'
 import Deals from './deals'
+import Navbar from './navbar'
 let UIManager = require('NativeModules').UIManager;
 let {
   Text,
@@ -44,18 +45,13 @@ export default class Profile extends React.Component{
 		return (
 
 		<View style={{flex:1,backgroundColor:'e8e8ee'}}>
-			<View style={{height:45*k,backgroundColor:'#0679a2',...center}}>
-				<Text style={{color:'white',fontWeight:'bold',fontSize:16*k}}>Профиль</Text>
-
-			</View>
+			<Navbar backButton={true} title={'Профиль'}/>
 			<View>
 				<View style={{backgroundColor:'white'}}>
 					<View style={{flexDirection:'row',margin:8*k}}>
 						<Image source={{uri:profile.uri}} style={{flex:1,width:60*k,height:70*k,borderRadius:3*k}}/>
 						<View style={{flex:3,marginLeft:8*k}}>
 							<Text style={{fontSize:16,fontWeight:'700'}}>{profile.name}</Text>
-
-
 							<TouchableOpacity><View style={{marginTop:10,height:35*k,...center,width:150,backgroundColor:'#00b484',borderRadius:3*k}}>
 								<Text style={{color:'white',fontWeight:'bold'}}>Баланс: 212323 тг</Text>
 							</View></TouchableOpacity>

@@ -22,10 +22,7 @@ export default class CartCertificate extends React.Component{
 		// totalBuyCount()
 		toggleItemToCart({
 			[this.props.deal.id]: {
-				id: this.props.deal.id,
-				title: this.props.deal.title,
-				businessName: this.props.deal.businessName,
-				image:this.props.deal.image,
+				...this.props.deal,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),
@@ -53,10 +50,7 @@ export default class CartCertificate extends React.Component{
 		}
 		toggleItemToCart({
 			[this.props.deal.id]: {
-				id: this.props.deal.id,
-				title: this.props.deal.title,
-				businessName: this.props.deal.businessName,
-				image:this.props.deal.image,
+				...this.props.deal,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),

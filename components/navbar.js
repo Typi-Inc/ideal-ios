@@ -22,15 +22,29 @@ export default class Navbar extends React.Component{
 	}
 	render(){
 		return (
-			<View ref='mainView' style={[{backgroundColor:this.props.color?this.props.color:'0679a2',
-				height:50*k,alignItems:'center',justifyContent:'space-between',flexDirection:'row'}]}>
-				<TouchableOpacity  onPress={()=>this.props.navigator.pop()}>
-					<View style={{height:36*k,width:36*k,...center}}>
-						<Image  style={{height:16*k,width:12*k}} source={{uri:'arrowWhite',isStatic:true}}/>
-					</View>
-				</TouchableOpacity>
-				<Text  ref='text' style={{color:'white',fontWeight:'700',fontSize:16*k,}}>{this.props.title}</Text>
-				<View  style={{width:36*k}}/>
+			<View>
+				<View ref='mainView' style={[{backgroundColor:this.props.color?this.props.color:'#0679a2',
+					height:50*k,...center,flexDirection:'row'}]}>
+					<Text  ref='text' style={{color:'white',fontWeight:'700',fontSize:16*k,}}>{this.props.title}</Text>
+				</View>
+				{this.props.backButton?(
+					<TouchableOpacity style={{position:'absolute',top:6*k,backgroundColor:'transparent'}}  onPress={()=>this.props.navigator.pop()}>
+						<View style={{height:36*k,width:36*k,...center}}>
+							<Image  style={{height:16*k,width:12*k}} source={{uri:'arrowWhite',isStatic:true}}/>
+						</View>
+					</TouchableOpacity>
+					):<View/>
+
+				}
+				{this.props.onRightButtonPress?(
+					<TouchableOpacity style={{position:'absolute',top:6*k,left:280*k,backgroundColor:'transparent'}}  onPress={()=>this.props.onRightButtonPress()}>
+						<View style={{height:36*k,width:36*k,...center}}>
+							<Image  style={{height:16*k,width:12*k}} source={{uri:'arrowWhite',isStatic:true}}/>
+						</View>
+					</TouchableOpacity>
+					):<View/>
+				}
+				
 			</View>
      		)
 	}

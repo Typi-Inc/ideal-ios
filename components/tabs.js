@@ -68,10 +68,11 @@ var Epay=require('react-native').NativeModules.Epay
 export default class Tabs extends React.Component{
 	state={selectedTab:'search',height:43,overflow:'visible',countOfDealsInCart:0}
 	static contextTypes={state$:React.PropTypes.any,}
-  	static childContextTypes={toggleTabs:React.PropTypes.func,goHome:React.PropTypes.func}
+  	static childContextTypes={topNav:React.PropTypes.any,toggleTabs:React.PropTypes.func,goHome:React.PropTypes.func}
 	getChildContext(){
 		return {toggleTabs: this.toggleTabs.bind(this),
 				goHome:this.goHome.bind(this),
+				topNav:this.props.topNav
 			}
 	}
 	goHome(){
@@ -91,6 +92,24 @@ export default class Tabs extends React.Component{
   	renderSearchTab(route,navigator){
   		return (<FindTab />)
   	}
+  	renderCart(route,navigator){
+  		if(route.name==='Deal'){
+  			console.log('in route deal of cart ')
+  			return <Combinator><View style={{flex:1}}>
+  				{this.context.state$.map(state=>state.getIn(['dealsById',route.dealId])).distinctUntilChanged().map(deal=>{
+  					return <Deal deal={deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} justDeal={true}/>
+
+  					})
+
+
+  				}
+  				</View>
+  			</Combinator>
+
+  		}else{
+  			return <Cart navigator={navigator}/>
+  		}
+  	}
   	renderProfile(route,navigator){
   		if(route.name==='Deal'){
   			return <Deal deal={route.deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} pushedFromLenta={true}/>
@@ -99,11 +118,7 @@ export default class Tabs extends React.Component{
   		}
   		
   	}
-  	setCountOfDealsInCart(val){
-  		this.setState({countOfDealsInCart:val})
-  	}
-
-  	
+ 
 	render(){
 
 		return (
@@ -161,7 +176,16 @@ export default class Tabs extends React.Component{
 				    	</Combinator></View>)}
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'cart' })}>
-				    	<Cart/>
+				    	<Navigator
+							initialRoute={{name:'cart'}}
+							configureScene={(route,routeStack)=>{
+								if(route.name==='Deal') return Navigator.SceneConfigs.FloatFromBottom
+								return Navigator.SceneConfigs.FloatFromRight
+							}}
+							// navigationBar={<Navigator.NavigationBar routeMapper={ProfileRouteMapper} style={{backgroundColor:this.props.blue?'white':'#0679a2'}}/>}
+							renderScene={this.renderCart.bind(this)}
+
+						/>		
 				  </TabNavigator.Item>
 
 				    <TabNavigator.Item
@@ -178,8 +202,8 @@ export default class Tabs extends React.Component{
 				    <TabNavigator.Item
 				    selected={this.state.selectedTab === 'profile'}
 				    // title="Профиль"
-				    renderIcon={() => <Image style={{height:21,width:21}} source={require('image!profile')} />}
-				    renderSelectedIcon={() => <Image style={{height:21,width:21}} source={require('image!profilea')}/>}
+				    renderIcon={() => <Image style={{height:20,width:20}} source={require('image!profile')} />}
+				    renderSelectedIcon={() => <Image style={{height:20,width:20}} source={require('image!profilea')}/>}
 				    // badgeText="1"
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'profile' })}>

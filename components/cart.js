@@ -26,6 +26,10 @@ export default class Cart extends React.Component{
   	}
   	componentWillUnmount(){
   	}
+  	goToDeal(deal){
+  		// let deal2=deal.deleteIn(['certificates'])
+  		this.props.navigator.push({name:'Deal',dealId:deal.get('id')})
+  	}
 	render(){
 		return (
 			<View style={{flex:1,backgroundColor:'#e8e8ee'}}>
@@ -79,32 +83,31 @@ export default class Cart extends React.Component{
 													// console.log(item.get('certificates'))
 													return <View key={item.get('id')} style={{backgroundColor:'white',marginTop:10*k}}>
 
-															<View style={{flexDirection:'row',marginTop:5*k,marginLeft:7*k,alignItems:'center'}}>
-																<Image source={{uri:item.get('image')}} style={{margin:5*k,height:45*k,width:45*k}}/>
+																<TouchableOpacity onPress={this.goToDeal.bind(this,item)}>
+																	<View style={{flexDirection:'row',marginTop:5*k,marginLeft:7*k,alignItems:'center'}}>
+																		<Image source={{uri:item.get('image')}} style={{margin:5*k,height:45*k,width:45*k}}/>
 
-															<View style={{width:260*k}}>
-																<Text style={{margin:5*k}}>{item.get('title')} 
-																	<Text style={{fontWeight:'bold'}}> «{item.get('businessName')}»</Text>
-																</Text>
+																		<View style={{width:260*k}}>
+																			<Text style={{margin:5*k}}>{item.get('title')} 
+																				<Text style={{fontWeight:'bold'}}> «{item.getIn(['business','name'])}»</Text>
+																			</Text>
+																		</View>
+
+																	</View>
+																</TouchableOpacity>
+																<View style={{...separator}}/>
+																	{
+																		item.get('certificates').valueSeq().toArray().map(certificate=>{
+																			if(!certificate) return;
+																			return <CartCertificate deal={{
+																				...item.toJS()
+																			}} key={certificate.get('id')} certificate={certificate}/>
+																		})
+																	}
+																<View style={{...separator}}/>
+
 															</View>
-
-														</View>
-														<View style={{...separator}}/>
-															{
-																item.get('certificates').valueSeq().toArray().map(certificate=>{
-																	if(!certificate) return;
-																	return <CartCertificate deal={{
-																		id:item.get('id'),
-																		title:item.get('title'),
-																		businessName:item.get('businessName'),
-																		image:item.get('image')
-																	}} key={certificate.get('id')} certificate={certificate}/>
-																})
-															}
-														<View style={{...separator}}/>
-
-														</View>
-												})
+													})
 
 
 											}

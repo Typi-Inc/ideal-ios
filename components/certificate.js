@@ -11,10 +11,11 @@ let {
   Animated,
   LayoutAnimation,
   TouchableWithoutFeedback,
+  InteractionManager,
   Image
 } = React;
 export default class Certificate extends React.Component{
-	state={}
+	state={loading:this.props.index>3?true:false}
 	static contextTypes={deal:React.PropTypes.any,state$:React.PropTypes.any}
 	plus(){
 		// this.setState({count:this.state.count+1})
@@ -22,10 +23,7 @@ export default class Certificate extends React.Component{
 		// totalBuyCount()
 		toggleItemToCart({
 			[this.context.deal.id]: {
-				id: this.context.deal.id,
-				title: this.context.deal.title,
-				businessName: this.context.deal.business.name,
-				image:this.context.deal.image,
+				...this.context.deal,
 				certificates: {
 					[this.props.certificate.get('id')]: {
 						...this.props.certificate.toJS(),
@@ -34,18 +32,7 @@ export default class Certificate extends React.Component{
 				}
 			}
 		})
-		// return;
-		// toggleItemToCart({
-		// 	[this.props.certificate.get('id')]: {
-		// 		...this.props.certificate.toJS(),
-		// 		dealId:this.context.deal.id,
-		// 		businessName:this.context.deal.business.name,
-		// 		dealTitle:this.context.deal.title,
-		// 		count: this.count+1,
-
-		// 	}
-		// })
-
+		
 	}
 	minus(){
 		if(this.count===0){
@@ -68,8 +55,18 @@ export default class Certificate extends React.Component{
 		// toggleItemToCart({certificate:this.props.certificate.toJS(),count:this.state.count})
 
 	}
+	componentDidMount(){
+
+		if(this.props.index>3) InteractionManager.runAfterInteractions(()=>{
+			this.setState({loading:false})
+			},0)
+
+	}
 	render(){
 		let certificate=this.props.certificate
+		if(this.state.loading){
+			return <View style={{height:55*k}}/>
+		}
 		return (
 
 				<View>

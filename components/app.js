@@ -4,27 +4,22 @@ import TimerMixin from 'react-timer-mixin'
 import Tabs from './tabs'
 import Combinator from './combinator'
 import FindTab from './findTab'
+import Navbar from './navbar'
 let UIManager = require('NativeModules').UIManager;
 let {
-  AppRegistry,
-  StyleSheet,
   LayoutAnimation,
   Text,
   View,
-  Modal,
-  ScrollView,
-  TouchableWithoutFeedback,
-  TabBarIOS,
-  NavigatorIOS,
+  Navigator,
   StatusBarIOS,
 } = React;
 var store = require('react-native-simple-store');
 
 export default class App extends React.Component{
 	state={modalVisible:false}
-	static childContextTypes={state$:React.PropTypes.any,showModal:React.PropTypes.func,hideModal:React.PropTypes.func}
+	static childContextTypes={state$:React.PropTypes.any,}
 	getChildContext(){
-		return {state$: this.props.state$,showModal:this.showModal.bind(this),hideModal:this.hideModal.bind(this)}
+		return {state$: this.props.state$,}
 	}
 	componentWillMount(){
 	}
@@ -35,27 +30,35 @@ export default class App extends React.Component{
 	hideModal(){
 		this.setState({modalVisible:false})
 	}
+	renderApp(route,navigator){
+		// this.navigator=navigator
+		// console.log('rendering app',this.navigator)
+
+		if(route.name==='Other'){
+			return <View style={{backgroundColor:'white',flex:1}}>
+						<Navbar navigator={navigator} backButton={true} title={route.title}/>
+							{route.component}
+					</View>
+		}
+		return <Tabs topNav={navigator} ref={el=>this.tabs=el}/>
+	}
 	render(){
 		StatusBarIOS.setStyle('light-content');
 		// if(this.authToken){
 		// 	return 
 		// }
 		return (
-				<View style={{flex:1,backgroundColor:'e8e8ee'}}>
+				<View style={{flex:1,backgroundColor:'#0679a2'}}>
 					<View ref='status' style={{height:20,backgroundColor:'#0679a2', }}/>
-				
-					<Tabs state$={this.props.state$} ref={el=>this.tabs=el}/>
-					 <Modal
-				          animated={true}
-				          // transparent={this.state.transparent}
-				          visible={this.state.modalVisible}>
-				          <View style={{marginTop:20}}>
-				          	 <TouchableWithoutFeedback onPress={this.hideModal.bind(this)}>
-				          	 	<Text>Закрыть</Text>
-				          	 </TouchableWithoutFeedback>
-				          </View>
-				          {this.insideModal}
-				     </Modal>
+					 <Navigator
+					 		ref={el=>this.navigator=el}
+							initialRoute={{name:'tabApp'}}
+							renderScene={this.renderApp.bind(this)}
+							configureScene={(route,routeStack)=>{
+								if(route.name==='Other') return Navigator.SceneConfigs.FloatFromBottom
+								return Navigator.SceneConfigs.FloatFromRight
+							}}
+						/>	
 				</View>
 			)
 	}

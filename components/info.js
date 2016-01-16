@@ -14,17 +14,22 @@ let {
   TouchableOpacity,
   LayoutAnimation,
   ScrollView,
+  InteractionManager,
   Animated,
   Image,
   View,
 } = React;
 export default class Info extends React.Component{
-	state={loading:true,open:true,open1:false,totalBuyCount:0}
+	state={loading:false,open:true,open1:false,totalBuyCount:0}
 	componentDidMount(){
-		this.setTimeout(()=>{
+		// this.setTimeout(()=>{
+			// InteractionManager.runAfterInteractions(()=>{
+			// 	LayoutAnimation.easeInEaseOut()
+			// 	this.setState({loading:false})
+			// })
 		// LayoutAnimation.easeInEaseOut()
-			this.setState({loading:false})
-		},0)
+			
+		// },0)
 	}
 	componentWillMount(){
 		getQuery([
@@ -41,9 +46,9 @@ export default class Info extends React.Component{
   		this.setState({totalBuyCount:this.state.totalBuyCount+val})
   	}
 	render(){
-		if(this.state.loading){
-			return <View style={{height:500*k}}></View>
-		}
+		// if(this.state.loading){
+		// 	return <View style={{height:500*k}}></View>
+		// }
 		this.anim=this.anim || new Animated.Value(0)
 		this.anim1=this.anim1 || new Animated.Value(0)
 		let certificates = this.props.deal.getIn(['certificates', 'sort:createdAt=desc', 'edges'])
@@ -54,9 +59,9 @@ export default class Info extends React.Component{
 				</View>
 				<View style={{...separator}}/> 
 				{
-					certificates ? certificates.toArray().map(certificate => (
+					certificates ? certificates.toArray().map((certificate,i) => (
 						<View key={`${certificate.get('id')}${this.props.deal.get('id')}`} >
-							<Certificate totalBuyCount={this.totalBuyCount.bind(this)} certificate={certificate}/>
+							<Certificate index={i} totalBuyCount={this.totalBuyCount.bind(this)} certificate={certificate}/>
 							<View style={{...separator}}/>
 						</View>
 					)) : (

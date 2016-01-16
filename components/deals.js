@@ -121,6 +121,7 @@ export default class Deals extends React.Component{
 	shouldComponentUpdate(nextProps,nextState){
 		return !this.props.data.equals(nextProps.data)|| this.state !== nextState
 	}
+
 	render(){
 		console.log('render deals',this.props.status)
 		if(this.props.data.get(0)) {
@@ -141,8 +142,8 @@ export default class Deals extends React.Component{
 					scrollEventThrottle={5000}
 					ref={el=>this.scroll=el}>
 						{
-							this.props.data.toArray().map(deal => (
-								<Deal ref={el=>this[deal.get('id')]=el}
+							this.props.data.toArray().map((deal,i) => (
+								<Deal index={i} ref={el=>this[deal.get('id')]=el}
 									key={deal.get('id')} deal={deal}  
 									isOpen={false}
 									viewDeal={!this.state.loadNewer?this.viewDeal.bind(this,deal.get('id')):null}

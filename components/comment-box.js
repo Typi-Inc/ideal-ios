@@ -12,6 +12,7 @@ let {
 } = React;
 export default class CommentBox extends React.Component{
 	state={}
+  // static contextTypes={justDeal:React.PropTypes.bool}
 	show(){
     
         // this.setTimeout(()=>{
@@ -38,6 +39,7 @@ export default class CommentBox extends React.Component{
     let bottom;
     if(k===1){
       bottom=87
+
     }else if (k>1){
       bottom=95
     }

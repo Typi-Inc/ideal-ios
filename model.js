@@ -28,12 +28,12 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 	
 	
 	let rootModel = new falcor.Model({
-		source: new FalcorHttpDatasource('http://169.254.26.217:9090/model.json'),
+		source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
 	});
 	store.get('Auth0Token').then(token=>{
 		if(token&&token.idToken){
 			rootModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://169.254.26.217:9090/model.json', {
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
 	  				headers: {
 	  					'Authorization': 'Bearer '+token.idToken
 	  				}
@@ -41,7 +41,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 			}).batch(20)
 		}else{
 		    rootModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://169.254.26.217:9090/model.json'),
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
 			})
 		}
 	})
@@ -49,7 +49,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 		let newModel;
 		if(idToken){
 			 newModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://169.254.26.217:9090/model.json', {
+	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
 	  				headers: {
 	  					'Authorization': 'Bearer '+idToken
 	  				}

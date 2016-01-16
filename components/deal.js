@@ -29,13 +29,13 @@ let {
   ScrollView
 } = React;
 export default class Deal extends React.Component{
-	state={earnOpen:false,isOpen:this.props.isOpen,buyText:'Купить',hidden:false,num:0,slideUp:0,commentBox:false,text:'',isLoaded:false,loading:this.props.isOpen};
-	static contextTypes={
-    	showModal: React.PropTypes.func,hideModal:React.PropTypes.func
+	state={earnOpen:false,isOpen:this.props.isOpen,hidden:false,num:0,slideUp:0,commentBox:false,text:'',isLoaded:false,};
+	static contextTypes={topNav:React.PropTypes.any
+    	// showModal: React.PropTypes.func,hideModal:React.PropTypes.func,
   	}
-  	static childContextTypes={deal:React.PropTypes.any}
+  	static childContextTypes={deal:React.PropTypes.any,}
 	getChildContext(){
-		return {deal:this.props.deal.toJS()}
+		return {deal:this.props.deal.toJS(),}
 	}
 //ANIMATE OPENING AND CLOSING BEGHINNING-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	animateScrollToTop(){
@@ -151,6 +151,13 @@ export default class Deal extends React.Component{
 		//  		},200)
 		 		
 		// });
+		if(this.props.index>1){
+			InteractionManager.runAfterInteractions(()=>{
+				this.setState({loading:false})
+			})
+		}
+
+		
 
     }
     componentWillUnmount() {
@@ -187,6 +194,7 @@ export default class Deal extends React.Component{
 		this.setState({buyText:'Купить'})
 	}
 	render(){
+		// if(this.props.index===0) console.log('helsjkdfj',this.context.topNav)
 		this.heightOfCard=this.heightOfCard||345*k;
 		let lengthOfTags=0||lengthOfTags
 		if(this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']))lengthOfTags=this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => tag.get('text')).join(' ').length
@@ -218,11 +226,11 @@ export default class Deal extends React.Component{
 		let deal=this.props.deal
 		this.move=this.move || 0
 		this.keyboard=this.keyboard || 0
-		if(this.state.loading){
-			return (<View style={{backgroundColor:'e8e8ee',flexDirection:'column',flex:1,alignItems:'center',justifyContent:'flex-start',height:600*k}}>
-		 	   <Spinner style={{marginTop:15*k}} isVisible={this.state.renderPlaceholderOnly} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
-	      </View>)
-		}
+		// if(this.state.loading){
+		// 	return (<View style={{height:600*k}}>
+		 	     
+	 //      </View>)
+		// }
 			return (
 			<Animated.View ref={el=>this.mainView=el} 
 			style={{flex:1,width:this.state.isOpen?320*k:320*k,height:this.heightOfCard,
@@ -309,7 +317,7 @@ export default class Deal extends React.Component{
 						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>Отправь друзьям.</Animated.Text>
 						<Animated.Text style={{textAlign:'center',color:'white',marginTop:15*k,fontWeight:'900',
 						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>За каждую покупку друга получи 1000 тг и выше.</Animated.Text>
-						<TouchableOpacity style={{...center}}  onPress={()=>this.context.showModal({component:<Payout/>})}>
+						<TouchableOpacity style={{...center}}  onPress={()=>this.context.topNav.push({name:'Other',component:<Payout/>,title:'Рекомендовать'})}>
 							<Animated.View style={{marginTop:19*k,borderWidth:1,borderColor:'white',width:this.anim.interpolate({inputRange:[0,.3,1],outputRange:[0,this.anim._value>0?0:85*k,85*k]}),height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,35*k]}),...center,borderRadius:3*k}}>
 								<Animated.Text style={{color:'white',fontWeight:'700',fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.3,1],outputRange:[0.1,this.anim._value>0?0.1:14,15]}),margin:10}}>Начать</Animated.Text>
 							</Animated.View>
