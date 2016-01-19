@@ -19,12 +19,12 @@ export default class Auth extends React.Component{
     	goHome: React.PropTypes.func
   	}
 	componentWillMount(){
-		store.delete('Auth0Token').then(()=>
+		// store.delete('Auth0Token').then(()=>
 			store.get('Auth0Token').then(res=>{
 				if(res) this.setState({loggedIn:true})
 				else this.setState({loggedIn:false})
 			})
-		)
+		// )
 	}
 	render(){
 		if(!this.state.loggedIn){

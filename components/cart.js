@@ -7,8 +7,10 @@ import Loading from './loading'
 import {getQuery} from '../intent/getQuery'
 import Combinator from './combinator'
 import _ from 'lodash'
+import Payout from './payout'
 import {toggleItemToCart} from '../intent/toggleItemToCart' 
 import Spinner from 'react-native-spinkit'
+export let message=''
 let UIManager = require('NativeModules').UIManager;
 let {
   Text,
@@ -22,10 +24,9 @@ let {
 export default class Cart extends React.Component{
 	state={}
 	static contextTypes={
-    	state$: React.PropTypes.any
+    	state$: React.PropTypes.any,topNav:React.PropTypes.any
   	}
-  	componentWillUnmount(){
-  	}
+
   	goToDeal(deal){
   		// let deal2=deal.deleteIn(['certificates'])
   		this.props.navigator.push({name:'Deal',dealId:deal.get('id')})
@@ -71,7 +72,9 @@ export default class Cart extends React.Component{
 					<ScrollView>
 						{
 							this.context.state$.
-								map(state => state.get('chosenItems')).distinctUntilChanged().
+								map(state => {
+									return state.get('chosenItems')
+								}).distinctUntilChanged().
 								map(chosenItems => {
 									if (!chosenItems) {
 										return;
@@ -84,15 +87,39 @@ export default class Cart extends React.Component{
 													return <View key={item.get('id')} style={{backgroundColor:'white',marginTop:10*k}}>
 
 																<TouchableOpacity onPress={this.goToDeal.bind(this,item)}>
-																	<View style={{flexDirection:'row',marginTop:5*k,marginLeft:7*k,alignItems:'center'}}>
-																		<Image source={{uri:item.get('image')}} style={{margin:5*k,height:45*k,width:45*k}}/>
+																	<View>
+																		<View style={{flexDirection:'row',marginTop:5*k,marginLeft:7*k,alignItems:'center'}}>
+																			<Image source={{uri:item.get('image')}} style={{margin:5*k,height:45*k,width:45*k}}/>
 
-																		<View style={{width:260*k}}>
-																			<Text style={{margin:5*k}}>{item.get('title')} 
-																				<Text style={{fontWeight:'bold'}}> «{item.getIn(['business','name'])}»</Text>
-																			</Text>
+																			<View style={{width:260*k}}>
+																				<Text style={{margin:5*k}}>{item.get('title')} 
+																					<Text style={{fontWeight:'bold'}}> «{item.getIn(['business','name'])}»</Text>
+																				</Text>
+																			</View>
 																		</View>
+																		<View style={{flexDirection:'row',marginBottom:5*k,alignItems:'center',marginTop:5*k,marginLeft:10*k}}>
+																			<Image source={{uri:'sharing6',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:2,marginRight:3}}/>
+																			<Text style={{color:'gray'}}>114</Text>
+																			<Image source={{uri:'cartGreen',isStatic:true}} style={{height:10*k,width:10*k,marginRight:3,marginLeft:8}}/>
+																			<Text style={{color:'gray'}}>19</Text>
+																			<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
 
+																			<Combinator>
+																				<View>
+																					{
+																						this.context.state$.map(state=>state.getIn(['dealsById',item.get('id'),'likes', 'sort:createdAt=desc', 'count'])).distinctUntilChanged().map(count=>{
+																							if(!count)return <View/>
+																							this.count=this.count||null
+																							return <Text style={{color:'gray'}}>{count}</Text>	
+																						})
+																					}
+																				</View>
+																			</Combinator>
+
+																			<TouchableOpacity onPress={()=>this.context.topNav.push({name:'Other',component:<Payout fromCart={true} deal={item}/>,title:'Рекомендовать'})} style={{backgroundColor:'#0679a2',padding:10*k,paddingTop:7*k,paddingBottom:7*k,marginLeft:60*k,borderRadius:3*k}}>
+																				<Text style={{color:'white',fontWeight:'500'}}>Рекомендовать</Text>
+																			</TouchableOpacity>
+																		</View>
 																	</View>
 																</TouchableOpacity>
 																<View style={{...separator}}/>

@@ -38,7 +38,7 @@ export default class CommentBox extends React.Component{
 	render(){
     let bottom;
     if(k===1){
-      bottom=87
+      bottom=this.props.justDeal?-2:93
 
     }else if (k>1){
       bottom=95

@@ -19,12 +19,12 @@ export default class DealAuthor extends React.Component{
 		return (
 	<TouchableWithoutFeedback onPress={this.props.isOpen ? null:this.props.viewDeal}>
 		<View>
-			<View style={{alignItems:'center',justifyContent:'space-between',flexDirection:'row',height: 50*k}}>
+			<View style={{alignItems:'center',justifyContent:'space-between',flexDirection:'row',height: 43*k}}>
 				<View style={{...center,flexDirection:'row'}}>
-					<Image source={{uri:this.props.business.get('image')}} style={{height:45*k,width:45*k,marginLeft:5*k}}/>
+					<Image source={{uri:this.props.business.get('image')}} style={{height:38*k,width:38*k,marginLeft:5*k}}/>
 					<View>
 						<Text style={{marginLeft:10*k,fontSize:14*k,fontWeight:'700'}}>{factName}</Text>
-						<Text style={{marginLeft:10*k,fontSize:12,color:'gray',fontWeight:'700',marginTop:5}}>Осталось 3 дня</Text>
+						<Text style={{marginLeft:10*k,fontSize:12,color:'gray',fontWeight:'700',marginTop:1}}>Осталось 3 дня</Text>
 					</View>	
 				</View>
 					<TouchableOpacity style={{paddingTop:5*k,backgroundColor:'transparent',height:50*k,width:50*k,justifyContent:'flex-start',alignItems:'flex-end'}} onPress={()=>this.props.openHelper()}>

@@ -65,7 +65,7 @@ export default class Certificate extends React.Component{
 	render(){
 		let certificate=this.props.certificate
 		if(this.state.loading){
-			return <View style={{height:55*k}}/>
+			return <View style={{height:60*k}}/>
 		}
 		return (
 
@@ -77,12 +77,12 @@ export default class Certificate extends React.Component{
 								textAlign:'auto',marginBottom:7*k}}>
 								{certificate.get('title')}
 							</Text>
-							<View style={{flexDirection:'row',marginRight:10*k,...center,width:200*k,height:30*k,borderRadius:3*k,borderWidth:1,alignSelf:'center',borderColor:'#bbbbbb'}}>
+							<View style={{flexDirection:'row',marginRight:10*k,...center,width:200*k,height:35*k,borderRadius:3*k,borderWidth:1,alignSelf:'center',borderColor:'#bbbbbb'}}>
 								<TouchableOpacity onPress={this.minus.bind(this)} style={{flex:2,...center,height:35*k,backgroundColor:'transparent'}}>
-									<Text style={{fontSize:15*k,fontWeight:'500',color:this.count>0?'black':'gray'}}>-</Text>
+									<Text style={{fontSize:15*k,fontWeight:'500',color:this.count>0?'black':'black'}}>-</Text>
 								</TouchableOpacity>
 
-								<View style={{height:30*k,width:1,backgroundColor:'#bbbbbb'}}/>
+								<View style={{height:35*k,width:1,backgroundColor:'#bbbbbb'}}/>
 								<Combinator>
 									<Text style={{flex:0.8,marginLeft:this.count>9?16*k:18*k,
 										alignSelf:'center'}}>
@@ -107,7 +107,7 @@ export default class Certificate extends React.Component{
 									</Text>
 								</Combinator>
 
-								<View style={{height:30*k,width:1,backgroundColor:'#bbbbbb'}}/>
+								<View style={{height:35*k,width:1,backgroundColor:'#bbbbbb'}}/>
 								<TouchableOpacity onPress={this.plus.bind(this)} style={{flex:2,...center,height:35*k,backgroundColor:'transparent'}}>
 									<Text style={{fontSize:15*k,fontWeight:'500',color:'#0679a2'}}>+</Text>
 								</TouchableOpacity>

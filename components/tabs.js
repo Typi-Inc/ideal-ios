@@ -15,6 +15,7 @@ import Combinator from './combinator'
 var Auth0Lock = require('react-native-lock-ios');
 var lock = new Auth0Lock({clientId: 'TWpDN8HdEaplEXJYemOcNYSXi64oQmf8', domain: 'ideal.eu.auth0.com'});
 import Parent from './parent'
+import Notifications from './notifications'
 import FeaturedDealsTab from './featuredDealsTab'
 let {
   AppRegistry,
@@ -83,6 +84,7 @@ export default class Tabs extends React.Component{
   	}
 
   	renderHome(route,navigator){
+  		this.props.toggleInCart(false)
   		return (
   			<FeaturedDealsTab />
   		)
@@ -90,11 +92,13 @@ export default class Tabs extends React.Component{
   		// return <Deals route={route} data={data}/>
   	}
   	renderSearchTab(route,navigator){
+  		this.props.toggleInCart(false)
   		return (<FindTab />)
   	}
   	renderCart(route,navigator){
+  		if (this.state.selectedTab==='cart' && route.name==='Cart')this.props.toggleInCart(true)
+  		else this.props.toggleInCart(false)
   		if(route.name==='Deal'){
-  			console.log('in route deal of cart ')
   			return <Combinator><View style={{flex:1}}>
   				{this.context.state$.map(state=>state.getIn(['dealsById',route.dealId])).distinctUntilChanged().map(deal=>{
   					return <Deal deal={deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} justDeal={true}/>
@@ -106,11 +110,21 @@ export default class Tabs extends React.Component{
   				</View>
   			</Combinator>
 
-  		}else{
+  		}else if (route.name==='Cart'){
   			return <Cart navigator={navigator}/>
   		}
   	}
+  	renderNotifications(route,navigator){
+  		this.props.toggleInCart(false)
+  		if(route.name==='Deal'){
+  			return <Deal deal={route.deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} pushedFromLenta={true}/>
+  		}else{
+  			return <Auth><Notifications navigator={navigator}/></Auth>
+  		}
+  		
+  	}
   	renderProfile(route,navigator){
+  		this.props.toggleInCart(false)
   		if(route.name==='Deal'){
   			return <Deal deal={route.deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} pushedFromLenta={true}/>
   		}else{
@@ -177,12 +191,11 @@ export default class Tabs extends React.Component{
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'cart' })}>
 				    	<Navigator
-							initialRoute={{name:'cart'}}
+							initialRoute={{name:'Cart'}}
 							configureScene={(route,routeStack)=>{
 								if(route.name==='Deal') return Navigator.SceneConfigs.FloatFromBottom
 								return Navigator.SceneConfigs.FloatFromRight
 							}}
-							// navigationBar={<Navigator.NavigationBar routeMapper={ProfileRouteMapper} style={{backgroundColor:this.props.blue?'white':'#0679a2'}}/>}
 							renderScene={this.renderCart.bind(this)}
 
 						/>		
@@ -196,7 +209,12 @@ export default class Tabs extends React.Component{
 				    // badgeText="1"
 				    selectedTitleStyle={{color:'#0679a2',fontWeight:'600'}}
 				    onPress={() => this.setState({ selectedTab: 'notifications' })}>
-				    	<Imut/>
+				 	 <Navigator
+							initialRoute={{name:'notifications'}}
+							// navigationBar={<Navigator.NavigationBar routeMapper={ProfileRouteMapper} style={{backgroundColor:this.props.blue?'white':'#0679a2'}}/>}
+							renderScene={this.renderNotifications.bind(this)}
+
+						/>			
 				  </TabNavigator.Item>
 
 				    <TabNavigator.Item

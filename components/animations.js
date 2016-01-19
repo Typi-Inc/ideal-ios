@@ -1,6 +1,6 @@
 import React from 'react-native'
 let {LayoutAnimation}=React
-export let openAnimation={duration: 500,
+export let openAnimation={duration: 450,
 		    create: {
 		      type: LayoutAnimation.Types.easeOut,
 		      property: LayoutAnimation.Properties.opacity,

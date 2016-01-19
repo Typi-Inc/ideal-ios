@@ -95,10 +95,10 @@ export default class DealCard extends React.Component{
 							<View>
 							<Image  source={{uri:deal.get('image')}} resizeMode={'cover'}  //image of the deal
 								style={{justifyContent:'flex-end',alignItems:'flex-start',
-									height:this.state.isOpen?200*h:180*h,width:this.state.isOpen?320*k:320*k}}>
+									height:this.state.isOpen?200*h:180*h,width:320*k}}>
 									
 								</Image>
-								<View style={{marginLeft:!this.state.isOpen?5*k:10*k,flexDirection:'row', //title of the deal
+								<View style={{marginLeft:8*k,flexDirection:'row', //title of the deal
 									justifyContent:'space-between',alignItems:'center'}}>
 									<View style={{width:260*k}}>
 										<Text>
@@ -117,23 +117,21 @@ export default class DealCard extends React.Component{
 
 								<View style={{flexDirection:'row',marginTop:10*k}}>
 									<View style={{flex:2}}>
-										<View style={{flexDirection:'row',flexWrap:'wrap',flex:2,marginLeft:!this.state.isOpen?5*k:10*k,width:200*k}}>
+										<View style={{flexDirection:'row',flexWrap:'wrap',flex:2,marginLeft:8*k,width:200*k}}>
 											{
 												deal.getIn(['tags', 'sort:createdAt=desc', 'edges'])&&deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => (
 													<Text style={{fontSize:10*k,color:'gray',fontWeight:'500'}} key={`${tag.get('id')}${deal.get('id')}`}>  {tag.get('text').toUpperCase()}</Text>
 												))
 											}
 										</View>
-											<View style={{flexDirection:'row',marginBottom:10*k,alignItems:'center',marginTop:10*k,marginLeft:!this.state.isOpen?10*k:15*k}}>
+											<View style={{flexDirection:'row',marginBottom:10*k,alignItems:'center',marginTop:10*k,marginLeft:10*k}}>
 												<Image source={{uri:'sharing6',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:2,marginRight:3}}/>
 												<Text style={{color:'gray'}}>114</Text>
 												<Image source={{uri:'cartGreen',isStatic:true}} style={{height:10*k,width:10*k,marginRight:3,marginLeft:8}}/>
 												<Text style={{color:'gray'}}>19</Text>
 												<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
 												<Text style={{color:'gray'}}>{deal.getIn(['likes', 'sort:createdAt=desc', 'count'])}</Text>
-												
-											</View>
-										
+											</View>		
 									</View>
 									<View style={{flex:1,flexDirection:'row',...center,marginTop:10*k}}>
 										<Text style={{textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:15*k,color:'gray',textDecorationColor:'red'}}>1000 </Text>

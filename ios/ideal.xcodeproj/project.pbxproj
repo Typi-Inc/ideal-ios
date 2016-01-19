@@ -20,6 +20,7 @@
 		98327B601C3BE82000EF5D2D /* Epay.m in Sources */ = {isa = PBXBuildFile; fileRef = 98327B5F1C3BE82000EF5D2D /* Epay.m */; };
 		98327B661C3C2A3800EF5D2D /* RCTTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 98327B651C3C2A3800EF5D2D /* RCTTest.m */; };
 		98327B691C3CDF1A00EF5D2D /* MediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98327B681C3CDF1A00EF5D2D /* MediaController.m */; };
+		9858D4041C4CBCE800097F4A /* PasteBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9858D4031C4CBCE800097F4A /* PasteBoard.m */; };
 		98B9AA401C415F49004EF0E4 /* monaco.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98B9AA3F1C415F49004EF0E4 /* monaco.ttf */; };
 		98FA8A0D1C339835008B814E /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 98FA8A0C1C339835008B814E /* Mapbox.bundle */; };
 		98FA8A0F1C339885008B814E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 98FA8A0E1C339885008B814E /* Settings.bundle */; };
@@ -87,6 +88,8 @@
 		98327B651C3C2A3800EF5D2D /* RCTTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTTest.m; path = ideal/RCTTest.m; sourceTree = "<group>"; };
 		98327B671C3CDF1A00EF5D2D /* MediaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MediaController.h; path = ideal/MediaController.h; sourceTree = "<group>"; };
 		98327B681C3CDF1A00EF5D2D /* MediaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MediaController.m; path = ideal/MediaController.m; sourceTree = "<group>"; };
+		9858D4021C4CBCE800097F4A /* PasteBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PasteBoard.h; path = "../node_modules/react-native-pasteboard/RCTPasteBoard/PasteBoard.h"; sourceTree = "<group>"; };
+		9858D4031C4CBCE800097F4A /* PasteBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PasteBoard.m; path = "../node_modules/react-native-pasteboard/RCTPasteBoard/PasteBoard.m"; sourceTree = "<group>"; };
 		98B9AA3F1C415F49004EF0E4 /* monaco.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = monaco.ttf; path = ../../../Downloads/monaco.ttf; sourceTree = "<group>"; };
 		98FA8A0C1C339835008B814E /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
 		98FA8A0E1C339885008B814E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -163,6 +166,8 @@
 		13B07FAE1A68108700A75B9A /* ideal */ = {
 			isa = PBXGroup;
 			children = (
+				9858D4021C4CBCE800097F4A /* PasteBoard.h */,
+				9858D4031C4CBCE800097F4A /* PasteBoard.m */,
 				98B9AA3F1C415F49004EF0E4 /* monaco.ttf */,
 				98327B551C3BC3E600EF5D2D /* BMEpaySDK */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -485,6 +490,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				98327B661C3C2A3800EF5D2D /* RCTTest.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				9858D4041C4CBCE800097F4A /* PasteBoard.m in Sources */,
 				98327B5D1C3BC40B00EF5D2D /* BMEpayViewController.m in Sources */,
 				98327B5C1C3BC40B00EF5D2D /* BMEpayException.m in Sources */,
 				98327B691C3CDF1A00EF5D2D /* MediaController.m in Sources */,

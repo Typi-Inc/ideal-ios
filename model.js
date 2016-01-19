@@ -97,15 +97,15 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 		// 	})
 		// }
 
-		if (paths[0].includes('comments')) {
-			data$.onNext({
-				[paths[0][0]] : {
-					[paths[0][1]]: {
-						[paths[0][2]] : 'isLoading'
-					}
-				}
-			})
-		}
+		// if (paths[0].includes('comments')) {
+		// 	data$.onNext({
+		// 		[paths[0][0]] : {
+		// 			[paths[0][1]]: {
+		// 				[paths[0][2]] : 'isLoading'
+		// 			}
+		// 		}
+		// 	})
+		// }
 		rootModel.get(...paths).then(data => {
 			if (data && data.json) {
 				if (data.json.featuredDeals) {

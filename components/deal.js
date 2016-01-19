@@ -10,6 +10,7 @@ import CommentBox from './comment-box'
 import Spinner from 'react-native-spinkit'
 import Loading from './loading'
 import Payout from './payout'
+// import Navbar from './navbar'
 import _ from 'lodash'
 let UIManager = require('NativeModules').UIManager;
 
@@ -28,6 +29,7 @@ let {
   InteractionManager,
   ScrollView
 } = React;
+import shallowEqual from './shallowEqual'
 export default class Deal extends React.Component{
 	state={earnOpen:false,isOpen:this.props.isOpen,hidden:false,num:0,slideUp:0,commentBox:false,text:'',isLoaded:false,};
 	static contextTypes={topNav:React.PropTypes.any
@@ -67,7 +69,7 @@ export default class Deal extends React.Component{
 	hide(){
 		this.mainView.setNativeProps({
 			style:{
-				top:300*k,
+				top:200*k,
 			}
 		})
 		this.state.hidden=true
@@ -188,23 +190,25 @@ export default class Deal extends React.Component{
 			
 	}
 	shouldComponentUpdate(nextProps,nextState){
-		return !this.props.deal.equals(nextProps.deal) || this.state !== nextState
-	}
-	setBuyText(){
-		this.setState({buyText:'Купить'})
+		return !shallowEqual(nextProps.deal,this.props.deal) || this.state !== nextState
+		// return !this.props.deal.equals(nextProps.deal) || this.state !== nextState
 	}
 	render(){
+		let backText;
+		if(this.props.search)backText='Поиск'
+		else if(this.props.justDeal)backText='Корзина'
+		else backText='Лучшее'
 		// if(this.props.index===0) console.log('helsjkdfj',this.context.topNav)
-		this.heightOfCard=this.heightOfCard||345*k;
+		this.heightOfCard=this.heightOfCard||335*k;
 		let lengthOfTags=0||lengthOfTags
 		if(this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']))lengthOfTags=this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => tag.get('text')).join(' ').length
 		if(lengthOfTags>0){
 			if(lengthOfTags>27&&lengthOfTags<50){
-				this.heightOfCard=355*k
+				this.heightOfCard=345*k
 			}else if(lengthOfTags>=50 && lengthOfTags<75){
-				this.heightOfCard=365*k
+				this.heightOfCard=355*k
 			}else if(lengthOfTags>=75 && lengthOfTags<100){
-				this.heightOfCard=375*k
+				this.heightOfCard=365*k
 			}
 		}
 		this.earn=this.earn || new Animated.Value(0)
@@ -214,8 +218,6 @@ export default class Deal extends React.Component{
 	        shadowOffset:{width:1,height:2},
 	        shadowOpacity:1,
 			opacity:this.earn.interpolate({inputRange:[0,.1,.5,.8,.9,1],outputRange:[0,0,.0,0,.1,1]}),
-
-			// opacity:this.earn.interpolate({inputRange:[0,.6,1],outputRange:[0,this.earn._value>0?1:0,1]}),
 			top:50*k,
 			left:this.earn.interpolate({inputRange:[0,1],outputRange:[160*k,0*k]}),
 			height:this.earn.interpolate({inputRange:[0,0.1,0.2,.3,.6,1],outputRange:[0*k,30,80,100,200,600*k]}),
@@ -235,10 +237,9 @@ export default class Deal extends React.Component{
 			<Animated.View ref={el=>this.mainView=el} 
 			style={{flex:1,width:this.state.isOpen?320*k:320*k,height:this.heightOfCard,
 				backgroundColor:'white',marginTop:this.state.isOpen?0:10*k,
-				// borderWidth:this.state.isOpen?0:1,borderColor:'#e4e4e4'
 			}}>
-				{this.state.isOpen ? <DealNavbar buyText={this.state.buyText} closeEarn={this.closeEarn.bind(this)} openEarn={this.openEarn.bind(this)} commentBox={this.state.commentBox} openCommentBox={this.openCommentBox.bind(this)}
-					closeCommentBox={this.closeCommentBox.bind(this)} 
+				{this.state.isOpen ? <DealNavbar backText={backText} commentBox={this.state.commentBox} openCommentBox={this.openCommentBox.bind(this)}
+					closeCommentBox={this.closeCommentBox.bind(this)} deal={deal}
 					toggleScroll={this.toggleScroll.bind(this)} 
 					navigator={this.props.navigator} 
 					closeDeal={this.props.closeDeal}/>:<DealAuthor
@@ -301,14 +302,14 @@ export default class Deal extends React.Component{
 						closeCommentBox={this.closeCommentBox.bind(this)} 
 						openCommentBox={this.openCommentBox.bind(this)} deal={deal} conditions={deal.get('conditions')}/>:null}
 				</ScrollView>
-					{this.state.commentBox?<CommentBox pushedFromLenta={this.props.pushedFromLenta && this.props.pushedFromLenta} ref='comment-box' submitComment={this.submitComment.bind(this)}/>:<View/>}
+					{this.state.commentBox?<CommentBox justDeal={this.props.justDeal} pushedFromLenta={this.props.pushedFromLenta && this.props.pushedFromLenta} ref='comment-box' submitComment={this.submitComment.bind(this)}/>:<View/>}
 					<Animated.View ref={el=>this.dialog=el} style={{
 						height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,182*k]}),
 						backgroundColor:'rgba(0,132,180,0.9)',overflow:'visible',
 						width:320*k,
 						position:'absolute',
 						paddingRight:10*k,paddingLeft:10*k,
-						top:50*k,left:0,justifyContent:'flex-start',alignItems:'center',
+						top:43*k,left:0,justifyContent:'flex-start',alignItems:'center',
 						opacity:this.anim.interpolate({inputRange:[0,0.8,0.9,1],outputRange:[0,1,1,1]}),
 					}}>
 						<Animated.Text style={{color:'white',marginTop:15*k,fontWeight:'900',
@@ -317,7 +318,7 @@ export default class Deal extends React.Component{
 						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>Отправь друзьям.</Animated.Text>
 						<Animated.Text style={{textAlign:'center',color:'white',marginTop:15*k,fontWeight:'900',
 						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>За каждую покупку друга получи 1000 тг и выше.</Animated.Text>
-						<TouchableOpacity style={{...center}}  onPress={()=>this.context.topNav.push({name:'Other',component:<Payout/>,title:'Рекомендовать'})}>
+						<TouchableOpacity style={{...center}}  onPress={()=>this.context.topNav.push({name:'Other',component:<Payout deal={deal}/>,title:'Рекомендовать'})}>
 							<Animated.View style={{marginTop:19*k,borderWidth:1,borderColor:'white',width:this.anim.interpolate({inputRange:[0,.3,1],outputRange:[0,this.anim._value>0?0:85*k,85*k]}),height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,35*k]}),...center,borderRadius:3*k}}>
 								<Animated.Text style={{color:'white',fontWeight:'700',fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.3,1],outputRange:[0.1,this.anim._value>0?0.1:14,15]}),margin:10}}>Начать</Animated.Text>
 							</Animated.View>

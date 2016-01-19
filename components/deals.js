@@ -17,11 +17,12 @@ let {
   View,
   ScrollView,
   StatusBarIOS,
-  InteractionManager
+  InteractionManager,
+  RefreshControl
 } = React;
 
 export default class Deals extends React.Component{
-	state={loadNewer:false}
+	state={loadNewer:false,isRefreshing:false}
 	static contextTypes={
     	toggleTabs: React.PropTypes.func
   	}
@@ -78,9 +79,9 @@ export default class Deals extends React.Component{
 					this.refs['navbar'].destroy()
 					this[refS].animateOpen(pagey,75*k)
 				}else if(this.props.search){
-					this[refS].animateOpen(pagey,125*k)
+					this[refS].animateOpen(pagey,130*k)
 				}else{
-					this[refS].animateOpen(pagey,25*k)
+					this[refS].animateOpen(pagey,30*k)
 				}
 				// this.context.toggleTabs(true)
 				this.props.toggleSearch && this.props.toggleSearch(true)
@@ -121,6 +122,10 @@ export default class Deals extends React.Component{
 	shouldComponentUpdate(nextProps,nextState){
 		return !this.props.data.equals(nextProps.data)|| this.state !== nextState
 	}
+	onRefresh(){
+		this.setState({isRefreshing:true})
+		this.setTimeout(()=>this.setState({isRefreshing:false}),5000)
+	}
 
 	render(){
 		console.log('render deals',this.props.status)
@@ -133,6 +138,17 @@ export default class Deals extends React.Component{
 					scrollEnabled={true}
 					automaticallAdjustContentInsets={true}
 					contentContainerStyle={{paddingBottom:this.props.search?80:0}}
+					// refreshControl={
+			  //         <RefreshControl
+			  //           refreshing={this.state.isRefreshing}
+			  //           onRefresh={this._onRefresh}
+			  //           tintColor="#ff0000"
+			  //           title="Loading..."
+			  //           colors={['#ff0000', '#00ff00', '#0000ff']}
+			  //           progressBackgroundColor="#ffff00"
+			  //         />
+			  //       }
+			 		onRefreshStart={()=>console.log('refreshing')}
 					onScroll={(e)=>{
 						if(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y<2700 && !this.stopFetch){
 							this.stopFetch=true
@@ -146,12 +162,15 @@ export default class Deals extends React.Component{
 								<Deal index={i} ref={el=>this[deal.get('id')]=el}
 									key={deal.get('id')} deal={deal}  
 									isOpen={false}
+									search={this.props.search}
 									viewDeal={!this.state.loadNewer?this.viewDeal.bind(this,deal.get('id')):null}
 									closeDeal={this.closeDeal.bind(this,deal.get('id'))}
 								/>
 							))
 						}
 					</ScrollView>
+			    	<Spinner style={{marginTop:15*k}} isVisible={this.stopFetch} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
+
 				</View>
 			)
 		}	
