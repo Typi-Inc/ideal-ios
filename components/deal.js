@@ -233,9 +233,9 @@ export default class Deal extends React.Component{
 		let deal=this.props.deal
 		this.move=this.move || 0
 		this.keyboard=this.keyboard || 0
-		let heightOfExplanation=h>1?182*k:153
-		let margin=h>1?15*k:10
-		let margin1=h>1?19*k:15*k
+		let heightOfExplanation=h>0.99?182*k:153
+		let margin=h>0.99?15*k:10
+		let margin1=h>0.99?19*k:15*k
 		// if(this.state.loading){
 		// 	return (<View style={{height:600*k}}>
 		 	     
@@ -339,13 +339,6 @@ export default class Deal extends React.Component{
 
 			</Animated.View>
 					)
-		// }
-
-		// return (
-		// 	<View style={{flex:1,...center}}>
-		// 		<Spinner style={{marginBottom:140*k}} isVisible={!this.state.isLoaded} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
-		// 	</View>
-		// 	)	
 
 	}
 }

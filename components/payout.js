@@ -67,7 +67,7 @@ export default class Payout extends React.Component{
 	copy(){
 		PasteBoard.copyText('https://poblatu.kz/referral/iq4g2lk2ide2k',()=>{
 			LayoutAnimation.easeInEaseOut()
-			let top=h>1?k>1?453*h:447*h:360
+			let top=h>0.99?k>1?453*h:447*h:360
 			this.copied.setNativeProps({style:{top:top}})
 			this.setTimeout(()=>{
 				LayoutAnimation.easeInEaseOut()

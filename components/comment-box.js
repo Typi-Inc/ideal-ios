@@ -22,8 +22,8 @@ export default class CommentBox extends React.Component{
     this.refs['text-input'].blur()
   }
 	render(){
-    let bottom=this.props.justDeal?-2:h>1?90*h:89
-    let height=h>1?225*h:210
+    let bottom=this.props.justDeal?-2:h>0.99?k>1?81*h:92:89
+    let height=h>.99?k>1?185*h:210:210
     this.anim=this.anim || new Animated.Value(0)
 		return (
           <View style={{backgroundColor:'#e8e8ee'}}>

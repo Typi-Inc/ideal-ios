@@ -62,8 +62,6 @@ export default class App extends React.Component{
 								return Navigator.SceneConfigs.FloatFromRight
 							}}
 						/>	
-						
-
 						<Combinator>
 							<View style={{position:'absolute',top:60*k}}>
 								{
@@ -83,7 +81,6 @@ export default class App extends React.Component{
 													
 												},1000)
 											let top=h>0.99?425*k:340
-
 											return <Animated.View style ={{backgroundColor:'rgba(0,132,180,0.9)',
 													position:'absolute',
 													top:top,
@@ -94,9 +91,6 @@ export default class App extends React.Component{
 													borderRadius:this.anim.interpolate({inputRange:[0,0.2,1],outputRange:[0*k,2*k,3*k]}),
 													opacity:this.anim,
 													...center,
-													// shadowColor:'#444444',
-								     //    			shadowOffset:{width:1,height:2},
-								     //   				 shadowOpacity:1,
 													}}>
 														<Animated.Text style={{color:'white',
 														fontSize:this.anim.interpolate({inputRange:[0,0.2,1],outputRange:[0.1*k,13*k,13*k]})}}>

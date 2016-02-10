@@ -92,7 +92,7 @@ export default class FindTab extends React.Component{
 	}
 	handleKeyboardAppear(){
 		let temp;
-		if(h>1)temp=320*k
+		if(h>0.99)temp=320*k
 		else temp=400
 		this.suggestionScroll.setNativeProps({contentInset:{bottom:temp}})
 		this.anim.setValue(0)
