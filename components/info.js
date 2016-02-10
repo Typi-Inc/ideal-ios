@@ -61,7 +61,7 @@ export default class Info extends React.Component{
 				{
 					certificates ? certificates.toArray().map((certificate,i) => (
 						<View key={`${certificate.get('id')}${this.props.deal.get('id')}`} >
-							<Certificate index={i} totalBuyCount={this.totalBuyCount.bind(this)} certificate={certificate}/>
+							<Certificate count={this.props.count} index={i} totalBuyCount={this.totalBuyCount.bind(this)} certificate={certificate}/>
 							<View style={{...separator}}/>
 						</View>
 					)) : (

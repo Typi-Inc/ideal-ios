@@ -117,7 +117,7 @@ export default class Certificate extends React.Component{
 
 						</View>
 						<View style={{flex:1,marginLeft:5*k}}>
-							<Text style={{textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:12*k,color:'gray',textDecorationColor:'red'}}>{certificate.get('oldPrice')?certificate.get('oldPrice')+' ':''}</Text>
+							
 							<Text style={{fontSize:14*k,fontWeight:'400',fontFamily:'Monaco'}}>{certificate.get('newPrice')}<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
 						</View>
 					</View>

@@ -12,51 +12,24 @@ let {
 } = React;
 export default class CommentBox extends React.Component{
 	state={}
-  // static contextTypes={justDeal:React.PropTypes.bool}
 	show(){
-    
-        // this.setTimeout(()=>{
-        //   // LayoutAnimation.configureNext(LayoutAnimation.create(200,LayoutAnimation.Types.keyboard,LayoutAnimation.Properties.scaleXY));
-
-        //   this.refs['slide-up'].setNativeProps({
-
-        //   style:{height:height}
-
-        // })},0)
     Animated.spring(this.anim,{toValue:1,velocity:9,tension:48,friction:10}).start()
-
   }
   hide(){
-
     Animated.spring(this.anim,{toValue:0,velocity:-15,tension:58,friction:10}).start()
   }
   blurText(){
     this.refs['text-input'].blur()
   }
-
-
 	render(){
-    let bottom;
-    if(k===1){
-      bottom=this.props.justDeal?-2:93
-
-    }else if (k>1){
-      bottom=95
-    }
-    let height;
-    if(k===1){
-      height=210
-    }else if (k>1){
-      height=215
-    }
+    let bottom=this.props.justDeal?-2:h>1?90*h:89
+    let height=h>1?225*h:210
     this.anim=this.anim || new Animated.Value(0)
 		return (
-
-
           <View style={{backgroundColor:'#e8e8ee'}}>
               <View ref='main-view' 
               style={{height:55*k,borderWidth:1,flexDirection:'row',...center,
-                borderColor:'#e4e4e4',width:320*k,marginBottom:this.props.pushedFromLenta ? bottom:bottom}}>
+                borderColor:'#e4e4e4',width:320*k,marginBottom:bottom}}>
                   <TextInput
                     ref='text-input'
                     style={{height:40*k,borderRadius:3*k,backgroundColor:'white',fontSize:13*k, borderColor: '#d3d3d3', borderWidth: 1,marginTop:6*k,width:250*k,paddingLeft:10*k}}

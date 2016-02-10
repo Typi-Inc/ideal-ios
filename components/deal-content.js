@@ -27,8 +27,7 @@ export default class DealContent extends React.Component{
 			// LayoutAnimation.configureNext(openAnimation)
 			this.setState({
 				num:num,
-				count:this.state.count+1,
-				commentCount:num===2?this.state.commentCount+1:this.state.commentCount
+				count:this.state.count+1
 			}, ()=>{
 				if (num===2) {
 					this.props.openCommentBox()

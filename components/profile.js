@@ -45,7 +45,7 @@ export default class Profile extends React.Component{
 		return (
 
 		<View style={{flex:1,backgroundColor:'e8e8ee'}}>
-			<Navbar backButton={true} title={'Профиль'}/>
+			<Navbar navigator={this.props.navigator} backButton={true} title={'Профиль'}/>
 			<View>
 				<View style={{backgroundColor:'white'}}>
 					<View style={{flexDirection:'row',margin:8*k}}>

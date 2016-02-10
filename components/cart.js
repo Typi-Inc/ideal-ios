@@ -1,6 +1,6 @@
 import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
-import {openAnimation} from './animations'
+import {fast,openAnimation} from './animations'
 import Navbar from './navbar'
 import CartCertificate from './cart-certificate'
 import Loading from './loading'
@@ -18,8 +18,10 @@ let {
   LayoutAnimation,
   ScrollView,
   Animated,
+  TouchableWithoutFeedback,
   Image,
   View,
+  StyleSheet
 } = React;
 export default class Cart extends React.Component{
 	state={}
@@ -31,9 +33,10 @@ export default class Cart extends React.Component{
   		// let deal2=deal.deleteIn(['certificates'])
   		this.props.navigator.push({name:'Deal',dealId:deal.get('id')})
   	}
+
 	render(){
 		return (
-			<View style={{flex:1,backgroundColor:'#e8e8ee'}}>
+			<View ref={el=>this.mainView=el} style={{flex:1,backgroundColor:'#e8e8ee'}}>
 
 				<Combinator>
 					<View>
@@ -49,13 +52,19 @@ export default class Cart extends React.Component{
 										.map(certificate=>certificate.get('newPrice')*certificate.get('count')).reduce((x,y)=>x+y)
 								}).reduce((x,y)=>x+y, 0)
 								if (totalSum>0){
-									return <View style={{backgroundColor:'white'}}>
-												<Text style={{fontSize:14*k,fontWeight:'bold',marginTop:10*k,marginLeft:10*k,marginBottom:10*k}}>Итого к оплате: {totalSum} тенге</Text>
-												<View style={{...separator}}/>
-												<TouchableOpacity><View style={{backgroundColor:'white',height:40*k,justifyContent:'center',padding:10}}><Text>Оплатить банковской картой</Text></View></TouchableOpacity>
-												<View style={{...separator}}/>
-												<TouchableOpacity onPress={()=>toggleItemToCart({kill:true})}><View style={{backgroundColor:'white',height:40*k,justifyContent:'center',padding:10}}><Text>Очистить корзину</Text></View></TouchableOpacity>
-												<View style={{...separator}}/>
+									return <View>
+												<View style={{backgroundColor:'white'}}>
+													<Text style={{fontSize:14*k,fontWeight:'600',marginTop:15*k,marginLeft:10*k,marginBottom:15*k,alignSelf:'center'}}>Итого к оплате: {totalSum} тенге</Text>
+													<View style={{...separator}}/>
+													<View style={{flexDirection:'row',...center}}>
+														<TouchableOpacity onPress={this.showPayOptions.bind(this)} style={{backgroundColor:'#00b484',...center,borderRadius:3*k,padding:12*k,paddingTop:8*k,paddingBottom:8*k,margin:10*k}}><Text style={{color:'white',fontWeight:'600'}}>Оплатить</Text></TouchableOpacity>
+
+														<TouchableOpacity onPress={()=>toggleItemToCart({kill:true})} style={{backgroundColor:'#E02B3B',...center,borderRadius:3*k,padding:12*k,paddingTop:8*k,paddingBottom:8*k,margin:10*k}}><Text style={{color:'white',fontWeight:'600'}}>Очистить</Text></TouchableOpacity>
+													</View>
+													<View style={{...separator}}/>
+
+												</View>
+												
 											</View>
 								}else{
 									return <View style={{backgroundColor:'white',...center,flex:1,height:520*k}}>
@@ -81,7 +90,7 @@ export default class Cart extends React.Component{
 									}
 										return <View>
 											{ 
-												chosenItems.valueSeq().toArray().map(item=>{
+												chosenItems.valueSeq().toArray().map((item,i)=>{
 													if(!item) return;
 													// console.log(item.get('certificates'))
 													return <View key={item.get('id')} style={{backgroundColor:'white',marginTop:10*k}}>
@@ -116,7 +125,7 @@ export default class Cart extends React.Component{
 																				</View>
 																			</Combinator>
 
-																			<TouchableOpacity onPress={()=>this.context.topNav.push({name:'Other',component:<Payout fromCart={true} deal={item}/>,title:'Рекомендовать'})} style={{backgroundColor:'#0679a2',padding:10*k,paddingTop:7*k,paddingBottom:7*k,marginLeft:60*k,borderRadius:3*k}}>
+																			<TouchableOpacity onPress={()=>this.context.topNav.push({name:'Other',component:<Payout fromCart={true} deal={item}/>,title:'Рекомендовать'})} style={{backgroundColor:'#0679a2',padding:10*k,paddingTop:8*k,paddingBottom:8*k,marginLeft:k===1?60*k:90*h,borderRadius:3*k}}>
 																				<Text style={{color:'white',fontWeight:'500'}}>Рекомендовать</Text>
 																			</TouchableOpacity>
 																		</View>
@@ -146,14 +155,79 @@ export default class Cart extends React.Component{
 					</ScrollView>
 				</Combinator>
 				
+				<TouchableWithoutFeedback onPress={this.hidePayOptions.bind(this)}>
+					<View  ref={el=>this.background=el} style={{position:'absolute',top:0,height:0*k,width:320*k,backgroundColor:'rgb(0,0,0)',opacity:0.3}}/>
+				</TouchableWithoutFeedback>
+				<View ref={el=>this.triangle=el} style={styles.triangle}/>
+				<View ref={el=>this.payOptions=el} style={{position:'absolute',height:0*k,width:320*k,top:100*k,backgroundColor:'white',opacity:0}}>
+					<TouchableOpacity onPress={()=>this.props.navigator.push({name:'PayByCard'})}><Text ref={el=>this.text1=el}  style={{alignSelf:'center',margin:0*k,fontSize:0.1}}>Оплатить карточкой</Text></TouchableOpacity>
+					<View ref={el=>this.separator1=el} style={{...separator,height:0}}/>
+					<TouchableOpacity><Text ref={el=>this.text2=el}  style={{alignSelf:'center',margin:0*k,fontSize:0.1}}>Оплатить через QIWI</Text></TouchableOpacity>
+					<View ref={el=>this.separator2=el} style={{...separator,height:0}}/>
+					<TouchableOpacity><Text ref={el=>this.text3=el} style={{alignSelf:'center',margin:0*k,fontSize:0.1}}>Оплатить через терминал</Text></TouchableOpacity>
+					<View ref={el=>this.separator3=el} style={{...separator,height:0}}/>
+
+				</View>
 			</View>		
 				
  		)
 		
 	}
+	showPayOptions(){
+		this.background.setNativeProps({style:{height:700*k}})
+		this.setTimeout(()=>{
+			LayoutAnimation.configureNext(fast)
+			this.payOptions.setNativeProps({style:{height:143*k}})
+			for(let item of [this.text1,this.text2,this.text3]){
+				item.setNativeProps({style:{margin:15*k,fontSize:14*k}})
+			}
+			for(let item of [this.separator1,this.separator2,this.separator3]){
+				item.setNativeProps({style:{height:1}})
+			}
+			this.triangle.setNativeProps({style:{opacity:1}})
+			this.setTimeout(()=>{this.payOptions.setNativeProps({style:{opacity:1}})})
+
+		},0)
+
+	}
+	hidePayOptions(){
+		this.setTimeout(()=>this.background.setNativeProps({style:{height:0}}),50)
+		this.setTimeout(()=>{
+			LayoutAnimation.configureNext(fast)
+			this.payOptions.setNativeProps({style:{height:0*k,}})
+			for(let item of [this.text1,this.text2,this.text3]){
+				item.setNativeProps({style:{margin:0,fontSize:0.1}})
+			}for(let item of [this.separator1,this.separator2,this.separator3]){
+				item.setNativeProps({style:{height:0}})
+			}
+			this.triangle.setNativeProps({style:{opacity:0}})
+			this.setTimeout(()=>{this.payOptions.setNativeProps({style:{opacity:0}})},60)
+
+		},0)
+	}
 }
 Object.assign(Cart.prototype, TimerMixin);
 
-
-
+let Dimensions = require('Dimensions');
+let windowSize = Dimensions.get('window');
+let coeff=windowSize.width/320
+let styles=StyleSheet.create({
+ triangle:{
+ 	position:'absolute',
+ 	top:91*coeff,
+ 	left:100*coeff,
+    width: 0,
+    opacity:0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 7,
+    borderRightWidth: 7,
+    borderBottomWidth: 10*coeff,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'white'
+  }
+		
+})
 

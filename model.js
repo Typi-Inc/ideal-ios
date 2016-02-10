@@ -107,6 +107,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 		// 	})
 		// }
 		rootModel.get(...paths).then(data => {
+
 			if (data && data.json) {
 				if (data.json.featuredDeals) {
 					const result = { featuredDeals: {}, dealsById: {} }
@@ -190,12 +191,11 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 
 		let tagIdString=tags.length === 0 ? '' : tags.map(tag => tag.id).join(',');
 		return Rx.Observable.fromPromise(rootModel.get(
-			['dealsByTags',tagIdString,{from:0,to:9},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 9}, ['id','text']],
-			['dealsByTags',tagIdString,{from:0,to:9},['title','conditions','id','image','discount','payout']],
-			['dealsByTags',tagIdString,{from:0,to:9},'business',['name','image']],
-			['dealsByTags',tagIdString,{from:0,to:9},'likes','sort:createdAt=desc','count'],
-			['dealsByTags',tagIdString,{from:0,to:9},'likedByUser', '{{me}}']
-
+			['dealsByTags',tagIdString,{from:0,to:4},'tags','sort:createdAt=desc', 'edges', {from: 0, to: 4}, ['id','text']],
+			['dealsByTags',tagIdString,{from:0,to:4},['title','conditions','id','image','discount','payout']],
+			['dealsByTags',tagIdString,{from:0,to:4},'business',['name','image']],
+			['dealsByTags',tagIdString,{from:0,to:4},'likes','sort:createdAt=desc','count'],
+			['dealsByTags',tagIdString,{from:0,to:4},'likedByUser', '{{me}}']
 		)).delay(100)
 	})//.delay(100)
 	.switchLatest().

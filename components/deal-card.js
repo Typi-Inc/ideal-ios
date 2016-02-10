@@ -95,7 +95,7 @@ export default class DealCard extends React.Component{
 							<View>
 							<Image  source={{uri:deal.get('image')}} resizeMode={'cover'}  //image of the deal
 								style={{justifyContent:'flex-end',alignItems:'flex-start',
-									height:this.state.isOpen?200*h:180*h,width:320*k}}>
+									height:180*h,width:320*k}}>
 									
 								</Image>
 								<View style={{marginLeft:8*k,flexDirection:'row', //title of the deal
@@ -134,8 +134,9 @@ export default class DealCard extends React.Component{
 											</View>		
 									</View>
 									<View style={{flex:1,flexDirection:'row',...center,marginTop:10*k}}>
-										<Text style={{textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:15*k,color:'gray',textDecorationColor:'red'}}>1000 </Text>
-										<Text style={{ marginRight:10*k,fontSize:19*k,fontWeight:'600',fontFamily:'Monaco'}}>700<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
+										<Text style={{//textDecorationLine:'line-through',fontFamily:'Monaco',fontSize:15*k,color:'gray',textDecorationColor:'red'
+											}}>     </Text>
+										<Text style={{ marginRight:10*k,fontSize:19*k,fontWeight:'600',fontFamily:'Monaco'}}>18000<Text style={{fontSize:14,color:'black'}}> тг</Text></Text>
 									</View>
 								</View>
 

@@ -65,13 +65,14 @@ export default class Payout extends React.Component{
 
 	}
 	copy(){
-		PasteBoard.copyText('hello world',()=>{
-						LayoutAnimation.easeInEaseOut()
-						this.copied.setNativeProps({style:{top:447*k}})
-						this.setTimeout(()=>{
-							LayoutAnimation.easeInEaseOut()
-							this.copied.setNativeProps({style:{top:670*k}})},1300)
-					})
+		PasteBoard.copyText('https://poblatu.kz/referral/iq4g2lk2ide2k',()=>{
+			LayoutAnimation.easeInEaseOut()
+			let top=h>1?k>1?453*h:447*h:360
+			this.copied.setNativeProps({style:{top:top}})
+			this.setTimeout(()=>{
+				LayoutAnimation.easeInEaseOut()
+				this.copied.setNativeProps({style:{top:670*k}})},1300)
+			})
 	}
 	render(){
 
@@ -80,7 +81,7 @@ export default class Payout extends React.Component{
 				<Text style={{fontWeight:'500',marginTop:10}}>Твоя рекомендательная ссылка</Text> 
 				<TouchableOpacity onPress={()=>this.copy()} style={{margin:8*k,flexDirection:'row'}}> 	
 					<Image source={require('image!link')} style={{height:16*k,width:16*k,marginRight:8*k}}/>
-					<Text style={{color:'#0679a2',marginBottom:0}}>https://besmart.kz/media/...</Text>
+					<Text style={{color:'#0679a2',marginBottom:0}}>https://poblatu.kz/referral/...</Text>
 				</TouchableOpacity>
 
 				<Text style={{textAlign:'center',fontWeight:'500',width:280}}>Поделись ею с тем, кому может пригодиться что-то из предложенного от:</Text>
@@ -126,7 +127,7 @@ export default class Payout extends React.Component{
 
 				<TouchableOpacity onPress={()=>this.copy()}>
 			          <View style={{alignItems: 'center',justifyContent:'center',margin:5*k, width:160*k,padding:10*k,borderRadius:3*k,backgroundColor:'#0679a2'}}>
-			           <Text style={{color:'#ffffff',fontWeight:'800',}}>Копировать</Text>
+			           <Text style={{color:'#ffffff',fontWeight:'800',}}>Cкопировать</Text>
 			          </View>
       		  </TouchableOpacity>
       		 

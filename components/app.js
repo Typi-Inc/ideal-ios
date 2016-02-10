@@ -82,10 +82,11 @@ export default class App extends React.Component{
 												Animated.timing(this.anim,{toValue:0,duration:200}).start()
 													
 												},1000)
+											let top=h>0.99?425*k:340
 
 											return <Animated.View style ={{backgroundColor:'rgba(0,132,180,0.9)',
 													position:'absolute',
-													top:425*k,
+													top:top,
 													height:this.anim.interpolate({inputRange:[0,0.2,1],outputRange:[0*k,35*k,35*k]}),
 													padding:10*k,
 													left:60*k,

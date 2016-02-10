@@ -52,7 +52,7 @@ export default class Deal extends React.Component{
 	moveUp(pagey){
 		this.mainView.setNativeProps({
 			style:{
-				top:-pagey,
+				top:-pagey-10*k,
 			}
 		})
 	}
@@ -69,7 +69,7 @@ export default class Deal extends React.Component{
 	hide(){
 		this.mainView.setNativeProps({
 			style:{
-				top:200*k,
+				top:250*k,
 			}
 		})
 		this.state.hidden=true
@@ -83,11 +83,12 @@ export default class Deal extends React.Component{
 		this.state.hidden=false
 	}
 	animateOpen(pagey,t){
+		let offset=k>1?5*h:0
 		this.mainView.setNativeProps({
 			style:{
 				height:k===1?600*h:600*k,
 				// width:320*k,
-				top:-pagey+t,
+				top:-pagey+t-offset
 				// marginLeft:0,
 				// borderWidth:0,	
 			}
@@ -191,24 +192,28 @@ export default class Deal extends React.Component{
 	}
 	shouldComponentUpdate(nextProps,nextState){
 		return !shallowEqual(nextProps.deal,this.props.deal) || this.state !== nextState
-		// return !this.props.deal.equals(nextProps.deal) || this.state !== nextState
 	}
 	render(){
 		let backText;
 		if(this.props.search)backText='Поиск'
 		else if(this.props.justDeal)backText='Корзина'
 		else backText='Лучшее'
-		// if(this.props.index===0) console.log('helsjkdfj',this.context.topNav)
-		this.heightOfCard=this.heightOfCard||335*k;
+		let heightTemp
+		if(h>0.99) heightTemp=335*h
+		else heightTemp=310
+		this.heightOfCard=this.heightOfCard||heightTemp;
 		let lengthOfTags=0||lengthOfTags
 		if(this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']))lengthOfTags=this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => tag.get('text')).join(' ').length
 		if(lengthOfTags>0){
 			if(lengthOfTags>27&&lengthOfTags<50){
-				this.heightOfCard=345*k
+				if(h<1)this.heightOfCard=320
+				else this.heightOfCard=345*h
 			}else if(lengthOfTags>=50 && lengthOfTags<75){
-				this.heightOfCard=355*k
+				if(h<1)this.heightOfCard=330
+				else this.heightOfCard=355*h
 			}else if(lengthOfTags>=75 && lengthOfTags<100){
-				this.heightOfCard=365*k
+				if(h<1)this.heightOfCard=340
+				else this.heightOfCard=365*h
 			}
 		}
 		this.earn=this.earn || new Animated.Value(0)
@@ -228,6 +233,9 @@ export default class Deal extends React.Component{
 		let deal=this.props.deal
 		this.move=this.move || 0
 		this.keyboard=this.keyboard || 0
+		let heightOfExplanation=h>1?182*k:153
+		let margin=h>1?15*k:10
+		let margin1=h>1?19*k:15*k
 		// if(this.state.loading){
 		// 	return (<View style={{height:600*k}}>
 		 	     
@@ -304,7 +312,7 @@ export default class Deal extends React.Component{
 				</ScrollView>
 					{this.state.commentBox?<CommentBox justDeal={this.props.justDeal} pushedFromLenta={this.props.pushedFromLenta && this.props.pushedFromLenta} ref='comment-box' submitComment={this.submitComment.bind(this)}/>:<View/>}
 					<Animated.View ref={el=>this.dialog=el} style={{
-						height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,182*k]}),
+						height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,heightOfExplanation]}),
 						backgroundColor:'rgba(0,132,180,0.9)',overflow:'visible',
 						width:320*k,
 						position:'absolute',
@@ -312,15 +320,15 @@ export default class Deal extends React.Component{
 						top:43*k,left:0,justifyContent:'flex-start',alignItems:'center',
 						opacity:this.anim.interpolate({inputRange:[0,0.8,0.9,1],outputRange:[0,1,1,1]}),
 					}}>
-						<Animated.Text style={{color:'white',marginTop:15*k,fontWeight:'900',
+						<Animated.Text style={{color:'white',marginTop:margin,fontWeight:'900',
 						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>Cкопируй ссылку.</Animated.Text>
-						<Animated.Text style={{color:'white',marginTop:15*k,fontWeight:'900',
+						<Animated.Text style={{color:'white',marginTop:margin,fontWeight:'900',
 						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>Отправь друзьям.</Animated.Text>
-						<Animated.Text style={{textAlign:'center',color:'white',marginTop:15*k,fontWeight:'900',
-						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>За каждую покупку друга получи 1000 тг и выше.</Animated.Text>
+						<Animated.Text style={{textAlign:'center',color:'white',marginTop:margin,fontWeight:'900',marginLeft:20*k,marginRight:20*k,
+						fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.2,1],outputRange:[0.1,this.anim._value>0?0.1:14,14]}),}}>За каждую покупку друга получи 1800 тг и выше.</Animated.Text>
 						<TouchableOpacity style={{...center}}  onPress={()=>this.context.topNav.push({name:'Other',component:<Payout deal={deal}/>,title:'Рекомендовать'})}>
-							<Animated.View style={{marginTop:19*k,borderWidth:1,borderColor:'white',width:this.anim.interpolate({inputRange:[0,.3,1],outputRange:[0,this.anim._value>0?0:85*k,85*k]}),height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,35*k]}),...center,borderRadius:3*k}}>
-								<Animated.Text style={{color:'white',fontWeight:'700',fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.3,1],outputRange:[0.1,this.anim._value>0?0.1:14,15]}),margin:10}}>Начать</Animated.Text>
+							<Animated.View style={{marginTop:margin1,borderWidth:1,borderColor:'white',width:this.anim.interpolate({inputRange:[0,.3,1],outputRange:[0,this.anim._value>0?0:85*k,85*k]}),height:this.anim.interpolate({inputRange:[0,1],outputRange:[0,35*k]}),...center,borderRadius:3*k}}>
+								<Animated.Text style={{color:'white',fontWeight:'700',fontSize:this.anim.interpolate({inputRange:[0,this.anim._value>0?.9:.3,1],outputRange:[0.1,this.anim._value>0?0.1:14,15]}),margin:8*h}}>Начать</Animated.Text>
 							</Animated.View>
 						</TouchableOpacity>
 				</Animated.View>

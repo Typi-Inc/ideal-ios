@@ -33,7 +33,7 @@ export default class FindTab extends React.Component{
 	static contextTypes={
     	state$: React.PropTypes.any
   	}
-	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:Map({text:'Almaty'}),loadDeals:false,placeholderText:'Искать по тегам',tagCount:0}
+	state={text:'',searchedTags:[],loadingSuggestion:false,citySelectionHeight:260*k,hideSearch:false,chosenTags:[],city:Map({text:'Алматы'}),loadDeals:false,placeholderText:'Искать по тегам',tagCount:0}
 	
 	chooseCity(city){
 		Animated.spring(this.anim,{toValue:this.anim._value>0?0:1}).start()
@@ -88,46 +88,18 @@ export default class FindTab extends React.Component{
 	}
 	toggleSearch(val){
 		this.anim.setValue(0)
-		let h1,h2;
-		if(k===1){
-			h1=560
-			h2=450
-		}else if (k>1){
-			h1=610
-			h2=610
-		}
-		this.searchPanel.setNativeProps({style:{height:val?0:100*k}})
-		this.deals.setNativeProps({style:{height:val?h1:h2}})
+		this.searchPanel.setNativeProps({style:{height:val?0:100*k,opacity:val?0:1}})
 	}
 	handleKeyboardAppear(){
-		let height;
-		if(k===1){
-			height=196
-		}else if (k>1){
-			height=300
-		}
+		let temp;
+		if(h>1)temp=320*k
+		else temp=400
+		this.suggestionScroll.setNativeProps({contentInset:{bottom:temp}})
 		this.anim.setValue(0)
-		this.setTimeout(()=>{
-			this.slider && this.slider.setNativeProps({style:{flex:k>1?.09:0.01}})
-			this.suggestion && this.suggestion.setNativeProps({style:{height:height}})
-		},500)
 	}
 	handleKeyboardDisappear(){
-		this.searchPanel&&this.searchPanel.measure((x,y,w,h,px,py)=>{
-			if(h>0){
-				let h1,h2;
-				if(k===1){
-					h1=500
-					h2=450
-				}else if (k>1){
-					h1=520
-					h2=600
-				}
-				this.slider && this.slider.setNativeProps({style:{flex:0}})
-				this.suggestion&&this.suggestion.setNativeProps({style:{height:h1}})
-				this.deals && this.deals.setNativeProps({style:{height:h2}})
-			}
-		})
+		this.suggestionScroll.setNativeProps({contentInset:{bottom:0*k,top:0}})
+		this.suggestionScroll.scrollTo(0,0)
 	}
 	componentWillMount() {
 		onTagTextChange('')
@@ -148,7 +120,6 @@ export default class FindTab extends React.Component{
     hideDeals(){
     	this.deals.setNativeProps({style:{opacity:0}})
     	this.bis.setNativeProps({style:{width:320*k,opacity:1}})
-
     }
     getMoreData(){
 		getQuery([
@@ -232,7 +203,7 @@ export default class FindTab extends React.Component{
 				
 		
 				<View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
-						<View ref={el=>this.deals=el} style={{height:500*k}}>
+						<View ref={el=>this.deals=el} style={{height:520*h}}>
 							<Combinator  me={'deals'}>
 							{
 								this.context.state$.
@@ -280,7 +251,7 @@ export default class FindTab extends React.Component{
 						</View>
 					  <View ref={el=>this.bis=el} style={{position:'absolute',left:0}}>
 						<View ref={el=>this.suggestion=el} style={{height:500*k,flex:1}}> 
-							<ScrollView keyboardShouldPersistTaps={true}>
+							<ScrollView ref={el=>this.suggestionScroll=el} automaticallyAdjustContentInsets={false} keyboardShouldPersistTaps={true}>
 								<Combinator me={'suggestion tags'}>
 									<View style={{flexDirection:'row',flexWrap:'wrap',...center,width:320*k,marginRight:100}}>
 										{

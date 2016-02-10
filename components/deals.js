@@ -22,18 +22,22 @@ let {
 } = React;
 
 export default class Deals extends React.Component{
-	state={loadNewer:false,isRefreshing:false}
+	state={loadNewer:false,isRefreshing:false,loadingMore:false}
 	static contextTypes={
     	toggleTabs: React.PropTypes.func
   	}
 	componentWillReceiveProps(props){
-		this.stopFetch=false
+		if (props.data.size>this.props.data.size){
+			this.setState({loadingMore:false})
+		}
 	}
 	moveUpPrev(currentIndex,pagey){
 		let prev = currentIndex - 1
 		if (prev > -1) {
 			let prevRef = this.props.data.getIn([prev, 'id'])
 			this[prevRef].moveUp(pagey)
+			let prevRef1=this.props.data.getIn([prev-1,'id'])
+			this[prevRef1].moveUp(pagey)
 		}
 		return;
 	}
@@ -42,6 +46,8 @@ export default class Deals extends React.Component{
 		if(prev>-1){
 			let prevRef = this.props.data.getIn([prev, 'id'])
 			this[prevRef].moveDown(pagey)
+			let prevRef1=this.props.data.getIn([prev-1,'id'])
+			this[prevRef1].moveDown(pagey)
 		}
 		return;
 	}
@@ -50,6 +56,8 @@ export default class Deals extends React.Component{
 			let nextRef = this.props.data.getIn([currentIndex + 1, 'id'])
 			if(this[nextRef]){
 				this[nextRef].hide()
+				let nextRef1 = this.props.data.getIn([currentIndex + 2, 'id'])
+				if(this[nextRef1]) this[nextRef1].hide()
 			}
 			
 		}
@@ -60,6 +68,9 @@ export default class Deals extends React.Component{
 			let nextRef = this.props.data.getIn([currentIndex+1, 'id'])
 			if(this[nextRef]&&this[nextRef].isHidden()){
 				this[nextRef].unHide()
+				let nextRef1 = this.props.data.getIn([currentIndex + 2, 'id'])
+				if(this[nextRef1]&&this[nextRef1].isHidden()) this[nextRef1].unHide()
+				
 			}
 		}
 		return;
@@ -71,7 +82,7 @@ export default class Deals extends React.Component{
 			let handle = React.findNodeHandle(this[refS]);
 			UIManager.measure(handle,(x,y,width,height,pagex,pagey)=>{
 				LayoutAnimation.configureNext(openAnimation);
-
+				this.props.toggleSearch && this.props.toggleSearch(true)
 				this[refS].toggleOpen(true)
 				this.moveUpPrev(currentIndex, pagey)
 				this.hideNext(currentIndex, pagey)
@@ -84,7 +95,7 @@ export default class Deals extends React.Component{
 					this[refS].animateOpen(pagey,30*k)
 				}
 				// this.context.toggleTabs(true)
-				this.props.toggleSearch && this.props.toggleSearch(true)
+				
 			})
 	
 	}
@@ -123,12 +134,14 @@ export default class Deals extends React.Component{
 		return !this.props.data.equals(nextProps.data)|| this.state !== nextState
 	}
 	onRefresh(){
-		this.setState({isRefreshing:true})
-		this.setTimeout(()=>this.setState({isRefreshing:false}),5000)
+		this.setState({isRefreshing:true},()=>{
+		})
+
+		this.setTimeout(()=>console.log('hello')||this.setState({isRefreshing:false}),2000)
 	}
 
 	render(){
-		console.log('render deals',this.props.status)
+		// console.log('render deals',this.props.status)
 		if(this.props.data.get(0)) {
 			return (
 				<View style={{flex:1,backgroundColor:'#e8e8ee'}}>
@@ -137,25 +150,17 @@ export default class Deals extends React.Component{
 					keyboardShouldPersistTaps={true}
 					scrollEnabled={true}
 					automaticallAdjustContentInsets={true}
-					contentContainerStyle={{paddingBottom:this.props.search?80:0}}
-					// refreshControl={
-			  //         <RefreshControl
-			  //           refreshing={this.state.isRefreshing}
-			  //           onRefresh={this._onRefresh}
-			  //           tintColor="#ff0000"
-			  //           title="Loading..."
-			  //           colors={['#ff0000', '#00ff00', '#0000ff']}
-			  //           progressBackgroundColor="#ffff00"
-			  //         />
-			  //       }
-			 		onRefreshStart={()=>console.log('refreshing')}
+					contentContainerStyle={{paddingBottom:this.props.search?60*k:0}}
 					onScroll={(e)=>{
-						if(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y<2700 && !this.stopFetch){
-							this.stopFetch=true
+						// console.log(Math.abs(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y))
+						if(Math.abs(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y)<480*k && !this.state.loadingMore){
+							console.log(Math.abs(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y))
+							this.setState({loadingMore:true})
+							console.log('here finally')
 							this.fetchBottom()	
 						}
 					}}
-					scrollEventThrottle={5000}
+					scrollEventThrottle={16}
 					ref={el=>this.scroll=el}>
 						{
 							this.props.data.toArray().map((deal,i) => (
@@ -168,8 +173,9 @@ export default class Deals extends React.Component{
 								/>
 							))
 						}
+			    	<Spinner style={{marginTop:15*k,alignSelf:'center',marginBototm:10*k}} isVisible={this.state.loadingMore} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
+			    	<View style={{height:10}}/>
 					</ScrollView>
-			    	<Spinner style={{marginTop:15*k}} isVisible={this.stopFetch} size={30} type={'WanderingCubes'} color={'0679a2'}/>       
 
 				</View>
 			)

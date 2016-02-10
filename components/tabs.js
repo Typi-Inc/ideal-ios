@@ -102,16 +102,15 @@ export default class Tabs extends React.Component{
   			return <Combinator><View style={{flex:1}}>
   				{this.context.state$.map(state=>state.getIn(['dealsById',route.dealId])).distinctUntilChanged().map(deal=>{
   					return <Deal deal={deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} justDeal={true}/>
-
   					})
-
-
   				}
   				</View>
   			</Combinator>
 
   		}else if (route.name==='Cart'){
   			return <Cart navigator={navigator}/>
+  		}else if (route.name==='PayByCard'){
+  			return <Profile navigator={navigator}/>
   		}
   	}
   	renderNotifications(route,navigator){
