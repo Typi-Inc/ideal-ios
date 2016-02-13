@@ -51,7 +51,7 @@ export default class App extends React.Component{
 		StatusBarIOS.setStyle('light-content');
 		this.anim=this.anim || new Animated.Value(0)
 		return (
-				<View style={{flex:1,backgroundColor:'#0679a2'}}>
+				<View style={{flex:1,backgroundColor:'#e8e8ee'}}>
 					<View ref='status' style={{height:20,backgroundColor:'#0679a2', }}/>
 					 <Navigator
 					 		ref={el=>this.navigator=el}

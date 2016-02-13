@@ -127,7 +127,7 @@ export default class DealCard extends React.Component{
 											<View style={{flexDirection:'row',marginBottom:10*k,alignItems:'center',marginTop:10*k,marginLeft:10*k}}>
 												<Image source={{uri:'sharing6',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:2,marginRight:3}}/>
 												<Text style={{color:'gray'}}>114</Text>
-												<Image source={{uri:'cartGreen',isStatic:true}} style={{height:10*k,width:10*k,marginRight:3,marginLeft:8}}/>
+												<Image source={{uri:'cartGreen',isStatic:true}} style={{height:12*k,width:12*k,marginRight:3,marginLeft:8}}/>
 												<Text style={{color:'gray'}}>19</Text>
 												<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
 												<Text style={{color:'gray'}}>{deal.getIn(['likes', 'sort:createdAt=desc', 'count'])}</Text>

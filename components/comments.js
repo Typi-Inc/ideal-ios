@@ -30,7 +30,7 @@ export default class Comments extends React.Component{
 		const comments = this.props.deal.getIn(['comments', 'sort:createdAt=desc', 'edges'])
 		if(!this.state.loading){
 			return (
-				<View style={{marginBottom:60}}>
+				<View style={{marginBottom:20}}>
 					<TouchableOpacity>
 						<View style={{height:30*k,...center}}>
 							<Text style={{color:'0084b4',fontSize:13*k,fontWeight:'700'}}>View more...</Text>

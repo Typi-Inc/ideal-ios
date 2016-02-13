@@ -22,13 +22,13 @@ let {
 } = React;
 
 export default class Deals extends React.Component{
-	state={loadNewer:false,isRefreshing:false,loadingMore:false}
+	state={loadNewer:false,isRefreshing:false,loadingMore:false,finished:true}
 	static contextTypes={
     	toggleTabs: React.PropTypes.func
   	}
 	componentWillReceiveProps(props){
 		if (props.data.size>this.props.data.size){
-			this.setState({loadingMore:false})
+			this.setState({loadingMore:false,finished:false})
 		}
 	}
 	moveUpPrev(currentIndex,pagey){
@@ -150,13 +150,13 @@ export default class Deals extends React.Component{
 					keyboardShouldPersistTaps={true}
 					scrollEnabled={true}
 					automaticallAdjustContentInsets={true}
-					contentContainerStyle={{paddingBottom:this.props.search?60*k:0}}
+					contentContainerStyle={{paddingBottom:this.props.search?100*k:0}}
 					onScroll={(e)=>{
-						// console.log(Math.abs(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y))
-						if(Math.abs(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y)<480*k && !this.state.loadingMore){
-							console.log(Math.abs(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y))
-							this.setState({loadingMore:true})
-							console.log('here finally')
+						if(Math.abs(e.nativeEvent.contentSize.height-e.nativeEvent.contentOffset.y)<480*k && !this.state.loadingMore && !this.state.finished){
+							this.setState({loadingMore:true,finished:true})
+							this.setTimeout(()=>{
+								this.setState({finished:!this.state.finished?false:true,loadingMore:false})
+							},500)
 							this.fetchBottom()	
 						}
 					}}

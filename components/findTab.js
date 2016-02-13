@@ -159,6 +159,7 @@ export default class FindTab extends React.Component{
 														this.cancel()
 													}
 													if(!text.includes('+')){
+														this.suggestionScroll.scrollTo(0,0)
 														onTagTextChange(text)
 													}
 												}}
@@ -203,7 +204,7 @@ export default class FindTab extends React.Component{
 				
 		
 				<View style={{flex:1,flexDirection:'row',justifyContent:'space-between'}}>
-						<View ref={el=>this.deals=el} style={{height:520*h}}>
+						<View ref={el=>this.deals=el} style={{height:520*h,}}>
 							<Combinator  me={'deals'}>
 							{
 								this.context.state$.

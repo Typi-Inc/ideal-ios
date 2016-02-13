@@ -191,10 +191,10 @@ export default class Tabs extends React.Component{
 				    onPress={() => this.setState({ selectedTab: 'cart' })}>
 				    	<Navigator
 							initialRoute={{name:'Cart'}}
-							configureScene={(route,routeStack)=>{
-								if(route.name==='Deal') return Navigator.SceneConfigs.FloatFromBottom
-								return Navigator.SceneConfigs.FloatFromRight
-							}}
+							// configureScene={(route,routeStack)=>{
+							// 	if(route.name==='Deal') return Navigator.SceneConfigs.FloatFromBottom
+							// 	return Navigator.SceneConfigs.FloatFromRight
+							// }}
 							renderScene={this.renderCart.bind(this)}
 
 						/>		

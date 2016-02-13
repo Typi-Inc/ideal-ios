@@ -21,6 +21,7 @@ let {
   TouchableWithoutFeedback,
   Image,
   View,
+  AlertIOS,
   StyleSheet
 } = React;
 export default class Cart extends React.Component{
@@ -58,8 +59,9 @@ export default class Cart extends React.Component{
 													<View style={{...separator}}/>
 													<View style={{flexDirection:'row',...center}}>
 														<TouchableOpacity onPress={this.showPayOptions.bind(this)} style={{backgroundColor:'#00b484',...center,borderRadius:3*k,padding:12*k,paddingTop:8*k,paddingBottom:8*k,margin:10*k}}><Text style={{color:'white',fontWeight:'600'}}>Оплатить</Text></TouchableOpacity>
-
-														<TouchableOpacity onPress={()=>toggleItemToCart({kill:true})} style={{backgroundColor:'#E02B3B',...center,borderRadius:3*k,padding:12*k,paddingTop:8*k,paddingBottom:8*k,margin:10*k}}><Text style={{color:'white',fontWeight:'600'}}>Очистить</Text></TouchableOpacity>
+														<TouchableOpacity onPress={()=>
+															AlertIOS.alert('Очистить','Вы уверены, что хотите очистить корзину?',[{text:'Очистить',style:'destructive',onPress:()=>toggleItemToCart({kill:true})},{text:'Отмена',style:'default'}])
+														} style={{backgroundColor:'#E02B3B',...center,borderRadius:3*k,padding:12*k,paddingTop:8*k,paddingBottom:8*k,margin:10*k}}><Text style={{color:'white',fontWeight:'600'}}>Очистить</Text></TouchableOpacity>
 													</View>
 													<View style={{...separator}}/>
 
@@ -109,7 +111,7 @@ export default class Cart extends React.Component{
 																		<View style={{flexDirection:'row',marginBottom:5*k,alignItems:'center',marginTop:5*k,marginLeft:10*k}}>
 																			<Image source={{uri:'sharing6',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:2,marginRight:3}}/>
 																			<Text style={{color:'gray'}}>114</Text>
-																			<Image source={{uri:'cartGreen',isStatic:true}} style={{height:10*k,width:10*k,marginRight:3,marginLeft:8}}/>
+																			<Image source={{uri:'cartGreen',isStatic:true}} style={{height:12*k,width:12*k,marginRight:3,marginLeft:8}}/>
 																			<Text style={{color:'gray'}}>19</Text>
 																			<Image source={{uri:'smallLikeRed',isStatic:true}} style={{height:10*k,width:10*k,marginLeft:8,marginRight:3}}/>
 
@@ -144,10 +146,7 @@ export default class Cart extends React.Component{
 
 															</View>
 													})
-
-
 											}
-
 											</View>
 									// }
 								})
@@ -207,7 +206,6 @@ export default class Cart extends React.Component{
 	}
 }
 Object.assign(Cart.prototype, TimerMixin);
-
 let Dimensions = require('Dimensions');
 let windowSize = Dimensions.get('window');
 let coeff=windowSize.width/320
@@ -228,6 +226,5 @@ let styles=StyleSheet.create({
     borderRightColor: 'transparent',
     borderBottomColor: 'white'
   }
-		
 })
 
