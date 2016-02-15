@@ -22,6 +22,10 @@ let {
 } = React;
 export default class DealContent extends React.Component{
 	state={num:0,count:0,commentCount:0}
+	static childContextTypes={count:React.PropTypes.number}
+	getChildContext(){
+		return {count:this.state.count}
+	}
 	changeTab(num){
 		// this.requestAnimationFrame(()=>{
 			// LayoutAnimation.configureNext(openAnimation)

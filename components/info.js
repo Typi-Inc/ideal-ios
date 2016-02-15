@@ -45,10 +45,7 @@ export default class Info extends React.Component{
 		let certificates = this.props.deal.getIn(['certificates', 'sort:createdAt=desc', 'edges'])
 		return (
 			<View style={{marginBottom:70*k}}>
-				<View style={{...center,height:40*k}}>
-					<Text style={{color:'gray'}}>Осталось 3 дня</Text>
-				</View>
-				<View style={{...separator}}/> 
+				
 				{
 					certificates ? certificates.toArray().map((certificate,i) => (
 						<View key={`${certificate.get('id')}${this.props.deal.get('id')}`} >

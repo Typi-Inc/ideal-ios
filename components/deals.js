@@ -100,7 +100,10 @@ export default class Deals extends React.Component{
 	
 	}
 	closeDeal(refS){
+		this[refS].scrollUp()
+		this.setTimeout(()=>{
 			this.toggleScroll(true)
+
 			this[refS].toggleScroll(false)
 			this[refS].closeCommentBox()
 			let currentIndex = this.props.data.findIndex(value => value.get('id') === refS)
@@ -120,6 +123,8 @@ export default class Deals extends React.Component{
 				this.props.toggleSearch && this.props.toggleSearch(false)
 			
 			})
+		},100)
+			
 
 	}
 	toggleScroll(val){
@@ -148,7 +153,7 @@ export default class Deals extends React.Component{
 					{this.props.navbar ? <Navbar ref='navbar' title={this.props.title} navigator={this.props.navigator}/>:null}
 					<ScrollView
 					keyboardShouldPersistTaps={true}
-					scrollEnabled={true}
+					scrollEnabled={!this.state.loadingMore}
 					automaticallAdjustContentInsets={true}
 					contentContainerStyle={{paddingBottom:this.props.search?100*k:0}}
 					onScroll={(e)=>{
@@ -168,7 +173,7 @@ export default class Deals extends React.Component{
 									key={deal.get('id')} deal={deal}  
 									isOpen={false}
 									search={this.props.search}
-									viewDeal={!this.state.loadNewer?this.viewDeal.bind(this,deal.get('id')):null}
+									viewDeal={this.viewDeal.bind(this,deal.get('id'))}
 									closeDeal={this.closeDeal.bind(this,deal.get('id'))}
 								/>
 							))

@@ -41,7 +41,7 @@ export default class FindTab extends React.Component{
 	focus(){
 		LayoutAnimation.easeInEaseOut()
 		this.textInput.setNativeProps({style:{width:255*k}})
-		this.cancelText.setNativeProps({style:{fontSize:15*k,marginLeft:5*k}})
+		this.cancelText.setNativeProps({style:{fontSize:14*k,marginLeft:5*k}})
 		this.hideDeals()
 		if(this.chosenTags){
 			onTagTextChange('')
@@ -168,7 +168,7 @@ export default class FindTab extends React.Component{
 									})
 								}
 								<TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this.cancel.bind(this)}><Text ref={el=>this.cancelText=el}	 
-									style={{marginLeft:0,color:'#0679a2',fontSize:0.1,fontWeight:'500'}}>Cancel</Text>
+									style={{marginLeft:0,color:'#0679a2',fontSize:0.1,fontWeight:'500'}}>Отмена</Text>
 								</TouchableOpacity>
 							</View>
 						</Combinator>
@@ -244,7 +244,7 @@ export default class FindTab extends React.Component{
 											/>
 										}
 										return <View style={{...center}}>
-											<Text style={{margin:15,color:'gray',textAlign:'center'}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
+											<Text style={{margin:15,color:'gray',textAlign:'center',width:300}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
 										</View>
 									})
 							}

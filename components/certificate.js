@@ -1,6 +1,6 @@
 import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
-import {openAnimation} from './animations'
+import {openAnimation,veryFast} from './animations'
 import {toggleItemToCart} from '../intent/toggleItemToCart'
 import Combinator from './combinator'
 let UIManager = require('NativeModules').UIManager;
@@ -15,8 +15,8 @@ let {
   Image
 } = React;
 export default class Certificate extends React.Component{
-	state={loading:this.props.index>3?true:false}
-	static contextTypes={deal:React.PropTypes.any,state$:React.PropTypes.any}
+	state={loading:true}
+	static contextTypes={count:React.PropTypes.number,deal:React.PropTypes.any,state$:React.PropTypes.any,justDeal:React.PropTypes.bool}
 	plus(){
 		// this.setState({count:this.state.count+1})
 		
@@ -56,10 +56,28 @@ export default class Certificate extends React.Component{
 
 	}
 	componentDidMount(){
-
-		if(this.props.index>3) InteractionManager.runAfterInteractions(()=>{
-			this.setState({loading:false})
-			},0)
+		// console.log(this.context.justDeal,this.context.count)
+		if(this.props.index>0&&this.context.count===0){
+			let tFirst=!this.context.justDeal?0:550
+			let tSecond=!this.context.justDeal?100:550
+			if(this.props.index<5) this.setTimeout(()=>{
+				LayoutAnimation.configureNext(veryFast)
+				this.setState({loading:false})
+				},tFirst)
+			else this.setTimeout(()=>{
+				LayoutAnimation.configureNext(veryFast)
+				this.setState({loading:false})
+				},tSecond)
+		}else{
+			
+			if(this.props.index>3) this.setTimeout(()=>{
+				LayoutAnimation.configureNext(veryFast)
+				this.setState({loading:false})
+				},200)
+			else this.setState({loading:false})
+		}
+		
+		
 
 	}
 	render(){

@@ -12,6 +12,7 @@ import Auth from './auth'
 import Imut from './imut'
 import Cart from './cart'
 import Combinator from './combinator'
+import CreateDeal from './createDeal'
 var Auth0Lock = require('react-native-lock-ios');
 var lock = new Auth0Lock({clientId: 'TWpDN8HdEaplEXJYemOcNYSXi64oQmf8', domain: 'ideal.eu.auth0.com'});
 import Parent from './parent'
@@ -67,7 +68,7 @@ var Epay=require('react-native').NativeModules.Epay
 
 // }
 export default class Tabs extends React.Component{
-	state={selectedTab:'search',height:43,overflow:'visible',countOfDealsInCart:0}
+	state={selectedTab:'notifications',height:43,overflow:'visible',countOfDealsInCart:0}
 	static contextTypes={state$:React.PropTypes.any,}
   	static childContextTypes={topNav:React.PropTypes.any,toggleTabs:React.PropTypes.func,goHome:React.PropTypes.func}
 	getChildContext(){
@@ -118,7 +119,7 @@ export default class Tabs extends React.Component{
   		if(route.name==='Deal'){
   			return <Deal deal={route.deal} isOpen={true} viewDeal={null} closeDeal={()=>navigator.pop()} pushedFromLenta={true}/>
   		}else{
-  			return <Auth><Notifications navigator={navigator}/></Auth>
+  			return <CreateDeal/>
   		}
   		
   	}

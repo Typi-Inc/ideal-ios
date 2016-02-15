@@ -11,7 +11,7 @@ let {
   TouchableOpacity
 } = React;
 export default class CommentBox extends React.Component{
-	state={}
+	state={height:0}
 	show(){
     Animated.spring(this.anim,{toValue:1,velocity:9,tension:48,friction:10}).start()
   }
@@ -28,14 +28,22 @@ export default class CommentBox extends React.Component{
 		return (
           <View style={{backgroundColor:'#e8e8ee'}}>
               <View ref='main-view' 
-              style={{height:55*k,borderWidth:1,flexDirection:'row',...center,
+              style={{height:Math.max(55*k, (10*k+this.state.height)),borderWidth:1,flexDirection:'row',...center,
                 borderColor:'#e4e4e4',width:320*k,marginBottom:bottom}}>
                   <TextInput
                     ref='text-input'
-                    style={{height:40*k,borderRadius:3*k,backgroundColor:'white',fontSize:13*k, borderColor: '#d3d3d3', borderWidth: 1,marginTop:6*k,width:250*k,paddingLeft:10*k}}
-                    onChangeText={(text) => this.setState({text})}
+                    style={{height: Math.max(40*k, this.state.height),borderRadius:3*k,backgroundColor:'white',fontSize:15*k, borderColor: '#d3d3d3', borderWidth: 1,marginTop:6*k,width:250*k,paddingLeft:10*k}}
+                    // onChangeText={(text) => this.setState({text})}
                     value={this.state.text}
+                    onChange={(event) => {
+                      console.log(event.nativeEvent)
+                        this.setState({
+                          text: event.nativeEvent.text,
+                          height: event.nativeEvent.contentSize.height,
+                        });
+                      }}
                     clearButtonMode={'while-editing'}
+                    multiline={true}
                     placeholder={'Написать комментарий'}
                   />
                   <TouchableOpacity>

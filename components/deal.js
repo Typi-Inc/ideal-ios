@@ -1,6 +1,6 @@
 import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
-import {openAnimation,scrollToTopAnimation,closeImageAnimation} from './animations'
+import {openAnimation,scrollToTopAnimation,closeImageAnimation,veryFast,fast} from './animations'
 import DealNavbar from './deal-navbar'
 import DealAuthor from './deal-author'
 import DealContent from './deal-content'
@@ -35,13 +35,13 @@ export default class Deal extends React.Component{
 	static contextTypes={topNav:React.PropTypes.any
     	// showModal: React.PropTypes.func,hideModal:React.PropTypes.func,
   	}
-  	static childContextTypes={deal:React.PropTypes.any,}
+  	static childContextTypes={deal:React.PropTypes.any,justDeal:React.PropTypes.bool}
 	getChildContext(){
-		return {deal:this.props.deal.toJS(),}
+		return {deal:this.props.deal.toJS(),justDeal:this.props.justDeal}
 	}
 //ANIMATE OPENING AND CLOSING BEGHINNING-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 	animateScrollToTop(){
-		this.refs['scroll'].scrollWithoutAnimationTo()
+		this.scroll.scrollWithoutAnimationTo()
 	}
 	shouldComponentUpdate(nextProps, nextState) {
 		return this.props.deal !== nextProps.deal
@@ -98,6 +98,10 @@ export default class Deal extends React.Component{
 		// 	this.openHelper()
 		// }
 	}	
+	scrollUp(){
+		this.scroll.scrollTo(0,0)
+
+	}
 	
 	animateClose(pagey){
 		this.mainView.setNativeProps({
@@ -112,7 +116,7 @@ export default class Deal extends React.Component{
 		
 	}
 	toggleScroll(val){
-		this.refs['scroll'].setNativeProps({
+		this.scroll.setNativeProps({
 			scrollEnabled:val
 		})
 	}
@@ -134,14 +138,14 @@ export default class Deal extends React.Component{
 	  	if(this.refs['comment-box']){
 			this.refs['comment-box'].show()
 		  	this.keyboard=1
-		  	// this.refs['scroll'].scrollTo(400*h,0)
+		  	// this.scroll.scrollTo(400*h,0)
 		}
 	  }
 	handleKeyboardDisappear(e){
 		if(this.refs['comment-box']){
 			this.refs['comment-box'].hide()
 	  		this.keyboard=0
-	  		// this.refs['scroll'].scrollTo(200,0)
+	  		// this.scroll.scrollTo(200,0)
 		}  	
 	  }
 	componentDidMount() {
@@ -154,6 +158,7 @@ export default class Deal extends React.Component{
 		//  		},200)
 		 		
 		// });
+		if(this.props.index===0)LayoutAnimation.configureNext(fast)
 		if(this.props.index>1){
 			InteractionManager.runAfterInteractions(()=>{
 				this.setState({loading:false})
@@ -176,12 +181,11 @@ export default class Deal extends React.Component{
 	// }	
 	openHelper(){
 		Animated.spring(this.anim,{toValue:this.anim._value===0?1:0,tension:40,velocity:this.anim._value===0?20:0,friction:10}).start()
-		UIManager.measure(React.findNodeHandle(this.dialog),(x,y,w,h,px,py)=>{
-		})
+		
 	}
 	openEarn(){
 		Animated.spring(this.earn,{toValue:1,velocity:20,tension:40,friction:10}).start(()=>{
-			this.setState({earnOpen:true})
+			// this.setState({earnOpen:true})
 		})
 
 	}
@@ -199,23 +203,11 @@ export default class Deal extends React.Component{
 		else if(this.props.justDeal)backText='Корзина'
 		else backText='Лучшее'
 		let heightTemp
-		if(h>0.99) heightTemp=335*h
-		else heightTemp=310
+		if(h>0.99) heightTemp=447*h
+		else heightTemp=320
 		this.heightOfCard=this.heightOfCard||heightTemp;
 		let lengthOfTags=0||lengthOfTags
-		if(this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']))lengthOfTags=this.props.deal.getIn(['tags', 'sort:createdAt=desc', 'edges']).toArray().filter(tag => tag.get('text')).map(tag => tag.get('text')).join(' ').length
-		if(lengthOfTags>0){
-			if(lengthOfTags>27&&lengthOfTags<50){
-				if(h<1)this.heightOfCard=320
-				else this.heightOfCard=345*h
-			}else if(lengthOfTags>=50 && lengthOfTags<75){
-				if(h<1)this.heightOfCard=330
-				else this.heightOfCard=355*h
-			}else if(lengthOfTags>=75 && lengthOfTags<100){
-				if(h<1)this.heightOfCard=340
-				else this.heightOfCard=365*h
-			}
-		}
+		
 		this.earn=this.earn || new Animated.Value(0)
 		this.slideDownStyle1={
 			position:'absolute',
@@ -233,9 +225,9 @@ export default class Deal extends React.Component{
 		let deal=this.props.deal
 		this.move=this.move || 0
 		this.keyboard=this.keyboard || 0
-		let heightOfExplanation=h>0.99?182*k:153
-		let margin=h>0.99?15*k:10
-		let margin1=h>0.99?19*k:15*k
+		let heightOfExplanation=h>0.99?230*h:153
+		let margin=h>0.99?20*k:10
+		let margin1=h>0.99?25*k:15*k
 		// if(this.state.loading){
 		// 	return (<View style={{height:600*k}}>
 		 	     
@@ -255,7 +247,7 @@ export default class Deal extends React.Component{
 						openHelper={this.openHelper.bind(this)} business={deal.get('business')}/>
 				}
 				<ScrollView 
-				ref='scroll'
+				ref={el=>this.scroll=el}
 				onTouchStart={(e)=>{this.move=0}}
 				onTouchMove={(e)=>{this.move=1}}
 				onTouchEnd={(e)=>{
@@ -263,6 +255,7 @@ export default class Deal extends React.Component{
 							this.refs['comment-box'].blurText()
 						}					
 				}}
+				// contentContainerStyle={{flex:1}}
 				scrollEventThrottle={16}
 				onScroll={(e)=>{
 					this.scrollOffsetY=e.nativeEvent.contentOffset.y
@@ -274,28 +267,28 @@ export default class Deal extends React.Component{
 					<DealCard  ref={el=>this.dealCard=el} disable={this.props.disable} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
 					{this.state.isOpen?<View><View style={{paddingRight:15,paddingLeft:15,marginBottom:10*k}}>
 						<View style={{height:5*k}}/>
-					   <SegmentedControlIOS values={['Сделки', 'Инфо', 'Комменты']} 
+					   <SegmentedControlIOS values={['Опции', 'Инфо', 'Комменты']} 
 					   tintColor={'#0084b4'} selectedIndex={0}
 					   onValueChange={(e)=>{
-					   		if(e==='Сделки'){
+					   		if(e==='Опции'){
 					   			if(this.scrollOffsetY<300*k){
-					   				this.refs['scroll'].scrollTo(300*k)
+					   				this.scroll.scrollTo(300*k)
 					   			}else{
-					   				this.refs['scroll'].scrollWithoutAnimationTo(300*k)
+					   				this.scroll.scrollWithoutAnimationTo(300*k)
 					   			}	
 					   			this.refs['deal-content'].changeTab(0)
 					   		}else if(e==='Инфо'){
 					   			if(this.scrollOffsetY<300*k){
-					   				this.refs['scroll'].scrollTo(300*k)
+					   				this.scroll.scrollTo(300*k)
 					   			}else{
-					   				this.refs['scroll'].scrollWithoutAnimationTo(300*k)
+					   				this.scroll.scrollWithoutAnimationTo(300*k)
 					   			}
 					   			this.refs['deal-content'].changeTab(1)
 					   		}else{
 					   			if(this.scrollOffsetY<300*k){
-					   				this.refs['scroll'].scrollTo(300*k)
+					   				this.scroll.scrollTo(300*k)
 					   			}else{
-					   				this.refs['scroll'].scrollWithoutAnimationTo(300*k)
+					   				this.scroll.scrollWithoutAnimationTo(300*k)
 					   			}
 					   			this.refs['deal-content'].changeTab(2)
 					   		}
@@ -333,7 +326,6 @@ export default class Deal extends React.Component{
 						</TouchableOpacity>
 				</Animated.View>
 				<Animated.View ref={el=>this.slideDown1=el} style={this.slideDownStyle1}>
-					{this.state.earnOpen?<Payout/>:<Loading color={'#0084b4'} isVisible={!this.state.open} size={30}/>}
 				</Animated.View>
 
 

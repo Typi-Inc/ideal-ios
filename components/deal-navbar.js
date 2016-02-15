@@ -38,7 +38,7 @@ export default class DealNavbar extends React.Component{
 		
 		return (
 			<View style={{}}>
-			<View style={[{backgroundColor:'white',borderWidth:1,borderColor:'#e4e4e4',
+			<View style={[{backgroundColor:'rgba(255,255,255,0)',
 				height:47*k,alignItems:'center',justifyContent:'space-between',flexDirection:'row'}]}>
 				<TouchableOpacity style={{flexDirection:'row',...center}} onPress={this.props.closeDeal}>
 					<View style={{height:36*k,width:36*k,...center}}>
