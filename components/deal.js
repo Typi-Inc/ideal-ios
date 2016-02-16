@@ -69,7 +69,7 @@ export default class Deal extends React.Component{
 	hide(){
 		this.mainView.setNativeProps({
 			style:{
-				top:250*k,
+				top:350*k,
 			}
 		})
 		this.state.hidden=true
@@ -99,7 +99,7 @@ export default class Deal extends React.Component{
 		// }
 	}	
 	scrollUp(){
-		this.scroll.scrollTo(0,0)
+		// this.scroll.scrollTo(0,0)
 
 	}
 	
@@ -138,14 +138,12 @@ export default class Deal extends React.Component{
 	  	if(this.refs['comment-box']){
 			this.refs['comment-box'].show()
 		  	this.keyboard=1
-		  	// this.scroll.scrollTo(400*h,0)
 		}
 	  }
 	handleKeyboardDisappear(e){
 		if(this.refs['comment-box']){
 			this.refs['comment-box'].hide()
 	  		this.keyboard=0
-	  		// this.scroll.scrollTo(200,0)
 		}  	
 	  }
 	componentDidMount() {
@@ -203,7 +201,7 @@ export default class Deal extends React.Component{
 		else if(this.props.justDeal)backText='Корзина'
 		else backText='Лучшее'
 		let heightTemp
-		if(h>0.99) heightTemp=447*h
+		if(h>0.99) heightTemp=405*h
 		else heightTemp=320
 		this.heightOfCard=this.heightOfCard||heightTemp;
 		let lengthOfTags=0||lengthOfTags
@@ -248,6 +246,7 @@ export default class Deal extends React.Component{
 				}
 				<ScrollView 
 				ref={el=>this.scroll=el}
+				// contentContainerStyle={{backgroundColor:'white'}}
 				onTouchStart={(e)=>{this.move=0}}
 				onTouchMove={(e)=>{this.move=1}}
 				onTouchEnd={(e)=>{
@@ -265,36 +264,36 @@ export default class Deal extends React.Component{
 				automaticallAdjustContentInsets={false}
 				scrollEnabled={this.state.isOpen}>
 					<DealCard  ref={el=>this.dealCard=el} disable={this.props.disable} closeDeal={this.props.closeDeal} viewDeal={this.props.viewDeal} deal={deal} isOpen={this.state.isOpen}/>
-					{this.state.isOpen?<View><View style={{paddingRight:15,paddingLeft:15,marginBottom:10*k}}>
-						<View style={{height:5*k}}/>
+					{this.state.isOpen?<View><View style={{paddingRight:15,paddingLeft:15,height:50*k,backgroundColor:'white'}}>
+						<View style={{height:5*k,backgroundColor:'white'}}/>
 					   <SegmentedControlIOS values={['Опции', 'Инфо', 'Комменты']} 
-					   tintColor={'#0084b4'} selectedIndex={0}
+					   tintColor={'#0084b4'} selectedIndex={0} style={{backgroundColor:'white'}}
 					   onValueChange={(e)=>{
 					   		if(e==='Опции'){
 					   			if(this.scrollOffsetY<300*k){
 					   				this.scroll.scrollTo(300*k)
 					   			}else{
-					   				this.scroll.scrollWithoutAnimationTo(300*k)
+					   				// this.scroll.scrollWithoutAnimationTo(300*k)
 					   			}	
 					   			this.refs['deal-content'].changeTab(0)
 					   		}else if(e==='Инфо'){
 					   			if(this.scrollOffsetY<300*k){
 					   				this.scroll.scrollTo(300*k)
 					   			}else{
-					   				this.scroll.scrollWithoutAnimationTo(300*k)
+					   				// this.scroll.scrollWithoutAnimationTo(300*k)
 					   			}
 					   			this.refs['deal-content'].changeTab(1)
 					   		}else{
 					   			if(this.scrollOffsetY<300*k){
 					   				this.scroll.scrollTo(300*k)
 					   			}else{
-					   				this.scroll.scrollWithoutAnimationTo(300*k)
+					   				// this.scroll.scrollWithoutAnimationTo(300*k)
 					   			}
 					   			this.refs['deal-content'].changeTab(2)
 					   		}
 					   }}
 					   />			   
-					</View><View style={{...separator,marginTop:5*k}}/></View>:<View/>}
+					</View><View style={{...separator}}/></View>:<View/>}
 
 					{this.state.isOpen?
 

@@ -2,7 +2,7 @@ import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
 import Deal from './deal'
 import _ from 'lodash'
-import {openAnimation,scrollToTopAnimation} from './animations'
+import {openAnimation,scrollToTopAnimation,veryFast} from './animations'
 import Combinator from './combinator'
 import Test from './test'
 import {callQuery} from '../intent/callQuery'
@@ -107,40 +107,42 @@ export default class DealCard extends React.Component{
 									>
 						<TouchableWithoutFeedback onPress={this.state.isOpen ? null:this.props.viewDeal} style={{height:330*h,flex:1}}>
 									<Image
-									onPress={()=>console.log('pressing image')}
-									// onLoadStart={()=>LayoutAnimation.configureNext(openAnimation)} 
+									// onPress={()=>console.log('pressing image')}
+									// onProgress={(e)=>console.log(e)}
+								
+									onLoadStart={()=>LayoutAnimation.configureNext(veryFast)} 
 									// onLoadStart={()=>console.log()} 
 									source={{uri:'http://simplykellydesigns.com/blog/wp-content/uploads/2014/03/SimplyKellyDesigns_PersimmonRosesSquare_WEB-600x600.jpg'}} //image of the deal
-									style={{justifyContent:'flex-end',alignItems:'flex-start',
-										height:320*k,width:320*k}}>
+									style={{...center,
+										height:280*k,width:320*k}}>
 										
 									</Image>
 									</TouchableWithoutFeedback>
 									<Image  source={{uri:'http://rlv.zcache.co.uk/beautiful_bouquet_of_flowers_square_paper_coaster-reb634e4027154733b6fe1427c25b08de_z6joz_1024.jpg?rlvnet=1'}}  //image of the deal
 									style={{justifyContent:'flex-end',alignItems:'flex-start',
-										height:320*k,width:320*k}}>
+										height:280*k,width:320*k}}>
 										
 									</Image>
 									<Image  source={{uri:'http://www.shop.nakayamaflowers.com/images/sring%20nose%20gay%20tf2014.jpg'}}  //image of the deal
 									style={{justifyContent:'flex-end',alignItems:'flex-start',
-										height:320*k,width:320*k}}>
+										height:280*k,width:320*k}}>
 										
 									</Image>
 									<Image
 									// onLoadStart={()=>LayoutAnimation.configureNext(openAnimation)}  
 									source={{uri:'http://cache2.asset-cache.net/gc/155394408-beautiful-bunch-of-colorful-flowers-close-up-gettyimages.jpg?v=1&c=IWSAsset&k=2&d=CrnhUwb6LqheONeD5bWQcacGhbmH34Gp5yDdnI9MUVyNxki8QDXAWT6XZqAsDsPs'}} //image of the deal
 									style={{justifyContent:'flex-end',alignItems:'flex-start',
-										height:320*k,width:320*k}}>
+										height:280*k,width:320*k}}>
 										
 									</Image>
 									<Image  source={{uri:'http://cache4.asset-cache.net/gc/155439411-beautiful-bouquet-of-flowers-in-soft-colours-gettyimages.jpg?v=1&c=IWSAsset&k=2&d=6BQooCBkzuDcJGJ%2B7%2BBXgo3vreHOpbnXrrKcCYJdj36jMxb8nm9mPVaYfSqmvXr8'}}  //image of the deal
 									style={{justifyContent:'flex-end',alignItems:'flex-start',
-										height:320*k,width:320*k}}>
+										height:280*k,width:320*k}}>
 										
 									</Image>
 									<Image  source={{uri:'http://g01.a.alicdn.com/kf/HTB1qj7hIpXXXXb.XVXXq6xXFXXXa/DIY-Beautiful-Flowers-Diamond-Resin-Square-Full-Of-Diamond-Embroidery-Decorative-Mosaic-Pattern-5D-Cross-Stitch.jpg'}}  //image of the deal
 									style={{justifyContent:'flex-end',alignItems:'flex-start',
-										height:320*k,width:320*k}}>
+										height:280*k,width:320*k}}>
 										
 									</Image>
 								</ScrollView>

@@ -20,12 +20,12 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Bolts (1.5.1):
-    - Bolts/AppLinks (= 1.5.1)
-    - Bolts/Tasks (= 1.5.1)
-  - Bolts/AppLinks (1.5.1):
+  - Bolts (1.6.0):
+    - Bolts/AppLinks (= 1.6.0)
+    - Bolts/Tasks (= 1.6.0)
+  - Bolts/AppLinks (1.6.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.5.1)
+  - Bolts/Tasks (1.6.0)
   - CocoaLumberjack (2.2.0):
     - CocoaLumberjack/Default (= 2.2.0)
     - CocoaLumberjack/Extensions (= 2.2.0)
@@ -35,18 +35,11 @@ PODS:
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
   - EUMTouchPointView (0.1.0)
-  - FBSDKCoreKit (4.8.0):
-    - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc (= 4.8.0)
-    - FBSDKCoreKit/no-arc (= 4.8.0)
-  - FBSDKCoreKit/arc (4.8.0):
-    - Bolts (~> 1.1)
-  - FBSDKCoreKit/no-arc (4.8.0):
-    - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc
-  - FBSDKLoginKit (4.8.0):
+  - FBSDKCoreKit (4.10.0):
+    - Bolts (~> 1.5)
+  - FBSDKLoginKit (4.10.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.9.1):
+  - FBSDKShareKit (4.10.0):
     - FBSDKCoreKit
   - Lock (1.22.0):
     - CocoaLumberjack (~> 2.0)
@@ -81,43 +74,40 @@ PODS:
   - Lock/WebView (1.22.0):
     - CocoaLumberjack (~> 2.0)
     - Lock/CoreUI
-  - LockReactNative (0.0.4):
-    - LockReactNative/Core (= 0.0.4)
-    - LockReactNative/NativeModule (= 0.0.4)
-  - LockReactNative/Core (0.0.4):
+  - LockReactNative (0.0.5):
+    - LockReactNative/Core (= 0.0.5)
+    - LockReactNative/NativeModule (= 0.0.5)
+  - LockReactNative/Core (0.0.5):
     - Lock (~> 1.21)
     - Lock/Email
     - Lock/SMS
     - Lock/TouchID
-  - LockReactNative/NativeModule (0.0.4):
+  - LockReactNative/NativeModule (0.0.5):
     - LockReactNative/Core
     - React/Core
-  - Mapbox-iOS-SDK (3.0.0)
-  - RCTMapboxGL (3.0.0):
-    - Mapbox-iOS-SDK (= 3.0.0)
-  - React (0.18.0):
-    - React/Core (= 0.18.0)
-  - react-native-fbsdkshare (0.0.7):
+  - React (0.19.0):
+    - React/Core (= 0.19.0)
+  - react-native-fbsdkshare (0.0.8):
     - FBSDKCoreKit
     - FBSDKShareKit
     - React
-  - React/Core (0.18.0)
-  - React/RCTActionSheet (0.18.0):
+  - React/Core (0.19.0)
+  - React/RCTActionSheet (0.19.0):
     - React/Core
-  - React/RCTGeolocation (0.18.0):
+  - React/RCTGeolocation (0.19.0):
     - React/Core
-  - React/RCTImage (0.18.0):
+  - React/RCTImage (0.19.0):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.18.0):
+  - React/RCTNetwork (0.19.0):
     - React/Core
-  - React/RCTSettings (0.18.0):
+  - React/RCTSettings (0.19.0):
     - React/Core
-  - React/RCTText (0.18.0):
+  - React/RCTText (0.19.0):
     - React/Core
-  - React/RCTVibration (0.18.0):
+  - React/RCTVibration (0.19.0):
     - React/Core
-  - React/RCTWebSocket (0.18.0):
+  - React/RCTWebSocket (0.19.0):
     - React/Core
   - SimpleKeychain (0.7.0)
   - TouchIDAuth (0.2.0):
@@ -127,7 +117,6 @@ DEPENDENCIES:
   - EUMTouchPointView
   - Lock-Facebook (~> 2.2)
   - LockReactNative (from `../node_modules/react-native-lock-ios`)
-  - RCTMapboxGL (from `../node_modules/react-native-mapbox-gl/ios`)
   - react-native-fbsdkshare (from `../node_modules/react-native-fbsdkshare`)
   - React/Core (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
@@ -142,8 +131,6 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   LockReactNative:
     :path: ../node_modules/react-native-lock-ios
-  RCTMapboxGL:
-    :path: ../node_modules/react-native-mapbox-gl/ios
   React:
     :path: ../node_modules/react-native
   react-native-fbsdkshare:
@@ -151,19 +138,17 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Bolts: a12663244b1d3351c738882e71902fc74db54f64
+  Bolts: f52a250053bb517ca874523c3913776359ab3def
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   EUMTouchPointView: 1c78c09726d22577b933444b42447ecfc636148b
-  FBSDKCoreKit: 66a935d17b6e00b6b64e604f2eb9b72c9ab7deb8
-  FBSDKLoginKit: d893fcbb98d854496925e9ff73c67b896982d3c4
-  FBSDKShareKit: b8c8ef0ed173f9fc1b3c8df384a0202ce53008d4
+  FBSDKCoreKit: 13bec8373fb3af94d44daf2aa1e0958687897fbd
+  FBSDKLoginKit: d3d4a2e9d31954deb00bfea964167a05ca1ea976
+  FBSDKShareKit: 54587b4624706ace1e810cf83412a918141f807a
   Lock: 44dc7465a9aae6f0a6b2eb1c3dfe082855faad5b
   Lock-Facebook: 09f2397cbc9ae2e1fc654f7e66248da30343e349
-  LockReactNative: 5380650513a98f99a0c408f86917e85e67a2b46e
-  Mapbox-iOS-SDK: 5e7bafc554a15ebfc615d8b0fa0a0b5d31faac70
-  RCTMapboxGL: 401ce6c335abdb17b4556697b3227158bddcf40b
-  React: 4092e2ece4866dc05763a5cb28e140fe2a5189b4
-  react-native-fbsdkshare: 1ad1d8c83847df59e1d1769d1eead6141ccb766d
+  LockReactNative: 117b5d116792fba7f8b9d04e6b274b4080852c44
+  React: 788590e9bb1784fac953ded1b325f16d9e817090
+  react-native-fbsdkshare: 6f4fe6174e0225ff81132d5d64345646338ac6da
   SimpleKeychain: b50cef3b87939d480ea1143425c00f5b4b70fe21
   TouchIDAuth: 0cf861f58a2cacfc1c12cb02de4850729d943c81
 

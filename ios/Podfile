@@ -11,7 +11,6 @@ pod 'React', :subspecs => [
   'RCTVibration'
   ], :path => '../node_modules/react-native'
 pod 'LockReactNative', :path => '../node_modules/react-native-lock-ios'
-pod 'RCTMapboxGL', :path => '../node_modules/react-native-mapbox-gl/ios'
 pod 'Lock-Facebook', '~> 2.2'
 pod 'react-native-fbsdkshare', :path => '../node_modules/react-native-fbsdkshare'
 pod "EUMTouchPointView"

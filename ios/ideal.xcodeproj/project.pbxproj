@@ -12,28 +12,12 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		576761418A156667B0F21B5E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F36BA5EC4C1DA1CC4BB0E1E2 /* libPods.a */; };
-		98327B3E1C3AB5F800EF5D2D /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98327B3D1C3AB5F800EF5D2D /* Social.framework */; };
-		98327B471C3AD93300EF5D2D /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98327B451C3AD8B900EF5D2D /* libRCTLinking.a */; };
-		98327B5C1C3BC40B00EF5D2D /* BMEpayException.m in Sources */ = {isa = PBXBuildFile; fileRef = 98327B581C3BC40B00EF5D2D /* BMEpayException.m */; };
-		98327B5D1C3BC40B00EF5D2D /* BMEpayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98327B5B1C3BC40B00EF5D2D /* BMEpayViewController.m */; };
-		98327B601C3BE82000EF5D2D /* Epay.m in Sources */ = {isa = PBXBuildFile; fileRef = 98327B5F1C3BE82000EF5D2D /* Epay.m */; };
-		98327B661C3C2A3800EF5D2D /* RCTTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 98327B651C3C2A3800EF5D2D /* RCTTest.m */; };
-		98327B691C3CDF1A00EF5D2D /* MediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98327B681C3CDF1A00EF5D2D /* MediaController.m */; };
-		9858D4041C4CBCE800097F4A /* PasteBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9858D4031C4CBCE800097F4A /* PasteBoard.m */; };
-		98B9AA401C415F49004EF0E4 /* monaco.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98B9AA3F1C415F49004EF0E4 /* monaco.ttf */; };
-		98FA8A0D1C339835008B814E /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 98FA8A0C1C339835008B814E /* Mapbox.bundle */; };
-		98FA8A0F1C339885008B814E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 98FA8A0E1C339885008B814E /* Settings.bundle */; };
-		98FA8A111C3398D4008B814E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A101C3398D4008B814E /* CoreTelephony.framework */; };
-		98FA8A131C3398E1008B814E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A121C3398E1008B814E /* GLKit.framework */; };
-		98FA8A151C3398F0008B814E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A141C3398F0008B814E /* ImageIO.framework */; };
-		98FA8A171C339902008B814E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A161C339902008B814E /* MobileCoreServices.framework */; };
-		98FA8A191C339911008B814E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A181C339911008B814E /* QuartzCore.framework */; };
-		98FA8A1B1C33991C008B814E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A1A1C33991C008B814E /* SystemConfiguration.framework */; };
-		98FA8A1D1C33994E008B814E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A1C1C33994E008B814E /* libc++.tbd */; };
-		98FA8A1F1C339965008B814E /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A1E1C339965008B814E /* libsqlite3.tbd */; };
-		98FA8A211C339CE0008B814E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A201C339CE0008B814E /* libz.tbd */; };
-		98FA8A411C34DF57008B814E /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FA8A401C34DF4B008B814E /* libRNSpinkit.a */; };
+		987C26B11C71B54F0074D8BB /* monaco.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 987C26B01C71B54F0074D8BB /* monaco.ttf */; };
+		987C26B81C71CD0D0074D8BB /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 987C26B71C71CCFB0074D8BB /* libRCTLinking.a */; };
+		987C26C11C71CDD10074D8BB /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 987C26C01C71CDC40074D8BB /* libRNSpinkit.a */; };
+		98FEC0561C721EE400846798 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FEC0551C721EDB00846798 /* libRCTCamera.a */; };
+		98FEC05D1C7222A900846798 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98FEC05C1C7222A200846798 /* libRCTCameraRoll.a */; };
+		FC47960C3CC508B33DF7E1F3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BD39797C908674267584C5B /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,19 +28,33 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = ideal;
 		};
-		98327B441C3AD8B900EF5D2D /* PBXContainerItemProxy */ = {
+		987C26B61C71CCFB0074D8BB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 98327B401C3AD8B900EF5D2D /* RCTLinking.xcodeproj */;
+			containerPortal = 987C26B21C71CCFB0074D8BB /* RCTLinking.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTLinking;
 		};
-		98FA8A3F1C34DF4B008B814E /* PBXContainerItemProxy */ = {
+		987C26BF1C71CDC40074D8BB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 98FA8A3B1C34DF4B008B814E /* RNSpinkit.xcodeproj */;
+			containerPortal = 987C26BA1C71CDC40074D8BB /* RNSpinkit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D42CB3511B2538DE00FD0AE2;
 			remoteInfo = RNSpinkit;
+		};
+		98FEC0541C721EDB00846798 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98FEC0501C721EDB00846798 /* RCTCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
+			remoteInfo = RCTCamera;
+		};
+		98FEC05B1C7222A200846798 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98FEC0571C7222A200846798 /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -72,47 +70,14 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ideal/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ideal/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ideal/main.m; sourceTree = "<group>"; };
-		3CD4B4DCFC59FAE8B320BD18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		6E9C8FEF6079D4ECB745805B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		98327B3D1C3AB5F800EF5D2D /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		98327B401C3AD8B900EF5D2D /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		98327B561C3BC40B00EF5D2D /* BMEpayDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMEpayDefines.h; path = "../../epay-sdk-ios/EpaySDKSample/BMEpaySDK/BMEpayDefines.h"; sourceTree = "<group>"; };
-		98327B571C3BC40B00EF5D2D /* BMEpayException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMEpayException.h; path = "../../epay-sdk-ios/EpaySDKSample/BMEpaySDK/BMEpayException.h"; sourceTree = "<group>"; };
-		98327B581C3BC40B00EF5D2D /* BMEpayException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMEpayException.m; path = "../../epay-sdk-ios/EpaySDKSample/BMEpaySDK/BMEpayException.m"; sourceTree = "<group>"; };
-		98327B591C3BC40B00EF5D2D /* BMEpaySDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMEpaySDK.h; path = "../../epay-sdk-ios/EpaySDKSample/BMEpaySDK/BMEpaySDK.h"; sourceTree = "<group>"; };
-		98327B5A1C3BC40B00EF5D2D /* BMEpayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BMEpayViewController.h; path = "../../epay-sdk-ios/EpaySDKSample/BMEpaySDK/BMEpayViewController.h"; sourceTree = "<group>"; };
-		98327B5B1C3BC40B00EF5D2D /* BMEpayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BMEpayViewController.m; path = "../../epay-sdk-ios/EpaySDKSample/BMEpaySDK/BMEpayViewController.m"; sourceTree = "<group>"; };
-		98327B5E1C3BE82000EF5D2D /* Epay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Epay.h; path = ideal/Epay.h; sourceTree = "<group>"; };
-		98327B5F1C3BE82000EF5D2D /* Epay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Epay.m; path = ideal/Epay.m; sourceTree = "<group>"; };
-		98327B641C3C2A3800EF5D2D /* RCTTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTTest.h; path = ideal/RCTTest.h; sourceTree = "<group>"; };
-		98327B651C3C2A3800EF5D2D /* RCTTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTTest.m; path = ideal/RCTTest.m; sourceTree = "<group>"; };
-		98327B671C3CDF1A00EF5D2D /* MediaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MediaController.h; path = ideal/MediaController.h; sourceTree = "<group>"; };
-		98327B681C3CDF1A00EF5D2D /* MediaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MediaController.m; path = ideal/MediaController.m; sourceTree = "<group>"; };
-		9858D4021C4CBCE800097F4A /* PasteBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PasteBoard.h; path = "../node_modules/react-native-pasteboard/RCTPasteBoard/PasteBoard.h"; sourceTree = "<group>"; };
-		9858D4031C4CBCE800097F4A /* PasteBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PasteBoard.m; path = "../node_modules/react-native-pasteboard/RCTPasteBoard/PasteBoard.m"; sourceTree = "<group>"; };
-		98B9AA3F1C415F49004EF0E4 /* monaco.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = monaco.ttf; path = ../../../Downloads/monaco.ttf; sourceTree = "<group>"; };
-		98FA8A0C1C339835008B814E /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
-		98FA8A0E1C339885008B814E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		98FA8A101C3398D4008B814E /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		98FA8A121C3398E1008B814E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		98FA8A141C3398F0008B814E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		98FA8A161C339902008B814E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		98FA8A181C339911008B814E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		98FA8A1A1C33991C008B814E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		98FA8A1C1C33994E008B814E /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		98FA8A1E1C339965008B814E /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		98FA8A201C339CE0008B814E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		98FA8A221C343413008B814E /* libAFNetworking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAFNetworking.a; path = "Pods/../build/Debug-iphoneos/libAFNetworking.a"; sourceTree = "<group>"; };
-		98FA8A231C343413008B814E /* libCocoaLumberjack.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCocoaLumberjack.a; path = "Pods/../build/Debug-iphoneos/libCocoaLumberjack.a"; sourceTree = "<group>"; };
-		98FA8A241C343413008B814E /* libLock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLock.a; path = "Pods/../build/Debug-iphoneos/libLock.a"; sourceTree = "<group>"; };
-		98FA8A251C343413008B814E /* libLockReactNative.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLockReactNative.a; path = "Pods/../build/Debug-iphoneos/libLockReactNative.a"; sourceTree = "<group>"; };
-		98FA8A261C343413008B814E /* libMapbox-iOS-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libMapbox-iOS-SDK.a"; path = "Pods/../build/Debug-iphoneos/libMapbox-iOS-SDK.a"; sourceTree = "<group>"; };
-		98FA8A271C343413008B814E /* libRCTMapboxGL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRCTMapboxGL.a; path = "Pods/../build/Debug-iphoneos/libRCTMapboxGL.a"; sourceTree = "<group>"; };
-		98FA8A281C343413008B814E /* libReact.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReact.a; path = "Pods/../build/Debug-iphoneos/libReact.a"; sourceTree = "<group>"; };
-		98FA8A291C343413008B814E /* libSimpleKeychain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSimpleKeychain.a; path = "Pods/../build/Debug-iphoneos/libSimpleKeychain.a"; sourceTree = "<group>"; };
-		98FA8A2A1C343413008B814E /* libTouchIDAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTouchIDAuth.a; path = "Pods/../build/Debug-iphoneos/libTouchIDAuth.a"; sourceTree = "<group>"; };
-		98FA8A3B1C34DF4B008B814E /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
-		F36BA5EC4C1DA1CC4BB0E1E2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BD39797C908674267584C5B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		987C26B01C71B54F0074D8BB /* monaco.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = monaco.ttf; path = ../../../Downloads/monaco.ttf; sourceTree = "<group>"; };
+		987C26B21C71CCFB0074D8BB /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		987C26BA1C71CDC40074D8BB /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
+		98FEC0501C721EDB00846798 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
+		98FEC0571C7222A200846798 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
+		B64342C08FAAD5C73D71909B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C38ACB88D7814879F5E4CF7D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,19 +92,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98327B471C3AD93300EF5D2D /* libRCTLinking.a in Frameworks */,
-				98327B3E1C3AB5F800EF5D2D /* Social.framework in Frameworks */,
-				98FA8A411C34DF57008B814E /* libRNSpinkit.a in Frameworks */,
-				98FA8A211C339CE0008B814E /* libz.tbd in Frameworks */,
-				98FA8A1F1C339965008B814E /* libsqlite3.tbd in Frameworks */,
-				98FA8A1D1C33994E008B814E /* libc++.tbd in Frameworks */,
-				98FA8A1B1C33991C008B814E /* SystemConfiguration.framework in Frameworks */,
-				98FA8A191C339911008B814E /* QuartzCore.framework in Frameworks */,
-				98FA8A171C339902008B814E /* MobileCoreServices.framework in Frameworks */,
-				98FA8A151C3398F0008B814E /* ImageIO.framework in Frameworks */,
-				98FA8A131C3398E1008B814E /* GLKit.framework in Frameworks */,
-				98FA8A111C3398D4008B814E /* CoreTelephony.framework in Frameworks */,
-				576761418A156667B0F21B5E /* libPods.a in Frameworks */,
+				98FEC05D1C7222A900846798 /* libRCTCameraRoll.a in Frameworks */,
+				98FEC0561C721EE400846798 /* libRCTCamera.a in Frameworks */,
+				987C26C11C71CDD10074D8BB /* libRNSpinkit.a in Frameworks */,
+				987C26B81C71CD0D0074D8BB /* libRCTLinking.a in Frameworks */,
+				FC47960C3CC508B33DF7E1F3 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,10 +123,6 @@
 		13B07FAE1A68108700A75B9A /* ideal */ = {
 			isa = PBXGroup;
 			children = (
-				9858D4021C4CBCE800097F4A /* PasteBoard.h */,
-				9858D4031C4CBCE800097F4A /* PasteBoard.m */,
-				98B9AA3F1C415F49004EF0E4 /* monaco.ttf */,
-				98327B551C3BC3E600EF5D2D /* BMEpaySDK */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -177,12 +130,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				98327B5E1C3BE82000EF5D2D /* Epay.h */,
-				98327B5F1C3BE82000EF5D2D /* Epay.m */,
-				98327B641C3C2A3800EF5D2D /* RCTTest.h */,
-				98327B651C3C2A3800EF5D2D /* RCTTest.m */,
-				98327B671C3CDF1A00EF5D2D /* MediaController.h */,
-				98327B681C3CDF1A00EF5D2D /* MediaController.m */,
 			);
 			name = ideal;
 			sourceTree = "<group>";
@@ -190,8 +137,10 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				98327B401C3AD8B900EF5D2D /* RCTLinking.xcodeproj */,
-				98FA8A3B1C34DF4B008B814E /* RNSpinkit.xcodeproj */,
+				98FEC0571C7222A200846798 /* RCTCameraRoll.xcodeproj */,
+				98FEC0501C721EDB00846798 /* RCTCamera.xcodeproj */,
+				987C26BA1C71CDC40074D8BB /* RNSpinkit.xcodeproj */,
+				987C26B21C71CCFB0074D8BB /* RCTLinking.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -199,23 +148,13 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				98FA8A1E1C339965008B814E /* libsqlite3.tbd */,
-				98FA8A201C339CE0008B814E /* libz.tbd */,
-				98FA8A1C1C33994E008B814E /* libc++.tbd */,
-				98FA8A1A1C33991C008B814E /* SystemConfiguration.framework */,
-				98FA8A181C339911008B814E /* QuartzCore.framework */,
-				98FA8A161C339902008B814E /* MobileCoreServices.framework */,
-				98FA8A141C3398F0008B814E /* ImageIO.framework */,
-				98FA8A121C3398E1008B814E /* GLKit.framework */,
-				98FA8A101C3398D4008B814E /* CoreTelephony.framework */,
-				98FA8A0E1C339885008B814E /* Settings.bundle */,
-				98FA8A0C1C339835008B814E /* Mapbox.bundle */,
+				987C26B01C71B54F0074D8BB /* monaco.ttf */,
 				13B07FAE1A68108700A75B9A /* ideal */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* idealTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
-				9778D62DBB7359CA4A3CC471 /* Pods */,
-				982922C28076C8EE4F3538F1 /* Frameworks */,
+				B7E23B691EB200B0531573A9 /* Frameworks */,
+				CC4F6515C2AC882D19F16354 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -230,60 +169,53 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9778D62DBB7359CA4A3CC471 /* Pods */ = {
+		987C26B31C71CCFB0074D8BB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6E9C8FEF6079D4ECB745805B /* Pods.debug.xcconfig */,
-				3CD4B4DCFC59FAE8B320BD18 /* Pods.release.xcconfig */,
+				987C26B71C71CCFB0074D8BB /* libRCTLinking.a */,
 			);
-			name = Pods;
+			name = Products;
 			sourceTree = "<group>";
 		};
-		982922C28076C8EE4F3538F1 /* Frameworks */ = {
+		987C26BB1C71CDC40074D8BB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				98327B3D1C3AB5F800EF5D2D /* Social.framework */,
-				98FA8A221C343413008B814E /* libAFNetworking.a */,
-				98FA8A231C343413008B814E /* libCocoaLumberjack.a */,
-				98FA8A241C343413008B814E /* libLock.a */,
-				98FA8A251C343413008B814E /* libLockReactNative.a */,
-				98FA8A261C343413008B814E /* libMapbox-iOS-SDK.a */,
-				98FA8A271C343413008B814E /* libRCTMapboxGL.a */,
-				98FA8A281C343413008B814E /* libReact.a */,
-				98FA8A291C343413008B814E /* libSimpleKeychain.a */,
-				98FA8A2A1C343413008B814E /* libTouchIDAuth.a */,
-				F36BA5EC4C1DA1CC4BB0E1E2 /* libPods.a */,
+				987C26C01C71CDC40074D8BB /* libRNSpinkit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		98FEC0511C721EDB00846798 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				98FEC0551C721EDB00846798 /* libRCTCamera.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		98FEC0581C7222A200846798 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				98FEC05C1C7222A200846798 /* libRCTCameraRoll.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B7E23B691EB200B0531573A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5BD39797C908674267584C5B /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		98327B411C3AD8B900EF5D2D /* Products */ = {
+		CC4F6515C2AC882D19F16354 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				98327B451C3AD8B900EF5D2D /* libRCTLinking.a */,
+				C38ACB88D7814879F5E4CF7D /* Pods.debug.xcconfig */,
+				B64342C08FAAD5C73D71909B /* Pods.release.xcconfig */,
 			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		98327B551C3BC3E600EF5D2D /* BMEpaySDK */ = {
-			isa = PBXGroup;
-			children = (
-				98327B561C3BC40B00EF5D2D /* BMEpayDefines.h */,
-				98327B571C3BC40B00EF5D2D /* BMEpayException.h */,
-				98327B581C3BC40B00EF5D2D /* BMEpayException.m */,
-				98327B591C3BC40B00EF5D2D /* BMEpaySDK.h */,
-				98327B5A1C3BC40B00EF5D2D /* BMEpayViewController.h */,
-				98327B5B1C3BC40B00EF5D2D /* BMEpayViewController.m */,
-			);
-			name = BMEpaySDK;
-			sourceTree = "<group>";
-		};
-		98FA8A3C1C34DF4B008B814E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				98FA8A401C34DF4B008B814E /* libRNSpinkit.a */,
-			);
-			name = Products;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,13 +243,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ideal" */;
 			buildPhases = (
-				819500A14E6FB14056C9C696 /* Check Pods Manifest.lock */,
+				E5D548501607A346DFCA053B /* Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				14A67420A24449F8D9F246AE /* Embed Pods Frameworks */,
-				E4FBF2B53244F99EDA281D37 /* Copy Pods Resources */,
+				31259A1ADCF0F60BC5FC766A /* Embed Pods Frameworks */,
+				8A79550051F33CFD6F08DBE9 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -356,12 +288,20 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 98327B411C3AD8B900EF5D2D /* Products */;
-					ProjectRef = 98327B401C3AD8B900EF5D2D /* RCTLinking.xcodeproj */;
+					ProductGroup = 98FEC0511C721EDB00846798 /* Products */;
+					ProjectRef = 98FEC0501C721EDB00846798 /* RCTCamera.xcodeproj */;
 				},
 				{
-					ProductGroup = 98FA8A3C1C34DF4B008B814E /* Products */;
-					ProjectRef = 98FA8A3B1C34DF4B008B814E /* RNSpinkit.xcodeproj */;
+					ProductGroup = 98FEC0581C7222A200846798 /* Products */;
+					ProjectRef = 98FEC0571C7222A200846798 /* RCTCameraRoll.xcodeproj */;
+				},
+				{
+					ProductGroup = 987C26B31C71CCFB0074D8BB /* Products */;
+					ProjectRef = 987C26B21C71CCFB0074D8BB /* RCTLinking.xcodeproj */;
+				},
+				{
+					ProductGroup = 987C26BB1C71CDC40074D8BB /* Products */;
+					ProjectRef = 987C26BA1C71CDC40074D8BB /* RNSpinkit.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -373,18 +313,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		98327B451C3AD8B900EF5D2D /* libRCTLinking.a */ = {
+		987C26B71C71CCFB0074D8BB /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTLinking.a;
-			remoteRef = 98327B441C3AD8B900EF5D2D /* PBXContainerItemProxy */;
+			remoteRef = 987C26B61C71CCFB0074D8BB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		98FA8A401C34DF4B008B814E /* libRNSpinkit.a */ = {
+		987C26C01C71CDC40074D8BB /* libRNSpinkit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNSpinkit.a;
-			remoteRef = 98FA8A3F1C34DF4B008B814E /* PBXContainerItemProxy */;
+			remoteRef = 987C26BF1C71CDC40074D8BB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		98FEC0551C721EDB00846798 /* libRCTCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCamera.a;
+			remoteRef = 98FEC0541C721EDB00846798 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		98FEC05C1C7222A200846798 /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = 98FEC05B1C7222A200846798 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -401,11 +355,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98FA8A0F1C339885008B814E /* Settings.bundle in Resources */,
-				98FA8A0D1C339835008B814E /* Mapbox.bundle in Resources */,
-				98B9AA401C415F49004EF0E4 /* monaco.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				987C26B11C71B54F0074D8BB /* monaco.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,9 +376,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../node_modules/react-native/packager/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/packager/react-native-xcode.sh";
 		};
-		14A67420A24449F8D9F246AE /* Embed Pods Frameworks */ = {
+		31259A1ADCF0F60BC5FC766A /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -441,22 +393,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		819500A14E6FB14056C9C696 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		E4FBF2B53244F99EDA281D37 /* Copy Pods Resources */ = {
+		8A79550051F33CFD6F08DBE9 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -469,6 +406,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E5D548501607A346DFCA053B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -486,14 +438,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98327B601C3BE82000EF5D2D /* Epay.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				98327B661C3C2A3800EF5D2D /* RCTTest.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				9858D4041C4CBCE800097F4A /* PasteBoard.m in Sources */,
-				98327B5D1C3BC40B00EF5D2D /* BMEpayViewController.m in Sources */,
-				98327B5C1C3BC40B00EF5D2D /* BMEpayException.m in Sources */,
-				98327B691C3CDF1A00EF5D2D /* MediaController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,10 +505,11 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6E9C8FEF6079D4ECB745805B /* Pods.debug.xcconfig */;
+			baseConfigurationReference = C38ACB88D7814879F5E4CF7D /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEAD_CODE_STRIPPING = NO;
+				GCC_STRICT_ALIASING = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -577,9 +524,10 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3CD4B4DCFC59FAE8B320BD18 /* Pods.release.xcconfig */;
+			baseConfigurationReference = B64342C08FAAD5C73D71909B /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_STRICT_ALIASING = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

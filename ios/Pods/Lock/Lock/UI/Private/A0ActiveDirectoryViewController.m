@@ -71,7 +71,7 @@ AUTH0_DYNAMIC_LOGGER_METHODS
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = A0LocalizedString(@"Access");
+        self.title = A0LocalizedString(@"Login");
     }
     return self;
 }

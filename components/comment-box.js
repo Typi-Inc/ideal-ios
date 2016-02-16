@@ -1,6 +1,6 @@
 import React from 'react-native'
 import TimerMixin from 'react-timer-mixin'
-import {openAnimation,spring1,spring2,scrollToTopAnimation,closeImageAnimation} from './animations'
+import {openAnimation,spring1,spring2,scrollToTopAnimation,closeImageAnimation,veryFast} from './animations'
 let {
   LayoutAnimation,
   Text,
@@ -28,18 +28,22 @@ export default class CommentBox extends React.Component{
 		return (
           <View style={{backgroundColor:'#e8e8ee'}}>
               <View ref='main-view' 
-              style={{height:Math.max(55*k, (10*k+this.state.height)),borderWidth:1,flexDirection:'row',...center,
+              style={{height:Math.max(55*k, (12*k+this.state.height)),borderWidth:1,flexDirection:'row',justifyContent:'center',alignItems:'flex-end',
                 borderColor:'#e4e4e4',width:320*k,marginBottom:bottom}}>
                   <TextInput
                     ref='text-input'
-                    style={{height: Math.max(40*k, this.state.height),borderRadius:3*k,backgroundColor:'white',fontSize:15*k, borderColor: '#d3d3d3', borderWidth: 1,marginTop:6*k,width:250*k,paddingLeft:10*k}}
-                    // onChangeText={(text) => this.setState({text})}
+                    style={{height: Math.max(40*k, this.state.height),
+                      borderRadius:3*k,backgroundColor:'white',fontSize:16, 
+                      borderColor: '#d3d3d3', borderWidth: 1,...center,
+                      marginTop:this.state.height<41*k?6*k:4*k,paddingTop:this.state.height<41*k?4*k:1*k,paddingBottom:4,
+                      width:250*k,paddingLeft:10*k}}
                     value={this.state.text}
                     onChange={(event) => {
-                      console.log(event.nativeEvent)
+                      event.nativeEvent.text.length===0?this.submit.setNativeProps({style:{backgroundColor:'gray'}}):this.submit.setNativeProps({style:{backgroundColor:'#0084b4'}})
+                      LayoutAnimation.configureNext(veryFast)
                         this.setState({
                           text: event.nativeEvent.text,
-                          height: event.nativeEvent.contentSize.height,
+                          height: Math.min(event.nativeEvent.contentSize.height,160*k)
                         });
                       }}
                     clearButtonMode={'while-editing'}
@@ -47,7 +51,9 @@ export default class CommentBox extends React.Component{
                     placeholder={'Написать комментарий'}
                   />
                   <TouchableOpacity>
-                    <View style={{backgroundColor:'0084b4',borderRadius:3*k,height:39*k,width:45*k,marginLeft:8*k,marginBottom:2*k,...center}}>
+                    <View ref={el=>this.submit=el} 
+                    style={{backgroundColor:'gray',
+                    borderRadius:3*k,height:36*k,width:45*k,marginLeft:8*k,marginBottom:9*k,...center}}>
                       <Image source={{uri:'arrow-right',isStatic:true}} style={{height:15*k,width:23*k}}/>
                     </View>
 

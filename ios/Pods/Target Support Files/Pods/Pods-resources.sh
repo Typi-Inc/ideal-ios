@@ -87,12 +87,10 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "Lock/Lock/UI/NIBs/A0TitleView.xib"
   install_resource "Lock/Lock/WebView/NIBs/A0WebKitViewController.xib"
   install_resource "Lock/Lock/WebView/NIBs/A0WebViewController.xib"
-  install_resource "../../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL/Settings.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/EUMTouchPointView.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/Auth0.SMS.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/Auth0.TouchID.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/Auth0.bundle"
-  install_resource "${BUILT_PRODUCTS_DIR}/Mapbox.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "Lock/Lock/Email/NIBs/A0EmailCodeViewController.xib"
@@ -124,12 +122,10 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "Lock/Lock/UI/NIBs/A0TitleView.xib"
   install_resource "Lock/Lock/WebView/NIBs/A0WebKitViewController.xib"
   install_resource "Lock/Lock/WebView/NIBs/A0WebViewController.xib"
-  install_resource "../../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL/Settings.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/EUMTouchPointView.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/Auth0.SMS.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/Auth0.TouchID.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/Auth0.bundle"
-  install_resource "${BUILT_PRODUCTS_DIR}/Mapbox.bundle"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

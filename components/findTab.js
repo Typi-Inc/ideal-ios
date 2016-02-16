@@ -244,7 +244,7 @@ export default class FindTab extends React.Component{
 											/>
 										}
 										return <View style={{...center}}>
-											<Text style={{margin:15,color:'gray',textAlign:'center',width:300}}>К сожалению, мы ничего не нашли для Вашей комбинации тегов. Попробуйте другую комбинацию.</Text>
+											<Text style={{margin:15,color:'gray',textAlign:'center',width:300}}></Text>
 										</View>
 									})
 							}

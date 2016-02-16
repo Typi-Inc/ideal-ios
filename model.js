@@ -16,11 +16,13 @@ const removeCircular = (json) => {
 	})
 }
 
-let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleItemToCart$ }) => {
+let model = ({ toggleNewDeal$,tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleItemToCart$ }) => {
 	let data$ = new Rx.ReplaySubject(1);
 	data$.onNext({featuredDeals:'isLoading'})
 	let state$ = data$.scan((accumulator, newData) => {
-		if (newData.chosenTags || newData.chosenItems) {
+			// console.log(removeCircular(newData))
+
+		if (newData.chosenTags || newData.chosenItems || newData.unpublishedDeals) {
 			return accumulator.merge(fromJS(newData, (key, value) => value.toOrderedMap()))
 		}
 		return accumulator.mergeDeep(fromJS(removeCircular(newData), (key, value) => value.toOrderedMap()))
@@ -28,12 +30,12 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 	
 	
 	let rootModel = new falcor.Model({
-		source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+		source: new FalcorHttpDatasource('http://169.254.161.5:9090/model.json'),
 	});
 	store.get('Auth0Token').then(token=>{
 		if(token&&token.idToken){
 			rootModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
+	  			source: new FalcorHttpDatasource('http://169.254.161.5:9090/model.json', {
 	  				headers: {
 	  					'Authorization': 'Bearer '+token.idToken
 	  				}
@@ -41,7 +43,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 			}).batch(20)
 		}else{
 		    rootModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+	  			source: new FalcorHttpDatasource('http://169.254.161.5:9090/model.json'),
 			})
 		}
 	})
@@ -49,7 +51,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 		let newModel;
 		if(idToken){
 			 newModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json', {
+	  			source: new FalcorHttpDatasource('http://169.254.161.5:9090/model.json', {
 	  				headers: {
 	  					'Authorization': 'Bearer '+idToken
 	  				}
@@ -59,7 +61,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 			rootModel = newModel
 		}else{
 		    newModel = new falcor.Model({
-	  			source: new FalcorHttpDatasource('http://localhost:9090/model.json'),
+	  			source: new FalcorHttpDatasource('http://169.254.161.5:9090/model.json'),
 			});
 			rootModel = newModel
 		}
@@ -154,6 +156,31 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 	)
 	callQuery$.subscribe(args => rootModel.call(...args).then(data => data && data.json && data$.onNext(data.json)))
 	// toggleItemToCart$.subscribe(item=>data$.onNext({'item':item}))
+
+	toggleNewDeal$.
+		scan((acc,props)=>{
+			if (props.constructor === Object) {
+				// console.log(acc,props,'there')
+				_.merge(acc, props);
+				return acc;
+			}
+			if (props.constructor === Array) {
+				const currentOrder = _.get(acc, props)
+				const images = _.get(acc, _.take(props, props.length - 1))
+				for (const imageURI in images) {
+					if (images[imageURI] > currentOrder) {
+						images[imageURI]--;
+					}
+				}
+				delete images[props[props.length - 1]]
+				return acc;
+			}
+		}, {}).subscribe(deals=>{
+			console.log(deals,'here')
+			data$.onNext({unpublishedDeals:deals})
+		})
+
+
 	toggleItemToCart$.
 		scan((acc,nextItem)=>{
 			if(nextItem.kill){
@@ -174,6 +201,7 @@ let model = ({ tagSearchText$, getQuery$, toggleTag$, auth$, callQuery$,toggleIt
 			return acc
 	},{}).subscribe(items=>{
 		// console.log(items)
+		console.log(items)
 		data$.onNext({chosenItems:items,chosenItemsInCartCount:Object.keys(items).length})
 	})
 	
